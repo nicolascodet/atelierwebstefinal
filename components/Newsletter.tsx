@@ -2,17 +2,40 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import { addSubscriber } from '../lib/supabase';
 
 const Newsletter = () => {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically handle the newsletter signup
-    // For now, we'll just simulate a successful submission
-    setSubmitted(true);
-    setEmail('');
+    setLoading(true);
+    setError('');
+    
+    try {
+      // Add the subscriber to Supabase
+      const result = await addSubscriber(email);
+      
+      if (result.success) {
+        setSubmitted(true);
+        setEmail('');
+      } else {
+        // Check if it's a duplicate email error
+        if (result.error && typeof result.error === 'object' && 'code' in result.error && result.error.code === '23505') {
+          setError('This email is already subscribed.');
+        } else {
+          setError('Something went wrong. Please try again later.');
+        }
+      }
+    } catch (err) {
+      console.error('Error submitting form:', err);
+      setError('Something went wrong. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -76,17 +99,26 @@ const Newsletter = () => {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email address"
                     required
+                    disabled={loading}
                     className="flex-1 px-5 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent text-base"
                   />
                   <motion.button
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.98 }}
                     type="submit"
-                    className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors text-base shadow-sm"
+                    disabled={loading}
+                    className="px-6 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors text-base shadow-sm disabled:bg-blue-400 disabled:cursor-not-allowed"
                   >
-                    Subscribe
+                    {loading ? 'Subscribing...' : 'Subscribe'}
                   </motion.button>
                 </div>
+                
+                {error && (
+                  <div className="mt-3 text-red-600 text-sm text-center">
+                    {error}
+                  </div>
+                )}
+                
                 <div className="mt-6 flex items-center justify-center">
                   <div className="flex items-center">
                     <svg className="h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
