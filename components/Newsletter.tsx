@@ -16,6 +16,7 @@ const Newsletter = () => {
 
     try {
       // Using Formspree to handle the form submission
+      // Replace YOUR_FORM_ID with the actual form ID from Formspree (e.g., xvoyqpkd)
       const response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
         method: 'POST',
         headers: {
