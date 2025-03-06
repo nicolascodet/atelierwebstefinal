@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 
@@ -100,7 +100,82 @@ const artStyles = [
 
 const Features = () => {
   const ref = useRef(null);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
+  
+  // Auto-scroll functionality for mobile
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (!scrollContainer) return;
+    
+    let scrollPosition = 0;
+    let scrollDirection = 1; // 1 for right, -1 for left
+    let isPaused = false;
+    
+    const autoScroll = () => {
+      if (!scrollContainer || isPaused) return;
+      
+      // Only auto-scroll on mobile/tablet
+      if (window.innerWidth >= 768) return;
+      
+      const maxScroll = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+      
+      // Change direction when reaching the end
+      if (scrollPosition >= maxScroll) {
+        scrollDirection = -1;
+      } else if (scrollPosition <= 0) {
+        scrollDirection = 1;
+      }
+      
+      // Calculate new position with smooth scrolling
+      scrollPosition += 1 * scrollDirection;
+      scrollContainer.scrollLeft = scrollPosition;
+    };
+    
+    // Create smooth animation with requestAnimationFrame
+    let animationId: number;
+    const animate = () => {
+      autoScroll();
+      animationId = requestAnimationFrame(animate);
+    };
+    
+    // Start the animation
+    animationId = requestAnimationFrame(animate);
+    
+    // Add pause on user interaction
+    const handleMouseEnter = () => {
+      isPaused = true;
+    };
+    
+    const handleMouseLeave = () => {
+      isPaused = false;
+    };
+    
+    const handleTouchStart = () => {
+      isPaused = true;
+    };
+    
+    const handleTouchEnd = () => {
+      // Resume after a short delay to allow user to finish their interaction
+      setTimeout(() => {
+        isPaused = false;
+      }, 2000);
+    };
+    
+    scrollContainer.addEventListener('mouseenter', handleMouseEnter);
+    scrollContainer.addEventListener('mouseleave', handleMouseLeave);
+    scrollContainer.addEventListener('touchstart', handleTouchStart);
+    scrollContainer.addEventListener('touchend', handleTouchEnd);
+    
+    // Clean up
+    return () => {
+      cancelAnimationFrame(animationId);
+      scrollContainer.removeEventListener('mouseenter', handleMouseEnter);
+      scrollContainer.removeEventListener('mouseleave', handleMouseLeave);
+      scrollContainer.removeEventListener('touchstart', handleTouchStart);
+      scrollContainer.removeEventListener('touchend', handleTouchEnd);
+    };
+  }, []);
   
   return (
     <div className="bg-white/80" id="features">
@@ -139,7 +214,7 @@ const Features = () => {
       {/* Features Cards Section - Horizontal Scrolling on Mobile */}
       <div className="pb-8 lg:pb-16">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-screen-xl mx-auto overflow-auto no-scrollbar">
+          <div ref={scrollContainerRef} className="max-w-screen-xl mx-auto overflow-auto no-scrollbar">
             <div className="flex flex-nowrap md:grid md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 md:grid-flow-row pb-4 md:pb-0" style={{ minWidth: "min-content" }}>
               {features.map((feature) => (
                 <motion.div
