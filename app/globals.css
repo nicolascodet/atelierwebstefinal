@@ -1,0 +1,324 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 17, 24, 39;
+  --background-rgb: 249, 250, 251;
+  --accent-rgb: 124, 58, 237;
+  --primary-rgb: 0, 119, 237;
+  --secondary-rgb: 17, 24, 39;
+  --success-rgb: 16, 185, 129;
+  --warning-rgb: 245, 158, 11;
+  --danger-rgb: 239, 68, 68;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 249, 250, 251;
+    --background-rgb: 17, 24, 39;
+    --accent-rgb: 167, 139, 250;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+  font-feature-settings: "ss01", "ss02", "cv01", "cv02";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+}
+
+/* Glass morphism and modern effects */
+.glass {
+  @apply bg-white/80 backdrop-blur-glass border border-white/20 shadow-glass;
+}
+
+.glass-dark {
+  @apply bg-gray-900/80 backdrop-blur-glass border border-gray-700/30 shadow-glass;
+}
+
+.gradient-primary {
+  @apply bg-gradient-to-r from-primary to-accent;
+}
+
+.gradient-subtle {
+  @apply bg-gradient-to-r from-gray-50 to-gray-100;
+}
+
+.gradient-animation {
+  background-size: 200% 200%;
+  @apply animate-gradient;
+}
+
+/* Modern button styles */
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center rounded-xl font-medium transition-all 
+    focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
+  }
+
+  .btn-sm {
+    @apply px-2.5 py-1.5 text-xs;
+  }
+
+  .btn-md {
+    @apply px-3.5 py-2 text-sm;
+  }
+
+  .btn-lg {
+    @apply px-5 py-2.5 text-base;
+  }
+
+  .btn-xl {
+    @apply px-6 py-3 text-lg;
+  }
+
+  .btn-primary {
+    @apply btn btn-lg text-white bg-primary hover:bg-primary-dark focus:ring-primary;
+  }
+
+  .btn-secondary {
+    @apply btn btn-lg text-gray-900 bg-gray-100 hover:bg-gray-200 focus:ring-gray-200;
+  }
+
+  .btn-outline {
+    @apply btn btn-lg text-primary border border-primary hover:bg-primary/5 focus:ring-primary;
+  }
+
+  .btn-ghost {
+    @apply btn btn-lg text-gray-800 hover:bg-gray-100 focus:ring-gray-200;
+  }
+
+  .btn-accent {
+    @apply btn btn-lg text-white bg-accent hover:bg-accent-light focus:ring-accent;
+  }
+
+  .btn-success {
+    @apply btn btn-lg text-white bg-success hover:bg-success/90 focus:ring-success;
+  }
+
+  .btn-icon {
+    @apply p-2 rounded-full;
+  }
+
+  /* Modern card styles */
+  .card {
+    @apply bg-white rounded-2xl border border-gray-200 shadow-soft overflow-hidden hover:shadow-medium transition-shadow duration-300;
+  }
+
+  .card-glass {
+    @apply glass rounded-2xl overflow-hidden hover:shadow-medium transition-shadow duration-300;
+  }
+
+  /* Badge styles */
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-primary {
+    @apply bg-primary/10 text-primary;
+  }
+
+  .badge-secondary {
+    @apply bg-gray-100 text-gray-800;
+  }
+
+  .badge-accent {
+    @apply bg-accent/10 text-accent;
+  }
+
+  .badge-success {
+    @apply bg-success/10 text-success;
+  }
+
+  .badge-warning {
+    @apply bg-warning/10 text-warning;
+  }
+
+  /* Section styles */
+  .section {
+    @apply py-16 md:py-24;
+  }
+  
+  .section-sm {
+    @apply py-8 md:py-12;
+  }
+
+  /* Container styles */
+  .container-mobile {
+    @apply w-full px-4 mx-auto max-w-mobile;
+  }
+
+  .container-sm {
+    @apply w-full px-4 mx-auto max-w-tablet;
+  }
+
+  .container-md {
+    @apply w-full px-4 mx-auto max-w-laptop;
+  }
+
+  .container-lg {
+    @apply w-full px-4 mx-auto max-w-desktop;
+  }
+
+  /* Typography */
+  .heading-1 {
+    @apply text-4xl sm:text-5xl md:text-6xl font-display font-bold tracking-tight;
+  }
+
+  .heading-2 {
+    @apply text-3xl sm:text-4xl md:text-5xl font-display font-bold tracking-tight;
+  }
+
+  .heading-3 {
+    @apply text-2xl sm:text-3xl md:text-4xl font-display font-bold tracking-tight;
+  }
+
+  .heading-4 {
+    @apply text-xl sm:text-2xl md:text-3xl font-display font-semibold tracking-tight;
+  }
+
+  .subtitle-1 {
+    @apply text-xl text-gray-600 leading-relaxed;
+  }
+
+  .subtitle-2 {
+    @apply text-lg text-gray-600 leading-relaxed;
+  }
+
+  .body-lg {
+    @apply text-lg leading-relaxed;
+  }
+
+  .body {
+    @apply text-base leading-relaxed;
+  }
+
+  .body-sm {
+    @apply text-sm leading-relaxed;
+  }
+
+  .caption {
+    @apply text-sm text-gray-500;
+  }
+}
+
+/* Feature highlight */
+.highlight-box {
+  @apply relative overflow-hidden rounded-2xl;
+}
+
+.highlight-box::before {
+  content: '';
+  @apply absolute inset-0 bg-gradient-to-br from-primary/20 to-accent/20 opacity-70;
+}
+
+.highlight-box::after {
+  content: '';
+  @apply absolute -inset-[1px] bg-gradient-to-br from-primary to-accent opacity-30 blur-sm;
+  z-index: -1;
+}
+
+/* Glass card variants */
+.glass-card {
+  @apply relative overflow-hidden p-6 rounded-2xl;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+}
+
+.glass-card-dark {
+  background: rgba(17, 24, 39, 0.7);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Scene color gradients for the Integration component */
+.gradient-living-room {
+  background: linear-gradient(135deg, rgba(0,119,237,0.7) 0%, rgba(124,58,237,0.4) 100%);
+}
+
+.gradient-office {
+  background: linear-gradient(135deg, rgba(124,58,237,0.7) 0%, rgba(76,29,149,0.4) 100%);
+}
+
+.gradient-bedroom {
+  background: linear-gradient(135deg, rgba(16,185,129,0.7) 0%, rgba(5,150,105,0.4) 100%);
+}
+
+.gradient-gallery {
+  background: linear-gradient(135deg, rgba(239,68,68,0.7) 0%, rgba(153,27,27,0.4) 100%);
+}
+
+/* Animation utilities */
+.fadeIn {
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.fadeInUp {
+  animation: fadeInUp 1s ease-in-out;
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Mobile touch improvements */
+@media (max-width: 767px) {
+  input, 
+  textarea, 
+  button, 
+  select, 
+  a {
+    font-size: 16px; /* Prevents iOS zoom on focus */
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Modern scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.5);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(107, 114, 128, 0.7);
+}
