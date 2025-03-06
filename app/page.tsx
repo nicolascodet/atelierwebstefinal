@@ -21,29 +21,29 @@ export default function Home() {
     <main className="min-h-screen bg-white">
       <Header />
       
-      <section id="hero" className="pt-20">
+      <section id="hero" className="pt-16 md:pt-20">
         <Hero />
       </section>
       
-      <section id="features" className="py-20">
+      <section id="features" className="py-12 md:py-16">
         <Features />
       </section>
       
-      <section id="ai-art-demo" className="py-20 bg-white">
+      <section id="ai-art-demo" className="py-12 md:py-16 bg-white">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <AIArtDemo />
         </div>
       </section>
       
-      <section id="integration" className="py-32 bg-gradient-to-b from-white via-blue-50/30 to-white">
+      <section id="integration" className="py-16 md:py-24 bg-gradient-to-b from-white via-blue-50/30 to-white">
         <Integration />
       </section>
       
-      <section id="pricing" className="bg-gray-50 py-24">
+      <section id="pricing" className="bg-gray-50 py-16 md:py-20">
         <Pricing />
       </section>
       
-      <section id="newsletter" className="py-24">
+      <section id="newsletter" className="py-16 md:py-20">
         <Newsletter />
       </section>
       

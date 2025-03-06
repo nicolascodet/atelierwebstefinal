@@ -134,23 +134,23 @@ export default function AIArtDemo() {
 
   return (
     <div className="max-w-5xl mx-auto">
-      <div className="text-center mb-12">
-        <h2 className="text-4xl font-bold mb-4">Try it out</h2>
-        <p className="text-lg">Create your perfect art</p>
+      <div className="text-center mb-8">
+        <h2 className="text-4xl font-bold mb-4">Experience AI Art</h2>
+        <p className="text-lg">Generate custom artwork with our AI technology</p>
       </div>
       
-      <div className="grid md:grid-cols-2 gap-8">
-        <div className="bg-white shadow-xl rounded-lg p-6">
-          <h3 className="text-2xl font-semibold mb-4">Style & Prompt</h3>
+      <div className="flex flex-col md:grid md:grid-cols-2 gap-8">
+        <div className="bg-white shadow-xl rounded-lg p-5">
+          <h3 className="text-2xl font-semibold mb-4">Choose Style & Description</h3>
           
-          <div className="mb-6">
+          <div className="mb-5">
             <label className="block text-sm font-medium mb-2">Select a style</label>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            <div className="grid grid-cols-2 gap-2 overflow-x-auto no-scrollbar pb-1">
               {artStyles.map((style) => (
                 <button
                   key={style.id}
                   onClick={() => handleStyleSelect(style)}
-                  className={`p-3 text-left rounded-md transition ${
+                  className={`p-2.5 text-left rounded-md transition ${
                     selectedStyle?.id === style.id
                       ? 'bg-blue-50 border border-blue-200'
                       : 'bg-gray-50 border border-gray-200 hover:bg-gray-100'
@@ -163,7 +163,7 @@ export default function AIArtDemo() {
             </div>
           </div>
           
-          <div className="mb-6">
+          <div className="mb-5">
             <label htmlFor="prompt-input" className="block text-sm font-medium mb-2">Describe your art</label>
             <textarea
               id="prompt-input"

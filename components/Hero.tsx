@@ -19,9 +19,9 @@ const Hero = () => {
     offset: ['start start', 'end start'],
   });
   
-  // Parallax effects for different elements
-  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '70%']);
-  const videoY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
+  // Parallax effects for different elements - reduced mobile effect
+  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '30%']);
+  const videoY = useTransform(scrollYProgress, [0, 1], ['0%', '10%']);
   
   // Futuristic features with tech icons
   const features = [
@@ -119,7 +119,7 @@ const Hero = () => {
                     className="flex items-center gap-2 mb-2"
                   >
                     <div className="inline-flex items-center rounded-full bg-blue-100 border border-blue-200 px-3 py-1">
-                      <span className="text-xs font-medium text-blue-700 uppercase tracking-wider">Smart Art Frame</span>
+                      <span className="text-xs font-medium text-blue-700 uppercase tracking-wider">AI Art Frame</span>
                     </div>
                   </motion.div>
 

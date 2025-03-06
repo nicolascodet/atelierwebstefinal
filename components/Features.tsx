@@ -105,7 +105,7 @@ const Features = () => {
   return (
     <div className="bg-white/80" id="features">
       {/* Header Section */}
-      <div className="py-10 lg:py-20 relative overflow-hidden">
+      <div className="py-8 lg:py-16 relative overflow-hidden">
         {/* Background elements */}
         <div className="absolute inset-0 -z-10 overflow-hidden">
           <div className="absolute top-[10%] left-[10%] w-[40%] h-[40%] rounded-full bg-blue-500/5 filter blur-[100px]"></div>
@@ -122,9 +122,9 @@ const Features = () => {
               className="max-w-3xl mx-auto text-center"
             >
               {/* Modern section header */}
-              <div className="flex flex-col items-center justify-center mb-6">
-                <div className="h-0.5 w-16 bg-gradient-to-r from-blue-500 to-purple-600 mb-4 sm:mb-6"></div>
-                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-medium tracking-tight text-gray-900 mb-4">
+              <div className="flex flex-col items-center justify-center mb-4">
+                <div className="h-0.5 w-16 bg-gradient-to-r from-blue-500 to-purple-600 mb-4"></div>
+                <h2 className="text-2xl sm:text-3xl lg:text-4xl font-medium tracking-tight text-gray-900 mb-3">
                   Limitless Creative <span className="bg-gradient-to-r from-blue-600 via-cyan-500 to-purple-600 bg-clip-text text-transparent">Possibilities</span>
                 </h2>
               </div>
@@ -136,11 +136,11 @@ const Features = () => {
         </div>
       </div>
 
-      {/* Features Cards Section - Modern Grid */}
-      <div className="pb-12 lg:pb-24">
+      {/* Features Cards Section - Horizontal Scrolling on Mobile */}
+      <div className="pb-8 lg:pb-16">
         <div className="container mx-auto px-4 sm:px-6">
-          <div className="max-w-screen-xl mx-auto">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
+          <div className="max-w-screen-xl mx-auto overflow-auto no-scrollbar">
+            <div className="flex flex-nowrap md:grid md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 md:grid-flow-row pb-4 md:pb-0" style={{ minWidth: "min-content" }}>
               {features.map((feature) => (
                 <motion.div
                   key={feature.id}
@@ -148,7 +148,7 @@ const Features = () => {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: feature.id * 0.05 }}
-                  className="bg-white rounded-xl border border-gray-200 p-4 sm:p-6 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-300 group"
+                  className="flex-none w-[85vw] sm:w-[300px] md:w-auto bg-white rounded-xl border border-gray-200 p-4 sm:p-6 shadow-sm hover:shadow-md hover:border-blue-200 transition-all duration-300 group"
                 >
                   <div className="flex items-start">
                     <div className="flex-shrink-0 mr-3 sm:mr-4">
