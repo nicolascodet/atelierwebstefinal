@@ -131,13 +131,13 @@ export default function AIArtDemo() {
 
   return (
     <div id="demo" className="max-w-5xl mx-auto">
-      <div className="text-center mb-8">
+      <div className="text-center mb-6 sm:mb-8">
         <motion.h2 
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
-          className="text-3xl md:text-4xl font-bold text-gray-900 mb-3"
+          className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 sm:mb-3"
         >
           Try It Yourself
         </motion.h2>
@@ -146,7 +146,7 @@ export default function AIArtDemo() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.1 }}
           viewport={{ once: true }}
-          className="text-gray-600 max-w-2xl mx-auto"
+          className="text-gray-600 max-w-2xl mx-auto text-sm sm:text-base"
         >
           Create your own custom artwork in seconds
         </motion.p>
@@ -158,7 +158,7 @@ export default function AIArtDemo() {
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
         viewport={{ once: true }}
-        className="sm:hidden mb-6 px-4"
+        className="sm:hidden mb-4 px-2"
       >
         <div className="flex justify-between items-center relative">
           <div className="absolute left-0 right-0 h-1 top-4 bg-gray-200 -z-10">
@@ -181,16 +181,16 @@ export default function AIArtDemo() {
         </div>
       </motion.div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-8">
         {/* Left side - Controls */}
         <motion.div 
           initial={{ opacity: 0, x: -20 }}
           whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
-          className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm"
+          className="bg-white rounded-lg border border-gray-200 p-4 sm:p-5 shadow-sm"
         >
-          <div className="mb-5">
+          <div className="mb-4 sm:mb-5">
             <div className="flex items-center mb-2">
               <div className={`w-6 h-6 rounded-full ${activeStep >= 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'} flex items-center justify-center text-xs font-bold mr-2`}>1</div>
               <label className="block text-sm font-medium text-gray-700">
@@ -216,7 +216,7 @@ export default function AIArtDemo() {
             </div>
           </div>
 
-          <div className="mb-5">
+          <div className="mb-4 sm:mb-5">
             <div className="flex items-center mb-2">
               <div className={`w-6 h-6 rounded-full ${activeStep >= 2 ? 'bg-blue-500 text-white' : 'bg-gray-200'} flex items-center justify-center text-xs font-bold mr-2`}>2</div>
               <label htmlFor="prompt" className="block text-sm font-medium text-gray-700">
@@ -230,13 +230,13 @@ export default function AIArtDemo() {
               onChange={(e) => setPrompt(e.target.value)}
               disabled={isGenerating}
               placeholder="e.g. a serene mountain landscape with a sunset"
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-              rows={3}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed text-base"
+              rows={2}
             ></textarea>
           </div>
 
-          <div className="mb-3">
-            <div className="flex items-center mb-3">
+          <div className="mb-2 sm:mb-3">
+            <div className="flex items-center mb-2 sm:mb-3">
               <div className={`w-6 h-6 rounded-full ${activeStep >= 3 ? 'bg-blue-500 text-white' : 'bg-gray-200'} flex items-center justify-center text-xs font-bold mr-2`}>3</div>
               <p className="text-sm font-medium text-gray-700">Generate your custom artwork</p>
             </div>
@@ -299,7 +299,7 @@ export default function AIArtDemo() {
               <span className="text-sm font-medium text-gray-700">Your Custom Artwork</span>
             </div>
             
-            <div className="flex-grow flex items-center justify-center bg-gray-50 rounded-md border border-gray-200 overflow-hidden relative min-h-[250px] py-4">
+            <div className="flex-grow flex items-center justify-center bg-gray-50 rounded-md border border-gray-200 overflow-hidden relative min-h-[300px] sm:min-h-[350px] py-6 px-3">
               <motion.div 
                 className="relative transform transition-all duration-700"
                 initial={{ scale: 0.95, opacity: 0 }}
@@ -309,11 +309,11 @@ export default function AIArtDemo() {
                 {/* The Atelier Frame - Always visible */}
                 <div className="relative md:mx-0 mx-auto">
                   {/* Walnut wood frame */}
-                  <div className="bg-gradient-to-br from-[#5d4037] to-[#3e2723] p-[20px] rounded-sm shadow-2xl relative overflow-hidden">
+                  <div className="bg-gradient-to-br from-[#5d4037] to-[#3e2723] p-[15px] sm:p-[20px] rounded-sm shadow-2xl relative overflow-hidden">
                     {/* Inner matting */}
-                    <div className="bg-[#f5f5f0] p-4 shadow-[inset_0_0_5px_rgba(0,0,0,0.2)]">
+                    <div className="bg-[#f5f5f0] p-3 sm:p-4 shadow-[inset_0_0_5px_rgba(0,0,0,0.2)]">
                       {/* Image container - 16:9 aspect ratio */}
-                      <div className="relative" style={{ aspectRatio: '16/9', width: '280px', maxWidth: '95%', margin: '0 auto' }}>
+                      <div className="relative" style={{ aspectRatio: '16/9', width: '260px', maxWidth: '100%', margin: '0 auto' }}>
                         {generatedImage ? (
                           <motion.img
                             initial={{ opacity: 0 }}
@@ -342,7 +342,7 @@ export default function AIArtDemo() {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                   </svg>
                                 </div>
-                                <p className="text-sm text-gray-500">Your art will appear here</p>
+                                <p className="text-sm text-gray-500 font-medium">Your art will appear here</p>
                               </div>
                             )}
                           </div>
