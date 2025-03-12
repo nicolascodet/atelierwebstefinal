@@ -52,23 +52,6 @@ const ProcessFlow = () => {
         viewport={{ once: true }}
         className="relative bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200"
       >
-        {/* Animated background line that flows through the steps */}
-        <div className="absolute md:top-12 top-10 left-0 right-0 md:h-1 h-0.75 bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 z-0">
-          <motion.div 
-            className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 shadow-sm"
-            style={{
-              backgroundSize: '200% 100%'
-            }}
-            initial={{ width: "0%", opacity: 0 }}
-            whileInView={{ width: "100%", opacity: 1 }}
-            transition={{ 
-              width: { duration: 1.2, ease: "easeOut" },
-              opacity: { duration: 0.3 }
-            }}
-            viewport={{ once: true, margin: "-100px" }}
-          />
-        </div>
-
         <div className="py-6 px-4 sm:px-6 sm:py-8">
           <div className="text-center mb-6">
             <h3 className="text-2xl font-semibold text-gray-900">How It Works</h3>
