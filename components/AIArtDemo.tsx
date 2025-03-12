@@ -299,7 +299,7 @@ export default function AIArtDemo() {
               <span className="text-sm font-medium text-gray-700">Your Custom Artwork</span>
             </div>
             
-            <div className="flex-grow flex items-center justify-center bg-gray-50 rounded-md border border-gray-200 overflow-hidden relative min-h-[250px]">
+            <div className="flex-grow flex items-center justify-center bg-gray-50 rounded-md border border-gray-200 overflow-hidden relative min-h-[250px] py-4">
               <motion.div 
                 className="relative transform transition-all duration-700"
                 initial={{ scale: 0.95, opacity: 0 }}
@@ -307,13 +307,13 @@ export default function AIArtDemo() {
                 transition={{ type: "spring", stiffness: 100, damping: 15 }}
               >
                 {/* The Atelier Frame - Always visible */}
-                <div className="relative">
+                <div className="relative md:mx-0 mx-auto">
                   {/* Walnut wood frame */}
                   <div className="bg-gradient-to-br from-[#5d4037] to-[#3e2723] p-[20px] rounded-sm shadow-2xl relative overflow-hidden">
                     {/* Inner matting */}
                     <div className="bg-[#f5f5f0] p-4 shadow-[inset_0_0_5px_rgba(0,0,0,0.2)]">
                       {/* Image container - 16:9 aspect ratio */}
-                      <div className="relative" style={{ aspectRatio: '16/9', width: '280px', maxWidth: '100%' }}>
+                      <div className="relative" style={{ aspectRatio: '16/9', width: '280px', maxWidth: '95%', margin: '0 auto' }}>
                         {generatedImage ? (
                           <motion.img
                             initial={{ opacity: 0 }}
