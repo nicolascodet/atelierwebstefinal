@@ -300,29 +300,76 @@ export default function AIArtDemo() {
             </div>
             
             <div className="flex-grow flex items-center justify-center bg-gray-50 rounded-md border border-gray-200 overflow-hidden relative min-h-[250px]">
-              {generatedImage ? (
-                <motion.img 
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.5 }}
-                  src={generatedImage} 
-                  alt="Generated art" 
-                  className="max-w-full max-h-full object-contain"
-                />
-              ) : (
-                <div className="text-center px-4">
-                  <div className="text-gray-400 mb-1">
-                    <svg className="w-10 h-10 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
+              <motion.div 
+                className="relative transform transition-all duration-700"
+                initial={{ scale: 0.95, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ type: "spring", stiffness: 100, damping: 15 }}
+              >
+                {/* The Atelier Frame - Always visible */}
+                <div className="relative">
+                  {/* Walnut wood frame */}
+                  <div className="bg-gradient-to-br from-[#5d4037] to-[#3e2723] p-[20px] rounded-sm shadow-2xl relative overflow-hidden">
+                    {/* Inner matting */}
+                    <div className="bg-[#f5f5f0] p-4 shadow-[inset_0_0_5px_rgba(0,0,0,0.2)]">
+                      {/* Image container - 16:9 aspect ratio */}
+                      <div className="relative" style={{ aspectRatio: '16/9', width: '280px', maxWidth: '100%' }}>
+                        {generatedImage ? (
+                          <motion.img
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5 }}
+                            src={generatedImage}
+                            alt="Generated artwork in frame"
+                            className="w-full h-full object-cover block"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                            {isGenerating ? (
+                              <div className="text-center px-4">
+                                <div className="text-blue-500 mb-2">
+                                  <svg className="animate-spin w-8 h-8 mx-auto" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                  </svg>
+                                </div>
+                                <p className="text-sm text-gray-500">Creating your artwork...</p>
+                              </div>
+                            ) : (
+                              <div className="text-center px-4">
+                                <div className="text-gray-400 mb-2">
+                                  <svg className="w-10 h-10 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                  </svg>
+                                </div>
+                                <p className="text-sm text-gray-500">Your art will appear here</p>
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                  <p className="text-sm text-gray-500">
-                    {isGenerating 
-                      ? "Your artwork is being created..." 
-                      : "Follow steps 1-3 to generate your custom art"}
-                  </p>
+                  
+                  {/* Atelier logo watermark */}
+                  <div className="absolute bottom-5 right-5 opacity-80">
+                    <div className="w-8 h-8 flex items-center justify-center bg-white rounded-full shadow-sm">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 22C13.5913 22 15.1174 21.5308 16.4223 20.6518C17.7271 19.7727 18.7485 18.5233 19.3712 17.0615C19.994 15.5997 20.191 13.9911 19.9384 12.4393C19.6857 10.8874 18.9949 9.46197 17.9497 8.31802C16.9046 7.17407 15.5537 6.36683 14.0559 6.00039C12.5582 5.63396 10.9804 5.72374 9.5301 6.25859C8.07977 6.79344 6.81743 7.7469 5.90265 9.00098C4.98787 10.2551 4.46875 11.7585 4.42578 13.3125C4.38444 14.8215 4.81055 16.3081 5.65625 17.5625" stroke="#334155" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M12 22C12.6628 22 13.2989 21.7233 13.7678 21.2322C14.2366 20.741 14.5133 20.1049 14.5133 19.4421C14.5133 18.7794 14.2366 18.1433 13.7678 17.6522C13.2989 17.161 12.6628 16.8843 12 16.8843C11.3372 16.8843 10.7011 17.161 10.2322 17.6522C9.76339 18.1433 9.48667 18.7794 9.48667 19.4421C9.48667 20.1049 9.76339 20.741 10.2322 21.2322C10.7011 21.7233 11.3372 22 12 22Z" stroke="#334155" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M12 16.8844V11.918" stroke="#334155" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M12 9.75586L12 7.5391" stroke="#334155" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                  </div>
+                  
+                  {/* Wall effect */}
+                  <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-[80%] h-8 bg-black/15 blur-xl rounded-full"></div>
+
+                  {/* Wall texture */}
+                  <div className="absolute -z-10 top-[-30px] left-[-30px] right-[-30px] bottom-[-30px] bg-gradient-to-b from-gray-100 to-gray-200 opacity-50"></div>
                 </div>
-              )}
+              </motion.div>
             </div>
 
             {generatedImage && (
