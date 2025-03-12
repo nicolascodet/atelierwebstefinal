@@ -6,96 +6,133 @@ import { motion } from 'framer-motion';
 const Newsletter = () => {
   const [email, setEmail] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
-  const [error, setError] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Basic email validation
+    if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+      setError('Please enter a valid email address');
+      return;
+    }
+    
+    setError(null);
     setIsSubmitting(true);
-    setError('');
-
+    
     try {
-      // Using Formspree to handle the form submission
-      // Replace YOUR_FORM_ID with the actual form ID from Formspree (e.g., xvoyqpkd)
-      const response = await fetch('https://formspree.io/f/YOUR_FORM_ID', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email }),
-      });
-
-      if (response.ok) {
-        setIsSuccess(true);
-        setEmail('');
-      } else {
-        const data = await response.json();
-        throw new Error(data.error || 'Something went wrong');
-      }
-    } catch (err: any) {
-      setError(err.message || 'Failed to subscribe. Please try again.');
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setSubmitted(true);
+      setEmail('');
+    } catch (err) {
+      setError('Something went wrong. Please try again.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
   return (
-    <section className="section px-4 md:px-0">
-      <div className="container-md mx-auto">
-        <div className="card-glass p-8 md:p-12 rounded-2xl">
-          <div className="flex flex-col md:flex-row md:items-center gap-6 md:gap-12">
-            <div className="md:w-1/2">
-              <h3 className="heading-3 mb-2">Join our mailing list</h3>
-              <p className="body-lg text-gray-600 dark:text-gray-300">
-                Get notified about new products, features, and exclusive offers.
+    <div className="max-w-5xl mx-auto px-4 sm:px-6">
+      {/* Background with gradients for visual appeal */}
+      <div className="relative overflow-hidden rounded-2xl">
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-50 to-indigo-50"></div>
+        
+        <div className="relative py-10 px-6 md:py-12 md:px-12">
+          <div className="max-w-3xl mx-auto text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              viewport={{ once: true }}
+            >
+              <h2 className="text-3xl font-bold text-gray-900 mb-4">
+                Stay Updated on <span className="text-blue-600">The Canvas</span>
+              </h2>
+              
+              <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+                Join our newsletter to receive updates on our Kickstarter campaign, product development, and exclusive early-bird offers.
               </p>
-            </div>
-            <div className="md:w-1/2">
-              {isSuccess ? (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="bg-green-50 border border-green-200 rounded-lg p-4 text-green-700"
-                >
-                  <p className="font-medium">Thank you for subscribing!</p>
-                  <p className="text-sm mt-1">We'll keep you updated with the latest news.</p>
-                </motion.div>
-              ) : (
-                <form onSubmit={handleSubmit} className="w-full">
-                  <div className="flex flex-col sm:flex-row gap-3">
-                    <input
-                      type="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Enter your email"
-                      required
-                      className="flex-grow px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 outline-none transition"
-                      disabled={isSubmitting}
-                    />
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="btn-primary py-3 px-6 whitespace-nowrap"
-                    >
-                      {isSubmitting ? 'Subscribing...' : 'Subscribe'}
-                    </button>
+              
+              {submitted ? (
+                <div className="bg-green-50 border border-green-200 rounded-lg p-4 max-w-md mx-auto">
+                  <div className="flex">
+                    <div className="flex-shrink-0">
+                      <svg className="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <div className="ml-3">
+                      <p className="text-sm font-medium text-green-800">
+                        Thanks for subscribing! Check your inbox soon.
+                      </p>
+                    </div>
                   </div>
-                  {error && (
-                    <motion.p
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="mt-2 text-sm text-red-600"
-                    >
-                      {error}
-                    </motion.p>
-                  )}
-                </form>
+                </div>
+              ) : (
+                <>
+                  <form onSubmit={handleSubmit} className="max-w-md mx-auto">
+                    <div className="flex flex-col sm:flex-row sm:space-x-2 space-y-3 sm:space-y-0">
+                      <div className="flex-grow">
+                        <label htmlFor="email" className="sr-only">Email address</label>
+                        <input
+                          id="email"
+                          name="email"
+                          type="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          disabled={isSubmitting}
+                          placeholder="Enter your email"
+                          className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                          required
+                        />
+                      </div>
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="flex-none px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors disabled:bg-blue-400"
+                      >
+                        {isSubmitting ? 'Subscribing...' : 'Subscribe'}
+                      </button>
+                    </div>
+                    
+                    {error && (
+                      <p className="mt-2 text-sm text-red-600">{error}</p>
+                    )}
+                  </form>
+                  
+                  <p className="text-xs text-gray-500 mt-3">
+                    We respect your privacy and will never share your information.
+                  </p>
+                </>
               )}
-            </div>
+              
+              {/* Kickstarter reminder */}
+              <div className="mt-8 pt-6 border-t border-gray-200">
+                <div className="flex flex-col items-center">
+                  <p className="text-gray-700 mb-3">
+                    Don't miss our limited-time Kickstarter offers!
+                  </p>
+                  <a 
+                    href="https://www.kickstarter.com/projects/nicolascodet/the-canvas-by-atelier-frames" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-5 py-3 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white font-medium hover:from-blue-700 hover:to-purple-700 transition-colors"
+                  >
+                    <span className="mr-2">View Kickstarter Campaign</span>
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 
