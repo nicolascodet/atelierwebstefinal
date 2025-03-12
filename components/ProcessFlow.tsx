@@ -53,12 +53,18 @@ const ProcessFlow = () => {
         className="relative bg-white rounded-xl shadow-sm overflow-hidden border border-gray-200"
       >
         {/* Animated background line that flows through the steps */}
-        <div className="absolute top-12 left-0 right-0 h-0.5 bg-gray-200 z-0">
+        <div className="absolute top-12 left-0 right-0 h-1 bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 z-0">
           <motion.div 
-            className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-500 to-purple-600"
-            initial={{ width: "0%" }}
-            whileInView={{ width: "100%" }}
-            transition={{ duration: 1.5, ease: "easeInOut" }}
+            className="absolute top-0 left-0 h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"
+            style={{
+              backgroundSize: '200% 100%'
+            }}
+            initial={{ width: "0%", opacity: 0 }}
+            whileInView={{ width: "100%", opacity: 1 }}
+            transition={{ 
+              width: { duration: 1.2, ease: "easeOut" },
+              opacity: { duration: 0.3 }
+            }}
             viewport={{ once: true }}
           />
         </div>
