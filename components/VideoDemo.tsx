@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 
 const VideoDemo = () => {
   return (
-    <div className="max-w-5xl mx-auto px-4 pt-2 pb-16">
+    <div className="max-w-5xl mx-auto px-4 pb-20 -mt-4 sm:mt-0">
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -17,12 +17,12 @@ const VideoDemo = () => {
           href="https://www.youtube.com/watch?v=YsnrgDo_wUY" 
           target="_blank" 
           rel="noopener noreferrer"
-          className="group flex items-center gap-2 py-2 px-4 rounded-full bg-white shadow-sm border border-gray-200 hover:shadow-md transition-all"
+          className="group flex items-center gap-3 py-3 px-6 rounded-full bg-white shadow-sm border border-gray-200 hover:shadow-md transition-all"
         >
-          <div className="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+          <div className="w-9 h-9 rounded-full bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
             <svg 
               xmlns="http://www.w3.org/2000/svg" 
-              className="h-4 w-4" 
+              className="h-5 w-5" 
               fill="none"
               viewBox="0 0 24 24" 
               stroke="currentColor"

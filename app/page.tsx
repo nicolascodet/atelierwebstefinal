@@ -50,8 +50,10 @@ export default function Home() {
         <Newsletter />
       </section>
       
-      <ProductGallery />
-      <VideoDemo />
+      <div className="bg-white">
+        <ProductGallery />
+        <VideoDemo />
+      </div>
       
       <Footer />
     </main>
