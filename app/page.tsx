@@ -3,12 +3,15 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Header from '../components/Header';
+import Image from 'next/image';
 import Hero from '../components/Hero';
 import ProcessFlow from '../components/ProcessFlow';
 import AIArtDemo from '../components/AIArtDemo';
 import Features from '../components/Features';
 import Newsletter from '../components/Newsletter';
 import Footer from '../components/Footer';
+import ProductGallery from '../components/ProductGallery';
+import VideoDemo from '../components/VideoDemo';
 
 export default function Home() {
   // Fix scroll issue - ensure page loads at top
@@ -46,6 +49,9 @@ export default function Home() {
       <section id="newsletter" className="py-8 md:py-12 bg-gray-50">
         <Newsletter />
       </section>
+      
+      <ProductGallery />
+      <VideoDemo />
       
       <Footer />
     </main>
