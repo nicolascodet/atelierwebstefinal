@@ -51,21 +51,14 @@ const Hero = () => {
     // Hide cursor when all text is done
     await animate("#cursor", { opacity: 0 }, { duration: 0.5 });
     
-    // Immediately make the illustration visible
-    animate(".right-illustration", { opacity: 1, scale: [0.9, 1] }, { duration: 0.7 });
+    // Logo animation - make all elements visible
+    animate(".logo-animation", { opacity: 1 }, { duration: 0.7 });
     
-    // Animate in each element of the frame with more dramatic visibility
+    // Animate in elements of the logo
     animate([
-      [".anthro-blob", { scale: [0.8, 1], opacity: [0, 0.9] }, { duration: 0.8 }],
-      [".anthro-circle", { scale: [0.5, 1], opacity: [0, 0.9] }, { duration: 0.6, delay: 0.1 }],
-      [".anthro-line", { pathLength: [0, 1], opacity: [0, 0.9] }, { duration: 0.7, delay: 0.2 }],
-    ]);
-    
-    // Start the breathing animations immediately after showing
-    animate([
-      [".frame-rect", { scale: [0.95, 1], opacity: [0, 1] }, { duration: 0.7 }],
-      [".control-dot", { scale: [0, 1], opacity: [0, 1] }, { duration: 0.5, delay: 0.3 }],
-      [".art-representation", { scale: [0.9, 1], opacity: [0, 1] }, { duration: 0.8, delay: 0.2 }],
+      [".logo-circle", { scale: [0.8, 1], opacity: [0, 1] }, { duration: 0.8 }],
+      [".logo-path", { pathLength: [0, 1], opacity: [0, 1] }, { duration: 1.2 }],
+      [".logo-accent", { scale: [0.7, 1], opacity: [0, 1] }, { duration: 0.6, delay: 0.3 }],
     ]);
     
     // Fade in description and cards
@@ -102,7 +95,7 @@ const Hero = () => {
                   </div>
                   
                   <div id="tagline" className="mt-4 text-2xl sm:text-3xl font-medium text-[rgb(var(--text-secondary))] opacity-0">
-                    Transforming walls into living art with AI magic
+                    Your walls, reimagined by AI brilliance
                   </div>
                 </h1>
 
@@ -157,63 +150,25 @@ const Hero = () => {
               </div>
             </div>
 
-            {/* Right side - Enhanced Anthropic-style Animation with higher visibility */}
-            <div className="right-illustration block opacity-0 relative">
-              <div className="relative flex items-center justify-center h-[400px] w-full">
-                {/* 3D Frame representation - more visible and modern */}
+            {/* Right side - Logo-inspired animated design */}
+            <div className="right-illustration flex items-center justify-center opacity-0">
+              <div className="relative w-full max-w-md h-[400px]">
+                {/* Logo-inspired animation */}
                 <svg 
-                  viewBox="0 0 500 500" 
-                  className="w-full h-full max-w-md mx-auto" 
+                  viewBox="0 0 400 400" 
+                  className="logo-animation w-full h-full mx-auto" 
                   fill="none" 
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  {/* Gradient background for the SVG to make it more visible */}
-                  <defs>
-                    <linearGradient id="frameGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="rgba(var(--primary-accent), 0.1)" />
-                      <stop offset="100%" stopColor="rgba(var(--secondary-accent), 0.1)" />
-                    </linearGradient>
-                  </defs>
-                  
-                  {/* Background Blob - higher opacity */}
-                  <motion.rect 
-                    x="120" y="80" 
-                    width="260" height="340" 
-                    rx="130" 
-                    fill="url(#frameGradient)"
-                    className="anthro-blob"
-                    stroke="rgba(var(--primary-accent), 0.3)"
-                    strokeWidth="1"
-                    opacity="0"
+                  {/* Background glow effect */}
+                  <motion.circle
+                    cx="200" cy="200" r="150"
+                    fill="rgba(var(--background-rgb), 0.8)"
+                    stroke="rgba(var(--primary-accent), 0.1)"
+                    strokeWidth="40"
                     animate={{
-                      width: [260, 270, 260],
-                      height: [340, 350, 340],
-                      x: [120, 115, 120],
-                      y: [80, 75, 80],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 6,
-                        ease: "easeInOut"
-                      }
-                    }}
-                  />
-                  
-                  {/* Main frame with breathing animation */}
-                  <motion.rect 
-                    x="150" y="120" 
-                    width="200" height="260" 
-                    rx="10" 
-                    className="frame-rect"
-                    fill="none"
-                    stroke="rgba(var(--primary-accent), 0.7)"
-                    strokeWidth="3"
-                    opacity="0"
-                    animate={{
-                      width: [200, 204, 200],
-                      height: [260, 264, 260],
-                      x: [150, 148, 150],
-                      y: [120, 118, 120],
+                      r: [150, 155, 150],
+                      opacity: [0.8, 0.9, 0.8],
                       transition: {
                         repeat: Infinity,
                         repeatType: "reverse",
@@ -223,270 +178,226 @@ const Hero = () => {
                     }}
                   />
                   
-                  {/* Digital screen representation */}
-                  <motion.rect 
-                    x="160" y="130" 
-                    width="180" height="240" 
-                    rx="5" 
-                    className="anthro-blob"
-                    fill="rgba(var(--secondary-accent), 0.15)"
-                    stroke="rgba(var(--secondary-accent), 0.3)"
+                  {/* Central triangle formation - inspired by the image */}
+                  <g className="triangle-formation">
+                    {/* Connection lines */}
+                    <motion.path
+                      d="M200,120 L120,240 L280,240 Z"
+                      className="logo-path"
+                      stroke="rgba(var(--tertiary-accent), 0.7)"
+                      strokeWidth="6"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      animate={{
+                        strokeWidth: [6, 8, 6],
+                        transition: {
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                          duration: 3,
+                          ease: "easeInOut"
+                        }
+                      }}
+                    />
+                    
+                    {/* Top node */}
+                    <motion.circle
+                      cx="200" cy="120" r="30"
+                      className="logo-circle"
+                      fill="rgba(var(--tertiary-accent), 0.9)"
+                      animate={{
+                        r: [30, 33, 30],
+                        transition: {
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                          duration: 2.5,
+                          ease: "easeInOut"
+                        }
+                      }}
+                    />
+                    
+                    {/* Left node */}
+                    <motion.circle
+                      cx="120" cy="240" r="30"
+                      className="logo-circle"
+                      fill="rgba(var(--tertiary-accent), 0.9)"
+                      animate={{
+                        r: [30, 33, 30],
+                        transition: {
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                          duration: 3.5,
+                          ease: "easeInOut",
+                          delay: 0.5
+                        }
+                      }}
+                    />
+                    
+                    {/* Right node */}
+                    <motion.circle
+                      cx="280" cy="240" r="30"
+                      className="logo-circle"
+                      fill="rgba(var(--tertiary-accent), 0.9)"
+                      animate={{
+                        r: [30, 33, 30],
+                        transition: {
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                          duration: 3,
+                          ease: "easeInOut",
+                          delay: 1
+                        }
+                      }}
+                    />
+                    
+                    {/* Shadow/glow effects behind nodes */}
+                    <motion.circle
+                      cx="200" cy="120" r="40"
+                      className="logo-accent"
+                      fill="rgba(var(--background-rgb), 0.7)"
+                      animate={{
+                        r: [40, 44, 40],
+                        opacity: [0.3, 0.5, 0.3],
+                        transition: {
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                          duration: 3,
+                          ease: "easeInOut"
+                        }
+                      }}
+                    />
+                    
+                    <motion.circle
+                      cx="120" cy="240" r="40"
+                      className="logo-accent"
+                      fill="rgba(var(--background-rgb), 0.7)"
+                      animate={{
+                        r: [40, 44, 40],
+                        opacity: [0.3, 0.5, 0.3],
+                        transition: {
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                          duration: 4,
+                          ease: "easeInOut",
+                          delay: 0.7
+                        }
+                      }}
+                    />
+                    
+                    <motion.circle
+                      cx="280" cy="240" r="40"
+                      className="logo-accent"
+                      fill="rgba(var(--background-rgb), 0.7)"
+                      animate={{
+                        r: [40, 44, 40],
+                        opacity: [0.3, 0.5, 0.3],
+                        transition: {
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                          duration: 3.5,
+                          ease: "easeInOut",
+                          delay: 1.4
+                        }
+                      }}
+                    />
+                  </g>
+                  
+                  {/* Decorative elements */}
+                  <motion.circle
+                    cx="200" cy="200" r="8"
+                    className="logo-accent"
+                    fill="rgba(var(--primary-accent), 0.8)"
+                    animate={{
+                      r: [8, 10, 8],
+                      opacity: [0.8, 1, 0.8],
+                      transition: {
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        duration: 2,
+                        ease: "easeInOut"
+                      }
+                    }}
+                  />
+                  
+                  {/* Floating accent particles */}
+                  <g className="floating-accents">
+                    {[...Array(5)].map((_, i) => (
+                      <motion.circle
+                        key={i}
+                        cx={200 + (i - 2) * 40}
+                        cy={300}
+                        r={4}
+                        className="logo-accent"
+                        fill="rgba(var(--secondary-accent), 0.6)"
+                        animate={{
+                          y: [0, -10, 0],
+                          opacity: [0.6, 0.8, 0.6],
+                          transition: {
+                            repeat: Infinity,
+                            repeatType: "reverse",
+                            duration: 2 + i * 0.5,
+                            ease: "easeInOut",
+                            delay: i * 0.3
+                          }
+                        }}
+                      />
+                    ))}
+                  </g>
+                  
+                  {/* Pulse rings */}
+                  <motion.circle
+                    cx="200" cy="200" r="60"
+                    stroke="rgba(var(--primary-accent), 0.2)"
                     strokeWidth="1"
-                    opacity="0"
-                    animate={{
-                      opacity: [0.15, 0.2, 0.15],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 3,
-                        ease: "easeInOut"
-                      }
-                    }}
-                  />
-                  
-                  {/* Art representation - more visibility */}
-                  <motion.path 
-                    d="M200,200 C230,170 280,170 300,200 S330,260 250,260 S170,230 200,200 Z" 
-                    className="art-representation"
-                    fill="rgba(var(--tertiary-accent), 0.3)"
-                    stroke="rgba(var(--tertiary-accent), 0.5)"
-                    strokeWidth="1.5"
-                    opacity="0"
-                    animate={{
-                      d: [
-                        "M200,200 C230,170 280,170 300,200 S330,260 250,260 S170,230 200,200 Z",
-                        "M195,195 C225,165 285,165 305,195 S335,265 250,265 S165,225 195,195 Z",
-                        "M200,200 C230,170 280,170 300,200 S330,260 250,260 S170,230 200,200 Z"
-                      ],
-                      opacity: [0.3, 0.4, 0.3],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 7,
-                        ease: "easeInOut"
-                      }
-                    }}
-                  />
-                  
-                  {/* Frame control circles - increased size */}
-                  <motion.circle 
-                    cx="250" cy="390" r="8" 
-                    className="control-dot"
-                    fill="rgba(var(--primary-accent), 0.7)"
-                    opacity="0"
-                    animate={{
-                      r: [8, 9, 8],
-                      opacity: [0.7, 0.9, 0.7],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 2,
-                        ease: "easeInOut"
-                      }
-                    }}
-                  />
-                  
-                  <motion.circle 
-                    cx="220" cy="390" r="6" 
-                    className="control-dot"
-                    fill="rgba(var(--secondary-accent), 0.7)"
-                    opacity="0"
-                    animate={{
-                      r: [6, 7, 6],
-                      opacity: [0.7, 0.9, 0.7],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 2.5,
-                        ease: "easeInOut",
-                        delay: 0.3
-                      }
-                    }}
-                  />
-                  
-                  <motion.circle 
-                    cx="280" cy="390" r="6" 
-                    className="control-dot"
-                    fill="rgba(var(--tertiary-accent), 0.7)"
-                    opacity="0"
-                    animate={{
-                      r: [6, 7, 6],
-                      opacity: [0.7, 0.9, 0.7],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 3,
-                        ease: "easeInOut",
-                        delay: 0.6
-                      }
-                    }}
-                  />
-                  
-                  {/* Design elements */}
-                  <motion.line 
-                    x1="160" y1="200" x2="340" y2="200" 
-                    className="anthro-line"
-                    stroke="rgba(var(--primary-accent), 0.4)"
-                    strokeWidth="1.5"
-                    opacity="0"
-                    animate={{
-                      y1: [200, 202, 200],
-                      y2: [200, 202, 200],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 5,
-                        ease: "easeInOut"
-                      }
-                    }}
-                  />
-                  
-                  <motion.line 
-                    x1="160" y1="250" x2="340" y2="250" 
-                    className="anthro-line"
-                    stroke="rgba(var(--secondary-accent), 0.4)"
-                    strokeWidth="1.5"
-                    opacity="0"
-                    animate={{
-                      y1: [250, 248, 250],
-                      y2: [250, 248, 250],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 4.5,
-                        ease: "easeInOut"
-                      }
-                    }}
-                  />
-                  
-                  {/* Electric pulses */}
-                  <motion.path 
-                    d="M140,330 L160,330 L170,310 L180,350 L190,330 L210,330" 
-                    className="anthro-line"
-                    stroke="rgba(var(--primary-accent), 0.5)"
-                    strokeWidth="2"
                     fill="none"
-                    opacity="0"
                     animate={{
-                      pathOffset: [0, 1],
+                      r: [60, 90, 60],
+                      opacity: [0.2, 0, 0.2],
                       transition: {
                         repeat: Infinity,
-                        duration: 2,
-                        ease: "linear"
+                        duration: 3,
+                        ease: "easeOut"
                       }
                     }}
                   />
                   
-                  <motion.path 
-                    d="M290,330 L310,330 L320,310 L330,350 L340,330 L360,330" 
-                    className="anthro-line"
-                    stroke="rgba(var(--secondary-accent), 0.5)"
-                    strokeWidth="2"
+                  <motion.circle
+                    cx="200" cy="200" r="70"
+                    stroke="rgba(var(--secondary-accent), 0.2)"
+                    strokeWidth="1"
                     fill="none"
-                    opacity="0"
                     animate={{
-                      pathOffset: [0, 1],
+                      r: [70, 100, 70],
+                      opacity: [0.2, 0, 0.2],
                       transition: {
                         repeat: Infinity,
-                        duration: 2,
-                        ease: "linear",
-                        delay: 0.5
-                      }
-                    }}
-                  />
-                  
-                  {/* Corner dots */}
-                  <motion.circle 
-                    cx="150" cy="120" r="4" 
-                    className="anthro-circle"
-                    fill="rgba(var(--primary-accent), 0.8)"
-                    opacity="0"
-                    animate={{
-                      r: [4, 5, 4],
-                      opacity: [0.8, 1, 0.8],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 1.5,
-                        ease: "easeInOut"
-                      }
-                    }}
-                  />
-                  
-                  <motion.circle 
-                    cx="350" cy="120" r="4" 
-                    className="anthro-circle"
-                    fill="rgba(var(--secondary-accent), 0.8)"
-                    opacity="0"
-                    animate={{
-                      r: [4, 5, 4],
-                      opacity: [0.8, 1, 0.8],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 1.5,
-                        ease: "easeInOut",
-                        delay: 0.3
-                      }
-                    }}
-                  />
-                  
-                  <motion.circle 
-                    cx="150" cy="380" r="4" 
-                    className="anthro-circle"
-                    fill="rgba(var(--tertiary-accent), 0.8)"
-                    opacity="0"
-                    animate={{
-                      r: [4, 5, 4],
-                      opacity: [0.8, 1, 0.8],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 1.5,
-                        ease: "easeInOut",
-                        delay: 0.6
-                      }
-                    }}
-                  />
-                  
-                  <motion.circle 
-                    cx="350" cy="380" r="4" 
-                    className="anthro-circle"
-                    fill="rgba(var(--primary-accent), 0.8)"
-                    opacity="0"
-                    animate={{
-                      r: [4, 5, 4],
-                      opacity: [0.8, 1, 0.8],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 1.5,
-                        ease: "easeInOut",
-                        delay: 0.9
+                        duration: 3,
+                        ease: "easeOut",
+                        delay: 1
                       }
                     }}
                   />
                 </svg>
                 
-                {/* Add subtle floating particles behind the frame */}
+                {/* Floating particles in background */}
                 <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                  {Array.from({ length: 15 }).map((_, i) => (
+                  {Array.from({ length: 10 }).map((_, i) => (
                     <motion.div
                       key={i}
-                      className="absolute rounded-full bg-[rgba(var(--primary-accent),0.2)]"
+                      className="absolute rounded-full bg-[rgba(var(--tertiary-accent),0.3)]"
                       style={{
-                        width: `${Math.random() * 10 + 5}px`,
-                        height: `${Math.random() * 10 + 5}px`,
+                        width: `${Math.random() * 6 + 3}px`,
+                        height: `${Math.random() * 6 + 3}px`,
                         left: `${Math.random() * 100}%`,
                         top: `${Math.random() * 100}%`,
                       }}
                       animate={{
-                        y: [0, -20, 0],
-                        x: [0, Math.random() * 10 - 5, 0],
-                        opacity: [0.2, 0.5, 0.2],
+                        y: [0, -15, 0],
+                        x: [0, Math.random() * 8 - 4, 0],
+                        opacity: [0.3, 0.5, 0.3],
                       }}
                       transition={{
-                        duration: Math.random() * 5 + 5,
+                        duration: Math.random() * 3 + 2,
                         repeat: Infinity,
                         ease: "easeInOut",
                       }}
