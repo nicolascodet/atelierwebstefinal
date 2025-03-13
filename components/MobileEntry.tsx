@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 
@@ -10,8 +10,13 @@ interface MobileEntryProps {
 
 const MobileEntry = ({ onComplete }: MobileEntryProps) => {
   const [animationPhase, setAnimationPhase] = useState<'initial' | 'spinning' | 'flyThrough' | 'complete'>('initial');
+  const animationStartedRef = useRef(false);
   
   useEffect(() => {
+    // Prevent the animation from starting multiple times
+    if (animationStartedRef.current) return;
+    animationStartedRef.current = true;
+    
     // Start animation sequence after a brief delay
     const timer = setTimeout(() => {
       setAnimationPhase('spinning');
