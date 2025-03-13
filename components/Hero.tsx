@@ -51,14 +51,14 @@ const Hero = () => {
     // Hide cursor when all text is done
     await animate("#cursor", { opacity: 0 }, { duration: 0.5 });
     
-    // Logo animation - make all elements visible
-    animate(".logo-animation", { opacity: 1 }, { duration: 0.7 });
+    // Animate in the exact logo elements with precision
+    animate(".logo-container", { opacity: 1 }, { duration: 0.5 });
     
-    // Animate in elements of the logo
+    // Precise sequencing of animation elements to match the logo
     animate([
-      [".logo-circle", { scale: [0.8, 1], opacity: [0, 1] }, { duration: 0.8 }],
-      [".logo-path", { pathLength: [0, 1], opacity: [0, 1] }, { duration: 1.2 }],
-      [".logo-accent", { scale: [0.7, 1], opacity: [0, 1] }, { duration: 0.6, delay: 0.3 }],
+      [".logo-glow", { opacity: [0, 0.5] }, { duration: 1 }],
+      [".connector-line", { pathLength: [0, 1], opacity: [0, 1] }, { duration: 1.2 }],
+      [".node-circle", { scale: [0.9, 1], opacity: [0, 1] }, { duration: 0.8 }],
     ]);
     
     // Fade in description and cards
@@ -95,7 +95,7 @@ const Hero = () => {
                   </div>
                   
                   <div id="tagline" className="mt-4 text-2xl sm:text-3xl font-medium text-[rgb(var(--text-secondary))] opacity-0">
-                    Your walls, reimagined by AI brilliance
+                    Your walls, reimagined by artificial intelligence
                   </div>
                 </h1>
 
@@ -150,25 +150,93 @@ const Hero = () => {
               </div>
             </div>
 
-            {/* Right side - Logo-inspired animated design */}
+            {/* Right side - EXACT Logo Recreation with breathing effect */}
             <div className="right-illustration flex items-center justify-center opacity-0">
-              <div className="relative w-full max-w-md h-[400px]">
-                {/* Logo-inspired animation */}
+              <div className="logo-container relative w-full max-w-[400px] h-[400px] opacity-0">
+                {/* Cream background to match the logo's background */}
+                <div className="absolute inset-0 rounded-full bg-[#FFF8E1] opacity-40"></div>
+                
+                {/* Exact logo SVG recreation with precise breathing animations */}
                 <svg 
                   viewBox="0 0 400 400" 
-                  className="logo-animation w-full h-full mx-auto" 
+                  className="w-full h-full"
                   fill="none" 
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  {/* Background glow effect */}
-                  <motion.circle
-                    cx="200" cy="200" r="150"
-                    fill="rgba(var(--background-rgb), 0.8)"
-                    stroke="rgba(var(--primary-accent), 0.1)"
-                    strokeWidth="40"
+                  {/* Background soft glow effect */}
+                  <defs>
+                    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                      <feGaussianBlur stdDeviation="10" result="blur" />
+                      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                    </filter>
+                  </defs>
+                  
+                  {/* The three glow halos behind each node */}
+                  <motion.ellipse 
+                    cx="200" cy="120" rx="35" ry="35" 
+                    className="logo-glow"
+                    fill="#E8F0E9" 
+                    filter="url(#glow)"
                     animate={{
-                      r: [150, 155, 150],
-                      opacity: [0.8, 0.9, 0.8],
+                      rx: [35, 38, 35],
+                      ry: [35, 38, 35],
+                      opacity: [0.5, 0.6, 0.5],
+                      transition: {
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        duration: 3,
+                        ease: "easeInOut"
+                      }
+                    }}
+                  />
+                  
+                  <motion.ellipse 
+                    cx="120" cy="240" rx="35" ry="35" 
+                    className="logo-glow"
+                    fill="#E8F0E9" 
+                    filter="url(#glow)"
+                    animate={{
+                      rx: [35, 38, 35],
+                      ry: [35, 38, 35],
+                      opacity: [0.5, 0.6, 0.5],
+                      transition: {
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        duration: 3.5,
+                        ease: "easeInOut",
+                        delay: 0.5
+                      }
+                    }}
+                  />
+                  
+                  <motion.ellipse 
+                    cx="280" cy="240" rx="35" ry="35" 
+                    className="logo-glow"
+                    fill="#E8F0E9" 
+                    filter="url(#glow)"
+                    animate={{
+                      rx: [35, 38, 35],
+                      ry: [35, 38, 35],
+                      opacity: [0.5, 0.6, 0.5],
+                      transition: {
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        duration: 3.2,
+                        ease: "easeInOut",
+                        delay: 0.8
+                      }
+                    }}
+                  />
+                  
+                  {/* Connection lines - precisely matching the logo's light green-gray */}
+                  <motion.path
+                    d="M200,120 L120,240"
+                    className="connector-line"
+                    stroke="#C4D0C5"  
+                    strokeWidth="4"
+                    strokeLinecap="round"
+                    animate={{
+                      strokeWidth: [4, 4.5, 4],
                       transition: {
                         repeat: Infinity,
                         repeatType: "reverse",
@@ -178,232 +246,88 @@ const Hero = () => {
                     }}
                   />
                   
-                  {/* Central triangle formation - inspired by the image */}
-                  <g className="triangle-formation">
-                    {/* Connection lines */}
-                    <motion.path
-                      d="M200,120 L120,240 L280,240 Z"
-                      className="logo-path"
-                      stroke="rgba(var(--tertiary-accent), 0.7)"
-                      strokeWidth="6"
-                      fill="none"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      animate={{
-                        strokeWidth: [6, 8, 6],
-                        transition: {
-                          repeat: Infinity,
-                          repeatType: "reverse",
-                          duration: 3,
-                          ease: "easeInOut"
-                        }
-                      }}
-                    />
-                    
-                    {/* Top node */}
-                    <motion.circle
-                      cx="200" cy="120" r="30"
-                      className="logo-circle"
-                      fill="rgba(var(--tertiary-accent), 0.9)"
-                      animate={{
-                        r: [30, 33, 30],
-                        transition: {
-                          repeat: Infinity,
-                          repeatType: "reverse",
-                          duration: 2.5,
-                          ease: "easeInOut"
-                        }
-                      }}
-                    />
-                    
-                    {/* Left node */}
-                    <motion.circle
-                      cx="120" cy="240" r="30"
-                      className="logo-circle"
-                      fill="rgba(var(--tertiary-accent), 0.9)"
-                      animate={{
-                        r: [30, 33, 30],
-                        transition: {
-                          repeat: Infinity,
-                          repeatType: "reverse",
-                          duration: 3.5,
-                          ease: "easeInOut",
-                          delay: 0.5
-                        }
-                      }}
-                    />
-                    
-                    {/* Right node */}
-                    <motion.circle
-                      cx="280" cy="240" r="30"
-                      className="logo-circle"
-                      fill="rgba(var(--tertiary-accent), 0.9)"
-                      animate={{
-                        r: [30, 33, 30],
-                        transition: {
-                          repeat: Infinity,
-                          repeatType: "reverse",
-                          duration: 3,
-                          ease: "easeInOut",
-                          delay: 1
-                        }
-                      }}
-                    />
-                    
-                    {/* Shadow/glow effects behind nodes */}
-                    <motion.circle
-                      cx="200" cy="120" r="40"
-                      className="logo-accent"
-                      fill="rgba(var(--background-rgb), 0.7)"
-                      animate={{
-                        r: [40, 44, 40],
-                        opacity: [0.3, 0.5, 0.3],
-                        transition: {
-                          repeat: Infinity,
-                          repeatType: "reverse",
-                          duration: 3,
-                          ease: "easeInOut"
-                        }
-                      }}
-                    />
-                    
-                    <motion.circle
-                      cx="120" cy="240" r="40"
-                      className="logo-accent"
-                      fill="rgba(var(--background-rgb), 0.7)"
-                      animate={{
-                        r: [40, 44, 40],
-                        opacity: [0.3, 0.5, 0.3],
-                        transition: {
-                          repeat: Infinity,
-                          repeatType: "reverse",
-                          duration: 4,
-                          ease: "easeInOut",
-                          delay: 0.7
-                        }
-                      }}
-                    />
-                    
-                    <motion.circle
-                      cx="280" cy="240" r="40"
-                      className="logo-accent"
-                      fill="rgba(var(--background-rgb), 0.7)"
-                      animate={{
-                        r: [40, 44, 40],
-                        opacity: [0.3, 0.5, 0.3],
-                        transition: {
-                          repeat: Infinity,
-                          repeatType: "reverse",
-                          duration: 3.5,
-                          ease: "easeInOut",
-                          delay: 1.4
-                        }
-                      }}
-                    />
-                  </g>
-                  
-                  {/* Decorative elements */}
-                  <motion.circle
-                    cx="200" cy="200" r="8"
-                    className="logo-accent"
-                    fill="rgba(var(--primary-accent), 0.8)"
+                  <motion.path
+                    d="M200,120 L280,240"
+                    className="connector-line"
+                    stroke="#C4D0C5"
+                    strokeWidth="4"
+                    strokeLinecap="round" 
                     animate={{
-                      r: [8, 10, 8],
-                      opacity: [0.8, 1, 0.8],
+                      strokeWidth: [4, 4.5, 4],
                       transition: {
                         repeat: Infinity,
                         repeatType: "reverse",
-                        duration: 2,
+                        duration: 4.3,
                         ease: "easeInOut"
                       }
                     }}
                   />
                   
-                  {/* Floating accent particles */}
-                  <g className="floating-accents">
-                    {[...Array(5)].map((_, i) => (
-                      <motion.circle
-                        key={i}
-                        cx={200 + (i - 2) * 40}
-                        cy={300}
-                        r={4}
-                        className="logo-accent"
-                        fill="rgba(var(--secondary-accent), 0.6)"
-                        animate={{
-                          y: [0, -10, 0],
-                          opacity: [0.6, 0.8, 0.6],
-                          transition: {
-                            repeat: Infinity,
-                            repeatType: "reverse",
-                            duration: 2 + i * 0.5,
-                            ease: "easeInOut",
-                            delay: i * 0.3
-                          }
-                        }}
-                      />
-                    ))}
-                  </g>
-                  
-                  {/* Pulse rings */}
-                  <motion.circle
-                    cx="200" cy="200" r="60"
-                    stroke="rgba(var(--primary-accent), 0.2)"
-                    strokeWidth="1"
-                    fill="none"
+                  <motion.path
+                    d="M120,240 L280,240"
+                    className="connector-line"
+                    stroke="#C4D0C5"
+                    strokeWidth="4"
+                    strokeLinecap="round"
                     animate={{
-                      r: [60, 90, 60],
-                      opacity: [0.2, 0, 0.2],
+                      strokeWidth: [4, 4.5, 4],
                       transition: {
                         repeat: Infinity,
+                        repeatType: "reverse",
+                        duration: 4.6,
+                        ease: "easeInOut"
+                      }
+                    }}
+                  />
+                  
+                  {/* The three green circular nodes - exact color match */}
+                  <motion.circle
+                    cx="200" cy="120" r="25"
+                    className="node-circle"
+                    fill="#5D7A61"
+                    animate={{
+                      r: [25, 27, 25],
+                      transition: {
+                        repeat: Infinity,
+                        repeatType: "reverse",
                         duration: 3,
-                        ease: "easeOut"
+                        ease: "easeInOut"
                       }
                     }}
                   />
                   
                   <motion.circle
-                    cx="200" cy="200" r="70"
-                    stroke="rgba(var(--secondary-accent), 0.2)"
-                    strokeWidth="1"
-                    fill="none"
+                    cx="120" cy="240" r="25"
+                    className="node-circle"
+                    fill="#5D7A61"
                     animate={{
-                      r: [70, 100, 70],
-                      opacity: [0.2, 0, 0.2],
+                      r: [25, 27, 25],
                       transition: {
                         repeat: Infinity,
-                        duration: 3,
-                        ease: "easeOut",
-                        delay: 1
+                        repeatType: "reverse",
+                        duration: 3.3,
+                        ease: "easeInOut",
+                        delay: 0.4
+                      }
+                    }}
+                  />
+                  
+                  <motion.circle
+                    cx="280" cy="240" r="25"
+                    className="node-circle"
+                    fill="#5D7A61"
+                    animate={{
+                      r: [25, 27, 25],
+                      transition: {
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        duration: 3.6,
+                        ease: "easeInOut",
+                        delay: 0.8
                       }
                     }}
                   />
                 </svg>
-                
-                {/* Floating particles in background */}
-                <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                  {Array.from({ length: 10 }).map((_, i) => (
-                    <motion.div
-                      key={i}
-                      className="absolute rounded-full bg-[rgba(var(--tertiary-accent),0.3)]"
-                      style={{
-                        width: `${Math.random() * 6 + 3}px`,
-                        height: `${Math.random() * 6 + 3}px`,
-                        left: `${Math.random() * 100}%`,
-                        top: `${Math.random() * 100}%`,
-                      }}
-                      animate={{
-                        y: [0, -15, 0],
-                        x: [0, Math.random() * 8 - 4, 0],
-                        opacity: [0.3, 0.5, 0.3],
-                      }}
-                      transition={{
-                        duration: Math.random() * 3 + 2,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                    />
-                  ))}
-                </div>
               </div>
             </div>
           </div>
