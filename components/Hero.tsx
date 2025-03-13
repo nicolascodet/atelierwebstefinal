@@ -48,6 +48,15 @@ const Hero = () => {
     // Fade in the tagline
     await animate("#tagline", { opacity: [0, 1], y: [10, 0] }, { duration: 0.4 });
     
+    // Animate the cool underline for "artificial intelligence"
+    animate(".ai-underline", { 
+      pathLength: [0, 1],
+      opacity: [0, 1]
+    }, { 
+      duration: 0.8,
+      ease: "easeInOut"
+    });
+    
     // Hide cursor when all text is done
     await animate("#cursor", { opacity: 0 }, { duration: 0.5 });
     
@@ -103,7 +112,36 @@ const Hero = () => {
                   </div>
                   
                   <div id="tagline" className="mt-4 text-2xl sm:text-3xl font-medium text-[rgb(var(--text-secondary))] opacity-0">
-                    Your walls, reimagined by artificial intelligence
+                    Your walls, reimagined by <span className="relative">
+                      artificial intelligence
+                      <svg 
+                        className="absolute left-0 -bottom-1 w-full" 
+                        height="12" 
+                        viewBox="0 0 200 12" 
+                        preserveAspectRatio="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <motion.path
+                          className="ai-underline"
+                          d="M0,3 C50,10 150,0 200,5"
+                          stroke="rgba(var(--tertiary-accent), 0.8)"
+                          strokeWidth="3"
+                          strokeLinecap="round"
+                          fill="none"
+                          initial={{ pathLength: 0, opacity: 0 }}
+                        />
+                        <motion.path
+                          className="ai-underline"
+                          d="M0,8 C75,4 125,12 200,8"
+                          stroke="rgba(var(--primary-accent), 0.5)"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          fill="none"
+                          initial={{ pathLength: 0, opacity: 0 }}
+                          style={{ pathOffset: 0.1 }}
+                        />
+                      </svg>
+                    </span>
                   </div>
                 </h1>
 
