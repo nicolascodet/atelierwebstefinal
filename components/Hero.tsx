@@ -1,200 +1,299 @@
 // This is a small change to trigger a new Vercel deployment
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
-import { motion, useScroll, useTransform, AnimatePresence } from 'framer-motion';
+import React, { useEffect, useState, useRef } from 'react';
+import { motion, useAnimate, stagger } from 'framer-motion';
 import Link from 'next/link';
 
 const Hero = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isLoaded, setIsLoaded] = useState(false);
-  
-  // Animation triggers
+  const [scope, animate] = useAnimate();
+  const [shapeScope, shapeAnimate] = useAnimate();
+  const [hasTyped, setHasTyped] = useState(false);
+  const typingRef = useRef<HTMLSpanElement>(null);
+
   useEffect(() => {
-    setIsLoaded(true);
-  }, []);
-  
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end start'],
-  });
-  
-  // Simplified parallax effects for better mobile performance
-  const textY = useTransform(scrollYProgress, [0, 1], ['0%', '20%']);
-  
-  // Simplified features with tech icons
-  const features = [
-    {
-      id: 'ai-generation',
-      label: 'AI-Generated Art',
-      icon: (
-        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M8 14C10.2091 14 12 12.2091 12 10C12 7.79086 10.2091 6 8 6C5.79086 6 4 7.79086 4 10C4 12.2091 5.79086 14 8 14Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M14 12L17 15L20 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      ),
-    },
-    {
-      id: 'display',
-      label: 'Museum Grade Display',
-      icon: (
-        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M20 9L20 15C20 17.2091 18.2091 19 16 19L8 19C5.79086 19 4 17.2091 4 15L4 9C4 6.79086 5.79086 5 8 5L16 5C18.2091 5 20 6.79086 20 9Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M12 19L12 22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          <path d="M8 22L16 22" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      ),
-    },
-  ];
+    const startAnimations = async () => {
+      if (hasTyped) return;
+
+      // Animate in the World's first text
+      await animate("#world-first", { opacity: [0, 1] }, { duration: 0.5 });
+      
+      // Typing animation for "AI picture frame"
+      const targetText = "AI picture frame";
+      const element = typingRef.current;
+      if (element) {
+        element.textContent = "";
+        for (let i = 0; i < targetText.length; i++) {
+          await new Promise(resolve => setTimeout(resolve, 70));
+          element.textContent = targetText.substring(0, i + 1);
+        }
+      }
+
+      // Animate the shapes during typing
+      shapeAnimate([
+        [".shape-circle", { scale: [0.6, 1], opacity: [0, 1] }, { duration: 0.8, delay: stagger(0.1) }],
+        [".shape-line", { pathLength: [0, 1], opacity: [0, 1] }, { duration: 1.2, delay: stagger(0.15) }],
+        [".shape-rect", { scale: [0.8, 1], opacity: [0, 1] }, { duration: 0.7, delay: stagger(0.1) }],
+        [".control-dot", { scale: [0, 1], opacity: [0, 1] }, { duration: 0.5, delay: stagger(0.08) }],
+      ]);
+
+      // Animate the transforms underline
+      await animate("#transforms-underline", { width: "100%" }, { duration: 0.4 });
+
+      // Animate the space underline
+      await animate("#space-underline", { width: "100%" }, { duration: 0.4 });
+      
+      // Fade in description and cards with stagger
+      await animate([
+        [".hero-description", { opacity: [0, 1], y: [20, 0] }, { duration: 0.5 }],
+        [".hero-card", { opacity: [0, 1], y: [20, 0] }, { duration: 0.6, delay: stagger(0.15) }],
+        [".video-link", { opacity: [0, 1] }, { duration: 0.3 }]
+      ]);
+
+      setHasTyped(true);
+    };
+
+    startAnimations();
+  }, [animate, shapeAnimate, hasTyped]);
 
   return (
-    <div ref={containerRef} className="relative overflow-hidden bg-white">
-      {/* Simplified gradient background */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-b from-blue-50 to-indigo-50/30"></div>
-        <div className="absolute inset-0 bg-[url('/images/grid.svg')] bg-center opacity-10"></div>
-      </div>
-
+    <div ref={scope} className="relative overflow-hidden bg-[rgb(var(--background-rgb))] py-10 md:py-16">
+      {/* Background gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[rgba(var(--secondary-accent),0.05)] to-transparent" />
+      
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
-        <div className="pt-12 lg:pt-20 pb-6 lg:pb-12 max-w-screen-xl mx-auto">
+        <div className="max-w-screen-xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Left side - Content */}
-            <div className="order-2 lg:order-1">
-              <motion.div 
-                style={{ y: textY }}
-                className="space-y-5"
-              >
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.6, ease: "easeOut" }}
-                  className="flex items-center gap-2 mb-2"
-                >
-                  <div className="inline-flex items-center rounded-full bg-blue-100 border border-blue-200 px-3 py-1">
-                    <span className="text-xs font-medium text-blue-700 uppercase tracking-wider">AI Art Frame</span>
+            <div>
+              <div className="space-y-6">
+                {/* Main heading with tight spacing */}
+                <h1 className="text-4xl sm:text-5xl font-bold text-[rgb(var(--text-primary))]">
+                  <div id="world-first" className="mb-2 opacity-0">World's first</div>
+                  <div className="flex items-baseline gap-x-2 mt-0">
+                    <span>that</span>
+                    <span className="relative inline-block">
+                      transforms
+                      <span id="transforms-underline" className="absolute bottom-1 left-0 w-0 h-[3px] bg-[rgb(var(--secondary-accent))]"></span>
+                    </span>
+                    <span>your</span>
                   </div>
-                </motion.div>
-
-                {/* Main heading with animated text */}
-                <motion.h1
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.6, ease: "easeOut", delay: 0.1 }}
-                  className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 leading-tight"
-                >
-                  Art that evolves 
-                  <span className="block mt-1 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 bg-clip-text text-transparent">with you</span>
-                </motion.h1>
-
-                {/* Description */}
-                <motion.p
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-                  className="mt-3 text-base md:text-lg text-gray-700"
-                >
-                  The Canvas by Atelier Frames combines elegant design with Museum Grade display technology and custom AI art generation to transform your space.
-                </motion.p>
-
-                {/* Feature pills */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={isLoaded ? { opacity: 1 } : {}}
-                  transition={{ duration: 0.8, delay: 0.4 }}
-                  className="mt-4"
-                >
-                  <div className="flex flex-wrap gap-3">
-                    {features.map((feature, i) => (
-                      <motion.div
-                        key={feature.id}
-                        initial={{ opacity: 0, x: -10 }}
-                        animate={isLoaded ? { opacity: 1, x: 0 } : {}}
-                        transition={{ duration: 0.4, delay: 0.5 + (i * 0.1) }}
-                        className="bg-white/80 backdrop-blur-sm border border-gray-200 py-1.5 px-3 rounded-full flex items-center gap-2"
-                      >
-                        <span className="text-blue-600">{feature.icon}</span>
-                        <span className="text-xs font-medium text-gray-700">{feature.label}</span>
-                      </motion.div>
-                    ))}
+                  <div className="mt-1">
+                    <span>living</span>&nbsp;
+                    <span className="relative inline-block">
+                      space
+                      <span id="space-underline" className="absolute bottom-1 left-0 w-0 h-[3px] bg-[rgb(var(--secondary-accent))]"></span>
+                    </span>
+                    <span className="ml-2 text-[rgb(var(--primary-accent))]" ref={typingRef}></span>
                   </div>
-                </motion.div>
+                </h1>
 
-                {/* Kickstarter CTA button - prominent placement and design */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isLoaded ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.6, ease: "easeOut", delay: 0.3 }}
-                  className="mt-6"
-                >
-                  <div className="flex flex-col sm:flex-row gap-4">
-                    <a 
-                      href="https://www.kickstarter.com/projects/nicolascodet/the-canvas-by-atelier-frames" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="w-full sm:w-auto"
-                    >
-                      <div className="relative overflow-hidden rounded-lg shadow-lg group">
-                        <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 transition-all group-hover:scale-105 duration-300"></div>
-                        <div className="relative flex items-center justify-center px-6 py-3.5 text-white font-medium">
-                          <span className="mr-2">Back our Kickstarter</span>
-                          <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                          </svg>
-                        </div>
+                <p className="hero-description text-lg text-[rgb(var(--text-secondary))] opacity-0">
+                  The Canvas by Atelier Frames is the first digital picture frame with built-in AI, 
+                  bringing your spaces to life with art that adapts to your style and environment.
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-10">
+                  {/* First Card */}
+                  <div className="hero-card anthro-card p-6 opacity-0">
+                    <div className="space-y-4">
+                      <div className="inline-flex items-center rounded-full bg-[rgba(var(--primary-accent),0.1)] border border-[rgba(var(--primary-accent),0.2)] px-3 py-1">
+                        <span className="text-xs font-medium text-[rgb(var(--primary-accent))] uppercase tracking-wider">INNOVATION</span>
                       </div>
-                    </a>
-                    
-                    <a 
-                      href="#ai-art-demo"
-                      className="w-full sm:w-auto"
-                    >
-                      <div className="relative overflow-hidden rounded-lg border border-gray-300 group">
-                        <div className="relative flex items-center justify-center px-6 py-3.5 text-gray-700 group-hover:text-blue-600 font-medium transition-colors">
-                          <span>Try the Demo</span>
-                        </div>
-                      </div>
-                    </a>
+                      <h2 className="title-sm">AI-Powered Art</h2>
+                      <p className="body">Experience intelligent art generation that evolves based on your preferences and environment.</p>
+                      <Link href="#features" className="btn btn-primary mt-4 inline-block">
+                        Learn more
+                      </Link>
+                    </div>
                   </div>
-                </motion.div>
 
-                {/* Project status */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={isLoaded ? { opacity: 1 } : {}}
-                  transition={{ duration: 0.6, delay: 0.4 }}
-                  className="mt-4 flex items-center text-sm text-gray-600"
-                >
-                  <span className="inline-block w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-                  <span>Kickstarter campaign live now!</span>
-                </motion.div>
-              </motion.div>
-            </div>
-
-            {/* Right side - Video (simplified for better mobile viewing) */}
-            <div className="order-1 lg:order-2">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={isLoaded ? { opacity: 1, scale: 1 } : {}}
-                transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                className="relative"
-              >
-                {/* Video frame with simplified styling */}
-                <div className="relative rounded-lg overflow-hidden border border-gray-200 bg-white shadow-lg">
-                  <div className="aspect-video relative">
-                    <iframe 
-                      width="100%" 
-                      height="100%" 
-                      src="https://www.youtube.com/embed/m6GNAmyvLVc" 
-                      title="The Canvas by Atelier Frames" 
-                      frameBorder="0" 
-                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                      allowFullScreen
-                    ></iframe>
+                  {/* Second Card */}
+                  <div className="hero-card anthro-card p-6 opacity-0">
+                    <div className="space-y-4">
+                      <div className="inline-flex items-center rounded-full bg-[rgba(var(--secondary-accent),0.1)] border border-[rgba(var(--secondary-accent),0.2)] px-3 py-1">
+                        <span className="text-xs font-medium text-[rgb(var(--secondary-accent))] uppercase tracking-wider">CRAFTSMANSHIP</span>
+                      </div>
+                      <h2 className="title-sm">Premium Design</h2>
+                      <p className="body">Elegant handcrafted frames that blend traditional craftsmanship with cutting-edge technology.</p>
+                      <Link href="#ai-art-demo" className="btn btn-secondary mt-4 inline-block">
+                        Try demo
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </motion.div>
+                
+                <div className="flex items-center space-x-4 mt-4">
+                  <a 
+                    href="https://www.kickstarter.com/projects/nicolascodet/the-canvas-by-atelier-frames" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="video-link text-tertiary flex items-center hover:text-secondary transition-colors duration-300 opacity-0"
+                  >
+                    <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
+                    </svg>
+                    <span>Watch our video</span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            {/* Right side - Animated Illustration */}
+            <div className="hidden lg:block" ref={shapeScope}>
+              <div className="relative">
+                <motion.svg 
+                  viewBox="0 0 500 500" 
+                  className="w-full h-auto" 
+                  fill="none" 
+                  xmlns="http://www.w3.org/2000/svg"
+                  animate={{
+                    scale: [1, 1.05, 1],
+                    transition: {
+                      repeat: Infinity,
+                      repeatType: "reverse" as const,
+                      duration: 3
+                    }
+                  }}
+                >
+                  {/* Frame outline */}
+                  <motion.rect 
+                    x="100" y="100" 
+                    width="300" height="300" 
+                    rx="50" ry="50"
+                    className="shape-rect fill-[rgb(var(--primary-accent))]"
+                    opacity="0"
+                    animate={{
+                      y: [0, -10, 0],
+                      opacity: 1,
+                      transition: {
+                        repeat: Infinity,
+                        repeatType: "reverse" as const,
+                        duration: 4
+                      }
+                    }}
+                  />
+                  
+                  {/* Inner display area */}
+                  <motion.rect 
+                    x="130" y="130" 
+                    width="240" height="240" 
+                    rx="30" ry="30"
+                    className="shape-rect fill-white"
+                    opacity="0"
+                  />
+                  
+                  {/* Animated lines */}
+                  <motion.line 
+                    x1="150" y1="180" x2="350" y2="180" 
+                    className="shape-line stroke-[rgb(var(--tertiary-accent))]" 
+                    strokeWidth="3" 
+                    strokeDasharray="10 5"
+                    opacity="0"
+                  />
+                  <motion.line 
+                    x1="150" y1="240" x2="350" y2="240" 
+                    className="shape-line stroke-[rgb(var(--primary-accent))]" 
+                    strokeWidth="3" 
+                    strokeDasharray="20 10"
+                    opacity="0"
+                  />
+                  <motion.line 
+                    x1="150" y1="300" x2="350" y2="300" 
+                    className="shape-line stroke-[rgb(var(--secondary-accent))]" 
+                    strokeWidth="3" 
+                    strokeDasharray="15 7"
+                    opacity="0"
+                  />
+
+                  {/* Circular elements with animation */}
+                  <motion.circle 
+                    cx="190" cy="190" r="20" 
+                    className="shape-circle fill-none stroke-[rgb(var(--secondary-accent))]" 
+                    strokeWidth="3"
+                    opacity="0"
+                    animate={{
+                      rotate: 360,
+                      transition: {
+                        repeat: Infinity,
+                        duration: 20,
+                        ease: "linear"
+                      }
+                    }}
+                  />
+                  <motion.circle 
+                    cx="310" cy="310" r="30" 
+                    className="shape-circle fill-none stroke-[rgb(var(--primary-accent))]" 
+                    strokeWidth="3"
+                    opacity="0"
+                    animate={{
+                      rotate: 360,
+                      transition: {
+                        repeat: Infinity,
+                        duration: 20,
+                        ease: "linear"
+                      }
+                    }}
+                  />
+                  <motion.circle 
+                    cx="250" cy="250" r="50" 
+                    className="shape-circle fill-none stroke-[rgb(var(--tertiary-accent))]" 
+                    strokeWidth="2" 
+                    strokeDasharray="5 5"
+                    opacity="0"
+                    animate={{
+                      rotate: 360,
+                      transition: {
+                        repeat: Infinity,
+                        duration: 20,
+                        ease: "linear"
+                      }
+                    }}
+                  />
+                  
+                  {/* Connecting lines with draw animation */}
+                  <motion.line 
+                    x1="180" y1="320" x2="250" y2="250" 
+                    className="shape-line stroke-[rgb(var(--primary-accent))]" 
+                    strokeWidth="2"
+                    opacity="0"
+                  />
+                  <motion.line 
+                    x1="320" y1="180" x2="250" y2="250" 
+                    className="shape-line stroke-[rgb(var(--secondary-accent))]" 
+                    strokeWidth="2"
+                    opacity="0"
+                  />
+                  
+                  {/* Control dots with pulse animation */}
+                  <motion.circle cx="80" cy="200" r="8" className="control-dot fill-[rgb(var(--secondary-accent))]" opacity="0" />
+                  <motion.circle cx="80" cy="250" r="8" className="control-dot fill-[rgb(var(--tertiary-accent))]" opacity="0" />
+                  <motion.circle cx="80" cy="300" r="8" className="control-dot fill-[rgb(var(--primary-accent))]" opacity="0" />
+                  
+                  <motion.circle cx="420" cy="200" r="8" className="control-dot fill-[rgb(var(--secondary-accent))]" opacity="0" />
+                  <motion.circle cx="420" cy="250" r="8" className="control-dot fill-[rgb(var(--tertiary-accent))]" opacity="0" />
+                  <motion.circle cx="420" cy="300" r="8" className="control-dot fill-[rgb(var(--primary-accent))]" opacity="0" />
+                  
+                  {/* Additional decorative elements */}
+                  <motion.path 
+                    d="M150,350 C200,380 300,380 350,350" 
+                    className="shape-line stroke-[rgb(var(--secondary-accent))]" 
+                    strokeWidth="2" 
+                    strokeDasharray="5 3"
+                    fill="none"
+                    opacity="0"
+                  />
+                  
+                  <motion.path 
+                    d="M150,150 C200,120 300,120 350,150" 
+                    className="shape-line stroke-[rgb(var(--tertiary-accent))]" 
+                    strokeWidth="2" 
+                    strokeDasharray="5 3"
+                    fill="none"
+                    opacity="0"
+                  />
+                </motion.svg>
+              </div>
             </div>
           </div>
         </div>
