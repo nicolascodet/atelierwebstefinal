@@ -62,6 +62,29 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
       .video-btn:hover {
         background-color: #4D6A51;
       }
+      .kickstarter-btn {
+        background-color: #5D7A61 !important;
+        border-color: #5D7A61 !important;
+        color: white;
+        transition: background-color 0.3s;
+      }
+      .kickstarter-btn:hover {
+        background-color: #4D6A51 !important;
+        border-color: #4D6A51 !important;
+      }
+      .feature-card {
+        position: relative;
+        cursor: default;
+        transition: transform 0.2s, box-shadow 0.2s;
+      }
+      .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+      }
+      .feature-card .btn {
+        position: relative;
+        z-index: 10;
+      }
     `;
     document.head.appendChild(style);
     
@@ -147,7 +170,6 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
           ["#card-1", { opacity: 1 }, { duration: 0 }],
           ["#card-2", { opacity: 1 }, { duration: 0 }],
           [".video-link", { opacity: 1 }, { duration: 0 }],
-          [".desktop-video-container", { opacity: 1 }, { duration: 0 }],
           [".right-illustration", { opacity: 1 }, { duration: 0 }],
           [".logo-container", { opacity: 1 }, { duration: 0 }],
           [".ai-underline", { pathLength: 1, opacity: 1 }, { duration: 0 }]
@@ -164,8 +186,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
         animate([
           [".hero-heading", { opacity: 1 }, { duration: 0 }],
           [".right-illustration", { opacity: 1 }, { duration: 0 }],
-          [".hero-description", { opacity: 1, y: 0 }, { duration: 0.2 }],
-          [".desktop-video-container", { opacity: 1 }, { duration: 0.3 }]
+          [".hero-description", { opacity: 1, y: 0 }, { duration: 0.2 }]
         ]);
         
         // Typing animation for "Introducing Atelier Frames" - slower
@@ -224,10 +245,9 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
           ["#card-2", { opacity: [0, 1], y: [20, 0] }, { duration: 0.3, delay: 0.1 }], // Reduced delay from 0.2 to 0.1
         ]);
         
-        // Fade in the video link and desktop video
+        // Fade in the video link only, not the desktop video container
         animate([
-          [".video-link", { opacity: [0, 1] }, { duration: 0.2 }],
-          [".desktop-video-container", { opacity: [0, 1] }, { duration: 0.3, delay: 0.2 }]
+          [".video-link", { opacity: [0, 1] }, { duration: 0.2 }]
         ]);
       }
     }
@@ -238,8 +258,8 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
   // Completely revised video implementation for more reliable playback
   const VideoComponent = ({ isMobile = false }) => {
     const containerClass = isMobile 
-      ? "mobile-video-container w-full opacity-0" 
-      : "desktop-video-container w-full opacity-0 rounded-lg overflow-hidden";
+      ? "mobile-video-container w-full" 
+      : "desktop-video-container w-full rounded-lg overflow-hidden";
       
     const handleOpenVideo = () => {
       // Open the video in a new tab if having issues with embedding
@@ -267,7 +287,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
             <p className="text-sm text-gray-600 mb-3">See how our AI-powered frame transforms spaces and brings art to life</p>
             <button 
               onClick={handleOpenVideo}
-              className="video-btn py-2 px-4 rounded flex items-center justify-center gap-2 w-full sm:w-auto font-medium text-sm"
+              className="kickstarter-btn py-2 px-4 rounded flex items-center justify-center gap-2 w-full sm:w-auto font-medium text-sm"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
                 <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"></path>
@@ -414,31 +434,41 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
                 </p>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-10">
-                  {/* First Card */}
-                  <div id="card-1" className="anthro-card p-6 opacity-0">
+                  {/* First Card - Redesigned to be more visually attractive but clearer about clickability */}
+                  <div id="card-1" className="anthro-card feature-card p-6 opacity-0 bg-white border border-gray-100 rounded-xl shadow-sm">
                     <div className="space-y-4">
                       <div className="inline-flex items-center rounded-full bg-[rgba(var(--primary-accent),0.1)] border border-[rgba(var(--primary-accent),0.2)] px-3 py-1">
                         <span className="text-xs font-medium text-[rgb(var(--primary-accent))] uppercase tracking-wider">INNOVATION</span>
                       </div>
-                      <h2 className="title-sm">AI-Powered Art</h2>
-                      <p className="body">Experience intelligent art generation that evolves based on your preferences and environment.</p>
-                      <Link href="#features" className="btn btn-primary mt-4 inline-block">
-                        Learn more
-                      </Link>
+                      <h2 className="title-sm font-bold">AI-Powered Art</h2>
+                      <p className="body text-gray-600">Experience intelligent art generation that evolves based on your preferences and environment.</p>
+                      <div className="pt-2">
+                        <Link href="#features" className="btn btn-primary mt-4 inline-flex items-center justify-center px-5 py-2 rounded-md">
+                          Learn more
+                          <svg className="ml-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                          </svg>
+                        </Link>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Second Card */}
-                  <div id="card-2" className="anthro-card p-6 opacity-0">
+                  {/* Second Card - Redesigned to match first card style */}
+                  <div id="card-2" className="anthro-card feature-card p-6 opacity-0 bg-white border border-gray-100 rounded-xl shadow-sm">
                     <div className="space-y-4">
                       <div className="inline-flex items-center rounded-full bg-[rgba(var(--secondary-accent),0.1)] border border-[rgba(var(--secondary-accent),0.2)] px-3 py-1">
                         <span className="text-xs font-medium text-[rgb(var(--secondary-accent))] uppercase tracking-wider">CRAFTSMANSHIP</span>
                       </div>
-                      <h2 className="title-sm">Premium Design</h2>
-                      <p className="body">Elegant handcrafted frames that blend traditional craftsmanship with cutting-edge technology.</p>
-                      <Link href="#ai-art-demo" className="btn btn-primary mt-4 inline-block">
-                        Try demo
-                      </Link>
+                      <h2 className="title-sm font-bold">Premium Design</h2>
+                      <p className="body text-gray-600">Elegant handcrafted frames that blend traditional craftsmanship with cutting-edge technology.</p>
+                      <div className="pt-2">
+                        <Link href="#ai-art-demo" className="btn btn-primary mt-4 inline-flex items-center justify-center px-5 py-2 rounded-md">
+                          Try demo
+                          <svg className="ml-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                          </svg>
+                        </Link>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -460,20 +490,6 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
                       </div>
                     </div>
                   </div>
-                </div>
-                
-                <div className="flex items-center space-x-4 mt-4">
-                  <a 
-                    href="https://www.youtube.com/watch?v=m6GNAmyvLVc" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="video-link text-tertiary flex items-center hover:text-secondary transition-colors duration-300 opacity-0"
-                  >
-                    <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
-                    </svg>
-                    <span>Watch our video</span>
-                  </a>
                 </div>
               </div>
             </div>
@@ -698,21 +714,25 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
             </div>
           </div>
 
-          {/* Desktop Video Section - Full width below the grid on desktop */}
-          <div className="hidden lg:block mt-16">
+          {/* DESKTOP VIDEO SECTION - completely separate from the main content */}
+          <div className="hidden lg:block mt-32 pt-16 border-t border-gray-200">
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">See the Canvas in Action</h2>
             <div className="max-w-3xl mx-auto">
               <VideoComponent isMobile={false} />
             </div>
           </div>
 
-          {/* Mobile Kickstarter link below video */}
-          <div className="flex items-center justify-center mt-4 lg:hidden">
+          {/* Mobile Kickstarter link below video - updated to use kickstarter-btn class */}
+          <div className="flex items-center justify-center mt-6 lg:hidden">
             <a 
               href="https://www.kickstarter.com/projects/nicolascodet/the-canvas-by-atelier-frames" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-block py-2 px-6 bg-[#5D7A61] hover:bg-[#4D6A51] text-white rounded-md font-medium transition-colors duration-300"
+              className="kickstarter-btn inline-flex items-center px-6 py-3 rounded-md font-medium transition-colors duration-300"
             >
+              <svg className="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18.315 7.686l-7.734 10.658-4.896-7.169 1.521-1.039 3.276 4.766 6.326-8.688 1.507 1.472z" />
+              </svg>
               Back on Kickstarter
             </a>
           </div>
