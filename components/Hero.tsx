@@ -13,7 +13,7 @@ const Hero = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       startAnimations();
-    }, 500); // Small delay to ensure everything is loaded
+    }, 300); // Reduced delay for faster start
     
     return () => clearTimeout(timer);
   }, []);
@@ -21,7 +21,7 @@ const Hero = () => {
   const startAnimations = async () => {
     if (hasAnimated) return;
 
-    // First, make sure everything is visible but at initial states
+    // Make everything visible at initial states
     animate(".hero-heading", { opacity: 1 }, { duration: 0 });
     animate(".right-illustration", { opacity: 1 }, { duration: 0 });
     
@@ -37,24 +37,35 @@ const Hero = () => {
         element.textContent = targetText.substring(0, i);
         // Move cursor
         animate("#cursor", { left: `${i * 0.6}em` }, { duration: 0.05 });
-        await new Promise(resolve => setTimeout(resolve, 80));
+        // Reduced timing for faster typing animation
+        await new Promise(resolve => setTimeout(resolve, 40));
       }
       
       // Move cursor to next line after typing is done
-      await new Promise(resolve => setTimeout(resolve, 500));
+      await new Promise(resolve => setTimeout(resolve, 300));
     }
     
     // Fade in the tagline
-    await animate("#tagline", { opacity: [0, 1], y: [10, 0] }, { duration: 0.6 });
+    await animate("#tagline", { opacity: [0, 1], y: [10, 0] }, { duration: 0.4 });
     
     // Hide cursor when all text is done
     await animate("#cursor", { opacity: 0 }, { duration: 0.5 });
     
-    // Animate in the minimalist frame on the right
+    // Immediately make the illustration visible
+    animate(".right-illustration", { opacity: 1, scale: [0.9, 1] }, { duration: 0.7 });
+    
+    // Animate in each element of the frame with more dramatic visibility
     animate([
-      [".anthro-blob", { scale: [0.95, 1], opacity: [0, 1] }, { duration: 1.5 }],
-      [".anthro-circle", { scale: [0, 1], opacity: [0, 1] }, { duration: 0.8, delay: 0.2 }],
-      [".anthro-line", { pathLength: [0, 1], opacity: [0, 1] }, { duration: 1.0, delay: 0.3 }],
+      [".anthro-blob", { scale: [0.8, 1], opacity: [0, 0.9] }, { duration: 0.8 }],
+      [".anthro-circle", { scale: [0.5, 1], opacity: [0, 0.9] }, { duration: 0.6, delay: 0.1 }],
+      [".anthro-line", { pathLength: [0, 1], opacity: [0, 0.9] }, { duration: 0.7, delay: 0.2 }],
+    ]);
+    
+    // Start the breathing animations immediately after showing
+    animate([
+      [".frame-rect", { scale: [0.95, 1], opacity: [0, 1] }, { duration: 0.7 }],
+      [".control-dot", { scale: [0, 1], opacity: [0, 1] }, { duration: 0.5, delay: 0.3 }],
+      [".art-representation", { scale: [0.9, 1], opacity: [0, 1] }, { duration: 0.8, delay: 0.2 }],
     ]);
     
     // Fade in description and cards
@@ -91,7 +102,7 @@ const Hero = () => {
                   </div>
                   
                   <div id="tagline" className="mt-4 text-2xl sm:text-3xl font-medium text-[rgb(var(--text-secondary))] opacity-0">
-                    Using generative AI to allow you to be the artist
+                    Transforming walls into living art with AI magic
                   </div>
                 </h1>
 
@@ -146,26 +157,63 @@ const Hero = () => {
               </div>
             </div>
 
-            {/* Right side - Minimalist Anthropic-style Animation */}
-            <div className="right-illustration block opacity-0">
-              <div className="relative flex items-center justify-center h-[400px]">
-                {/* Anthropic-style minimalist illustration */}
+            {/* Right side - Enhanced Anthropic-style Animation with higher visibility */}
+            <div className="right-illustration block opacity-0 relative">
+              <div className="relative flex items-center justify-center h-[400px] w-full">
+                {/* 3D Frame representation - more visible and modern */}
                 <svg 
                   viewBox="0 0 500 500" 
-                  className="w-full h-auto max-w-md" 
+                  className="w-full h-full max-w-md mx-auto" 
                   fill="none" 
                   xmlns="http://www.w3.org/2000/svg"
                 >
-                  {/* Base shapes */}
+                  {/* Gradient background for the SVG to make it more visible */}
+                  <defs>
+                    <linearGradient id="frameGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="rgba(var(--primary-accent), 0.1)" />
+                      <stop offset="100%" stopColor="rgba(var(--secondary-accent), 0.1)" />
+                    </linearGradient>
+                  </defs>
+                  
+                  {/* Background Blob - higher opacity */}
                   <motion.rect 
-                    x="150" y="100" 
-                    width="200" height="300" 
-                    rx="100" 
-                    className="anthro-blob fill-[rgba(var(--primary-accent),0.08)]"
+                    x="120" y="80" 
+                    width="260" height="340" 
+                    rx="130" 
+                    fill="url(#frameGradient)"
+                    className="anthro-blob"
+                    stroke="rgba(var(--primary-accent), 0.3)"
+                    strokeWidth="1"
                     opacity="0"
                     animate={{
-                      width: [200, 210, 200],
-                      height: [300, 310, 300],
+                      width: [260, 270, 260],
+                      height: [340, 350, 340],
+                      x: [120, 115, 120],
+                      y: [80, 75, 80],
+                      transition: {
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        duration: 6,
+                        ease: "easeInOut"
+                      }
+                    }}
+                  />
+                  
+                  {/* Main frame with breathing animation */}
+                  <motion.rect 
+                    x="150" y="120" 
+                    width="200" height="260" 
+                    rx="10" 
+                    className="frame-rect"
+                    fill="none"
+                    stroke="rgba(var(--primary-accent), 0.7)"
+                    strokeWidth="3"
+                    opacity="0"
+                    animate={{
+                      width: [200, 204, 200],
+                      height: [260, 264, 260],
+                      x: [150, 148, 150],
+                      y: [120, 118, 120],
                       transition: {
                         repeat: Infinity,
                         repeatType: "reverse",
@@ -175,66 +223,18 @@ const Hero = () => {
                     }}
                   />
                   
-                  <motion.circle 
-                    cx="250" cy="175" r="50" 
-                    className="anthro-circle fill-[rgba(var(--secondary-accent),0.1)]" 
-                    opacity="0"
-                    animate={{
-                      r: [50, 53, 50],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 3.5,
-                        ease: "easeInOut"
-                      }
-                    }}
-                  />
-                  
-                  <motion.circle 
-                    cx="250" cy="325" r="40" 
-                    className="anthro-circle fill-[rgba(var(--primary-accent),0.1)]" 
-                    opacity="0"
-                    animate={{
-                      r: [40, 43, 40],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 4.5,
-                        ease: "easeInOut",
-                        delay: 0.5
-                      }
-                    }}
-                  />
-                  
-                  {/* Frame representation */}
+                  {/* Digital screen representation */}
                   <motion.rect 
-                    x="175" y="150" 
-                    width="150" height="200" 
-                    rx="8" 
-                    className="anthro-blob fill-none stroke-[rgb(var(--primary-accent))]"
-                    strokeWidth="2"
+                    x="160" y="130" 
+                    width="180" height="240" 
+                    rx="5" 
+                    className="anthro-blob"
+                    fill="rgba(var(--secondary-accent), 0.15)"
+                    stroke="rgba(var(--secondary-accent), 0.3)"
+                    strokeWidth="1"
                     opacity="0"
                     animate={{
-                      x: [175, 177, 175],
-                      y: [150, 148, 150],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 5,
-                        ease: "easeInOut"
-                      }
-                    }}
-                  />
-                  
-                  {/* Subtle lines */}
-                  <motion.line 
-                    x1="175" y1="175" x2="325" y2="175" 
-                    className="anthro-line stroke-[rgb(var(--secondary-accent))]" 
-                    strokeWidth="1.5" 
-                    opacity="0"
-                    animate={{
-                      y1: [175, 177, 175],
-                      y2: [175, 177, 175],
+                      opacity: [0.15, 0.2, 0.15],
                       transition: {
                         repeat: Infinity,
                         repeatType: "reverse",
@@ -244,14 +244,94 @@ const Hero = () => {
                     }}
                   />
                   
-                  <motion.line 
-                    x1="175" y1="220" x2="325" y2="220" 
-                    className="anthro-line stroke-[rgb(var(--primary-accent))]" 
-                    strokeWidth="1.5" 
+                  {/* Art representation - more visibility */}
+                  <motion.path 
+                    d="M200,200 C230,170 280,170 300,200 S330,260 250,260 S170,230 200,200 Z" 
+                    className="art-representation"
+                    fill="rgba(var(--tertiary-accent), 0.3)"
+                    stroke="rgba(var(--tertiary-accent), 0.5)"
+                    strokeWidth="1.5"
                     opacity="0"
                     animate={{
-                      y1: [220, 222, 220],
-                      y2: [220, 222, 220],
+                      d: [
+                        "M200,200 C230,170 280,170 300,200 S330,260 250,260 S170,230 200,200 Z",
+                        "M195,195 C225,165 285,165 305,195 S335,265 250,265 S165,225 195,195 Z",
+                        "M200,200 C230,170 280,170 300,200 S330,260 250,260 S170,230 200,200 Z"
+                      ],
+                      opacity: [0.3, 0.4, 0.3],
+                      transition: {
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        duration: 7,
+                        ease: "easeInOut"
+                      }
+                    }}
+                  />
+                  
+                  {/* Frame control circles - increased size */}
+                  <motion.circle 
+                    cx="250" cy="390" r="8" 
+                    className="control-dot"
+                    fill="rgba(var(--primary-accent), 0.7)"
+                    opacity="0"
+                    animate={{
+                      r: [8, 9, 8],
+                      opacity: [0.7, 0.9, 0.7],
+                      transition: {
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        duration: 2,
+                        ease: "easeInOut"
+                      }
+                    }}
+                  />
+                  
+                  <motion.circle 
+                    cx="220" cy="390" r="6" 
+                    className="control-dot"
+                    fill="rgba(var(--secondary-accent), 0.7)"
+                    opacity="0"
+                    animate={{
+                      r: [6, 7, 6],
+                      opacity: [0.7, 0.9, 0.7],
+                      transition: {
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        duration: 2.5,
+                        ease: "easeInOut",
+                        delay: 0.3
+                      }
+                    }}
+                  />
+                  
+                  <motion.circle 
+                    cx="280" cy="390" r="6" 
+                    className="control-dot"
+                    fill="rgba(var(--tertiary-accent), 0.7)"
+                    opacity="0"
+                    animate={{
+                      r: [6, 7, 6],
+                      opacity: [0.7, 0.9, 0.7],
+                      transition: {
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        duration: 3,
+                        ease: "easeInOut",
+                        delay: 0.6
+                      }
+                    }}
+                  />
+                  
+                  {/* Design elements */}
+                  <motion.line 
+                    x1="160" y1="200" x2="340" y2="200" 
+                    className="anthro-line"
+                    stroke="rgba(var(--primary-accent), 0.4)"
+                    strokeWidth="1.5"
+                    opacity="0"
+                    animate={{
+                      y1: [200, 202, 200],
+                      y2: [200, 202, 200],
                       transition: {
                         repeat: Infinity,
                         repeatType: "reverse",
@@ -262,138 +342,157 @@ const Hero = () => {
                   />
                   
                   <motion.line 
-                    x1="175" y1="265" x2="325" y2="265" 
-                    className="anthro-line stroke-[rgb(var(--tertiary-accent))]" 
-                    strokeWidth="1.5" 
+                    x1="160" y1="250" x2="340" y2="250" 
+                    className="anthro-line"
+                    stroke="rgba(var(--secondary-accent), 0.4)"
+                    strokeWidth="1.5"
                     opacity="0"
                     animate={{
-                      y1: [265, 263, 265],
-                      y2: [265, 263, 265],
+                      y1: [250, 248, 250],
+                      y2: [250, 248, 250],
                       transition: {
                         repeat: Infinity,
                         repeatType: "reverse",
-                        duration: 4,
+                        duration: 4.5,
                         ease: "easeInOut"
                       }
                     }}
                   />
                   
-                  {/* Aesthetics dots */}
-                  <motion.circle 
-                    cx="350" cy="150" r="5" 
-                    className="anthro-circle fill-[rgb(var(--primary-accent))]" 
+                  {/* Electric pulses */}
+                  <motion.path 
+                    d="M140,330 L160,330 L170,310 L180,350 L190,330 L210,330" 
+                    className="anthro-line"
+                    stroke="rgba(var(--primary-accent), 0.5)"
+                    strokeWidth="2"
+                    fill="none"
                     opacity="0"
                     animate={{
-                      r: [5, 6, 5],
+                      pathOffset: [0, 1],
                       transition: {
                         repeat: Infinity,
-                        repeatType: "reverse",
                         duration: 2,
-                        ease: "easeInOut"
+                        ease: "linear"
                       }
                     }}
                   />
                   
-                  <motion.circle 
-                    cx="350" cy="200" r="5" 
-                    className="anthro-circle fill-[rgb(var(--secondary-accent))]" 
+                  <motion.path 
+                    d="M290,330 L310,330 L320,310 L330,350 L340,330 L360,330" 
+                    className="anthro-line"
+                    stroke="rgba(var(--secondary-accent), 0.5)"
+                    strokeWidth="2"
+                    fill="none"
                     opacity="0"
                     animate={{
-                      r: [5, 6, 5],
+                      pathOffset: [0, 1],
                       transition: {
                         repeat: Infinity,
-                        repeatType: "reverse",
                         duration: 2,
-                        ease: "easeInOut",
+                        ease: "linear",
                         delay: 0.5
                       }
                     }}
                   />
                   
+                  {/* Corner dots */}
                   <motion.circle 
-                    cx="350" cy="250" r="5" 
-                    className="anthro-circle fill-[rgb(var(--tertiary-accent))]" 
+                    cx="150" cy="120" r="4" 
+                    className="anthro-circle"
+                    fill="rgba(var(--primary-accent), 0.8)"
                     opacity="0"
                     animate={{
-                      r: [5, 6, 5],
+                      r: [4, 5, 4],
+                      opacity: [0.8, 1, 0.8],
                       transition: {
                         repeat: Infinity,
                         repeatType: "reverse",
-                        duration: 2,
-                        ease: "easeInOut",
-                        delay: 1
-                      }
-                    }}
-                  />
-                  
-                  <motion.circle 
-                    cx="150" cy="150" r="5" 
-                    className="anthro-circle fill-[rgb(var(--secondary-accent))]" 
-                    opacity="0"
-                    animate={{
-                      r: [5, 6, 5],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 2,
-                        ease: "easeInOut",
-                        delay: 0.2
-                      }
-                    }}
-                  />
-                  
-                  <motion.circle 
-                    cx="150" cy="200" r="5" 
-                    className="anthro-circle fill-[rgb(var(--tertiary-accent))]" 
-                    opacity="0"
-                    animate={{
-                      r: [5, 6, 5],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 2,
-                        ease: "easeInOut",
-                        delay: 0.7
-                      }
-                    }}
-                  />
-                  
-                  <motion.circle 
-                    cx="150" cy="250" r="5" 
-                    className="anthro-circle fill-[rgb(var(--primary-accent))]" 
-                    opacity="0"
-                    animate={{
-                      r: [5, 6, 5],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 2,
-                        ease: "easeInOut",
-                        delay: 1.2
-                      }
-                    }}
-                  />
-                  
-                  {/* Abstract art representation */}
-                  <motion.path 
-                    d="M220,200 C240,180 260,180 280,200 S300,240 250,240 S200,220 220,200 Z" 
-                    className="anthro-blob fill-[rgba(var(--secondary-accent),0.2)]" 
-                    opacity="0"
-                    animate={{
-                      d: [
-                        "M220,200 C240,180 260,180 280,200 S300,240 250,240 S200,220 220,200 Z",
-                        "M215,205 C235,175 265,175 285,205 S305,245 250,245 S195,225 215,205 Z",
-                        "M220,200 C240,180 260,180 280,200 S300,240 250,240 S200,220 220,200 Z"
-                      ],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 6,
+                        duration: 1.5,
                         ease: "easeInOut"
                       }
                     }}
                   />
+                  
+                  <motion.circle 
+                    cx="350" cy="120" r="4" 
+                    className="anthro-circle"
+                    fill="rgba(var(--secondary-accent), 0.8)"
+                    opacity="0"
+                    animate={{
+                      r: [4, 5, 4],
+                      opacity: [0.8, 1, 0.8],
+                      transition: {
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        duration: 1.5,
+                        ease: "easeInOut",
+                        delay: 0.3
+                      }
+                    }}
+                  />
+                  
+                  <motion.circle 
+                    cx="150" cy="380" r="4" 
+                    className="anthro-circle"
+                    fill="rgba(var(--tertiary-accent), 0.8)"
+                    opacity="0"
+                    animate={{
+                      r: [4, 5, 4],
+                      opacity: [0.8, 1, 0.8],
+                      transition: {
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        duration: 1.5,
+                        ease: "easeInOut",
+                        delay: 0.6
+                      }
+                    }}
+                  />
+                  
+                  <motion.circle 
+                    cx="350" cy="380" r="4" 
+                    className="anthro-circle"
+                    fill="rgba(var(--primary-accent), 0.8)"
+                    opacity="0"
+                    animate={{
+                      r: [4, 5, 4],
+                      opacity: [0.8, 1, 0.8],
+                      transition: {
+                        repeat: Infinity,
+                        repeatType: "reverse",
+                        duration: 1.5,
+                        ease: "easeInOut",
+                        delay: 0.9
+                      }
+                    }}
+                  />
                 </svg>
+                
+                {/* Add subtle floating particles behind the frame */}
+                <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                  {Array.from({ length: 15 }).map((_, i) => (
+                    <motion.div
+                      key={i}
+                      className="absolute rounded-full bg-[rgba(var(--primary-accent),0.2)]"
+                      style={{
+                        width: `${Math.random() * 10 + 5}px`,
+                        height: `${Math.random() * 10 + 5}px`,
+                        left: `${Math.random() * 100}%`,
+                        top: `${Math.random() * 100}%`,
+                      }}
+                      animate={{
+                        y: [0, -20, 0],
+                        x: [0, Math.random() * 10 - 5, 0],
+                        opacity: [0.2, 0.5, 0.2],
+                      }}
+                      transition={{
+                        duration: Math.random() * 5 + 5,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
