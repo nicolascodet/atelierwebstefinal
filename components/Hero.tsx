@@ -1,3 +1,4 @@
+// This is a small change to trigger a new Vercel deployment
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
