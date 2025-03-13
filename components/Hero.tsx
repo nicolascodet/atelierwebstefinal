@@ -4,6 +4,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { motion, useAnimate } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface HeroProps {
   skipMobileAnimation?: boolean;
@@ -27,10 +28,10 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
     // Listen for resize events
     window.addEventListener('resize', checkMobile);
     
-    // Start animations after a short delay
+    // Start animations almost immediately
     const timer = setTimeout(() => {
       startAnimations();
-    }, 150);
+    }, 75); // Reduced from 150ms to 75ms
     
     return () => {
       window.removeEventListener('resize', checkMobile);
@@ -42,76 +43,69 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
     if (hasAnimated) return;
 
     if (isMobile && !skipMobileAnimation) {
-      // MOBILE ANIMATION SEQUENCE
+      // MOBILE ANIMATION SEQUENCE - GREATLY ACCELERATED
       
       // First, show only the logo
-      animate(".mobile-logo-container", { opacity: 1 }, { duration: 0.3 });
+      animate(".mobile-logo-container", { opacity: 1 }, { duration: 0.2 });
       
-      // Do the spin animation
+      // Do the spin animation - faster
       await animate(".logo-spin-container", {
         rotate: [0, 720],
         scale: [0.6, 0.9, 0.7],
       }, {
-        duration: 2.0,
+        duration: 1.0, // Reduced from 2.0 to 1.0
         ease: "easeOut",
       });
       
-      // Fade out the logo
+      // Fade out the logo faster
       await animate(".mobile-logo-container", { 
         opacity: 0,
         scale: 0.5
       }, { 
-        duration: 0.5,
+        duration: 0.3, // Reduced from 0.5 to 0.3
         ease: "easeOut" 
       });
       
-      // Show the content section
-      animate(".hero-heading", { opacity: 1 }, { duration: 0.5 });
+      // Show content immediately
+      animate([
+        [".hero-heading", { opacity: 1 }, { duration: 0.3 }],
+        [".hero-description", { opacity: 1, y: 0 }, { duration: 0.2 }],
+        ["#card-1", { opacity: 1, y: 0 }, { duration: 0.2 }],
+        ["#card-2", { opacity: 1, y: 0 }, { duration: 0.2 }],
+        [".video-section", { opacity: 1 }, { duration: 0.2 }],
+        [".video-link", { opacity: 1 }, { duration: 0.2 }]
+      ]);
       
-      // Start typing animation
+      // Type out text faster
       const targetText = "Introducing Atelier Frames.";
       const element = typingRef.current;
       if (element) {
         element.textContent = "";
-        // Make cursor visible
         animate("#cursor", { opacity: 1 }, { duration: 0.1 });
         
         for (let i = 0; i <= targetText.length; i++) {
           element.textContent = targetText.substring(0, i);
-          // Move cursor
-          animate("#cursor", { left: `${i * 0.6}em` }, { duration: 0.05 });
-          // Reduced timing for faster typing animation
-          await new Promise(resolve => setTimeout(resolve, 12));
+          animate("#cursor", { left: `${i * 0.6}em` }, { duration: 0.02 });
+          // Ultra fast typing (6ms per character)
+          await new Promise(resolve => setTimeout(resolve, 6));
         }
-        
-        // Move cursor to next line after typing is done
-        await new Promise(resolve => setTimeout(resolve, 25));
       }
       
-      // Fade in the tagline
-      await animate("#tagline", { opacity: [0, 1], y: [10, 0] }, { duration: 0.3 });
+      // Show tagline right after typing
+      animate("#tagline", { opacity: 1, y: 0 }, { duration: 0.2 });
       
-      // Animate the cool underline for "artificial intelligence"
+      // Animate underline faster
       animate(".ai-underline", { 
         pathLength: [0, 1],
         opacity: [0, 1]
       }, { 
-        duration: 0.4,
+        duration: 0.2, // Reduced from 0.4 to 0.2
         ease: "easeInOut"
       });
       
-      // Hide cursor when all text is done
-      await animate("#cursor", { opacity: 0 }, { duration: 0.3 });
+      // Hide cursor
+      animate("#cursor", { opacity: 0 }, { duration: 0.2 });
       
-      // Fade in description and cards
-      await animate(".hero-description", { opacity: [0, 1], y: [20, 0] }, { duration: 0.25 });
-      
-      // Fade in the cards one at a time
-      await animate("#card-1", { opacity: [0, 1], y: [20, 0] }, { duration: 0.25 });
-      await animate("#card-2", { opacity: [0, 1], y: [20, 0] }, { duration: 0.25 });
-      
-      // Fade in the video link
-      animate(".video-link", { opacity: [0, 1] }, { duration: 0.3 });
     } else {
       // Skip mobile animation if we've already done the entry animation
       if (isMobile && skipMobileAnimation) {
@@ -123,6 +117,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
           ["#card-1", { opacity: 1 }, { duration: 0 }],
           ["#card-2", { opacity: 1 }, { duration: 0 }],
           [".video-link", { opacity: 1 }, { duration: 0 }],
+          [".video-section", { opacity: 1 }, { duration: 0 }],
           [".right-illustration", { opacity: 1 }, { duration: 0 }],
           [".logo-container", { opacity: 1 }, { duration: 0 }],
           [".ai-underline", { pathLength: 1, opacity: 1 }, { duration: 0 }]
@@ -134,79 +129,98 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
           element.textContent = "Introducing Atelier Frames.";
         }
       } else {
-        // DESKTOP ANIMATION SEQUENCE (unchanged)
-        animate(".hero-heading", { opacity: 1 }, { duration: 0 });
-        animate(".right-illustration", { opacity: 1 }, { duration: 0 });
+        // DESKTOP ANIMATION SEQUENCE - ALSO ACCELERATED
+        // Load critical elements immediately
+        animate([
+          [".hero-heading", { opacity: 1 }, { duration: 0 }],
+          [".right-illustration", { opacity: 1 }, { duration: 0 }],
+          [".hero-description", { opacity: 1, y: 0 }, { duration: 0.2 }],
+          [".video-section", { opacity: 1 }, { duration: 0.3 }]
+        ]);
         
-        // Typing animation for "Introducing Atelier Frames"
+        // Typing animation for "Introducing Atelier Frames" - faster
         const targetText = "Introducing Atelier Frames.";
         const element = typingRef.current;
         if (element) {
           element.textContent = "";
-          // Make cursor visible
           animate("#cursor", { opacity: 1 }, { duration: 0.1 });
           
           for (let i = 0; i <= targetText.length; i++) {
             element.textContent = targetText.substring(0, i);
-            // Move cursor
-            animate("#cursor", { left: `${i * 0.6}em` }, { duration: 0.05 });
-            // Reduced timing for faster typing animation
-            await new Promise(resolve => setTimeout(resolve, 25));
+            animate("#cursor", { left: `${i * 0.6}em` }, { duration: 0.02 });
+            // Faster typing
+            await new Promise(resolve => setTimeout(resolve, 12)); // Reduced from 25ms to 12ms
           }
           
-          // Move cursor to next line after typing is done
-          await new Promise(resolve => setTimeout(resolve, 50));
+          await new Promise(resolve => setTimeout(resolve, 25)); // Reduced from 50ms to 25ms
         }
         
-        // Fade in the tagline
-        await animate("#tagline", { opacity: [0, 1], y: [10, 0] }, { duration: 0.4 });
+        // Fade in the tagline faster
+        await animate("#tagline", { opacity: [0, 1], y: [10, 0] }, { duration: 0.3 }); // Reduced from 0.4 to 0.3
         
-        // Animate the cool underline for "artificial intelligence"
+        // Animate the underline faster
         animate(".ai-underline", { 
           pathLength: [0, 1],
           opacity: [0, 1]
         }, { 
-          duration: 0.8,
+          duration: 0.4, // Reduced from 0.8 to 0.4
           ease: "easeInOut"
         });
         
-        // Hide cursor when all text is done
-        await animate("#cursor", { opacity: 0 }, { duration: 0.5 });
+        // Hide cursor
+        await animate("#cursor", { opacity: 0 }, { duration: 0.3 }); // Reduced from 0.5 to 0.3
         
-        // Make container visible first
-        animate(".logo-container", { opacity: 1 }, { duration: 0.3 });
+        // Make container visible
+        animate(".logo-container", { opacity: 1 }, { duration: 0.2 }); // Reduced from 0.3 to 0.2
         
-        // First, the initial spin animation of the logo
+        // Spin animation - faster
         await animate(".logo-spin-container", {
-          rotate: [0, 720], // Two full rotations
-          scale: [0.6, 1],  // Grow from smaller to normal size
+          rotate: [0, 720], 
+          scale: [0.6, 1],
         }, {
-          duration: 1.8,    // Duration of spin
-          ease: "easeOut",  // Start fast, then slow down
+          duration: 1.0, // Reduced from 1.8 to 1.0
+          ease: "easeOut",
         });
         
-        // Then add the glow and detailed animations
+        // Add glow and detailed animations
         animate([
-          [".logo-glow", { opacity: [0, 0.5] }, { duration: 0.8 }],
-          [".connector-line", { pathLength: [0, 1], opacity: [0, 1] }, { duration: 1 }],
+          [".logo-glow", { opacity: [0, 0.5] }, { duration: 0.4 }], // Reduced from 0.8 to 0.4
+          [".connector-line", { pathLength: [0, 1], opacity: [0, 1] }, { duration: 0.5 }], // Reduced from 1.0 to 0.5
         ]);
         
-        // Fade in description and cards
-        await animate(".hero-description", { opacity: [0, 1], y: [20, 0] }, { duration: 0.5 });
-        
-        // Fade in the cards
+        // Fade in cards faster
         animate([
-          ["#card-1", { opacity: [0, 1], y: [20, 0] }, { duration: 0.5 }],
-          ["#card-2", { opacity: [0, 1], y: [20, 0] }, { duration: 0.5, delay: 0.2 }],
+          ["#card-1", { opacity: [0, 1], y: [20, 0] }, { duration: 0.3 }], // Reduced from 0.5 to 0.3
+          ["#card-2", { opacity: [0, 1], y: [20, 0] }, { duration: 0.3, delay: 0.1 }], // Reduced delay from 0.2 to 0.1
         ]);
         
         // Fade in the video link
-        animate(".video-link", { opacity: [0, 1] }, { duration: 0.3 });
+        animate(".video-link", { opacity: [0, 1] }, { duration: 0.2 }); // Reduced from 0.3 to 0.2
       }
     }
     
     setHasAnimated(true);
   };
+
+  // Video section component
+  const VideoSection = () => (
+    <div className="video-section bg-white rounded-lg shadow-md overflow-hidden opacity-0">
+      <div className="relative pb-[56.25%] overflow-hidden">
+        <iframe 
+          src="https://www.youtube.com/embed/rFvrtf5wudE?rel=0&showinfo=0&autoplay=0" 
+          title="The Canvas by Atelier Frames"
+          className="absolute inset-0 w-full h-full"
+          frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        ></iframe>
+      </div>
+      <div className="p-4 border-t border-gray-100">
+        <h3 className="font-medium text-lg mb-1">Watch: The Canvas in Action</h3>
+        <p className="text-sm text-gray-600">See how our AI-powered frame transforms spaces and brings art to life</p>
+      </div>
+    </div>
+  );
 
   return (
     <div ref={scope} className="relative overflow-hidden bg-[rgb(var(--background-rgb))] py-10 md:py-16">
@@ -266,7 +280,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
                     opacity: [0, 0.7, 0],
                   }}
                   transition={{
-                    duration: 2.0,
+                    duration: 1.0, // Reduced from 2.0 to 1.0 to match new spin duration
                     ease: "easeOut"
                   }}
                 >
@@ -290,9 +304,10 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
       
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="max-w-screen-xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+          {/* Desktop layout: Content + Logo + Video in a 3-column grid */}
+          <div className="hidden lg:grid lg:grid-cols-12 lg:gap-8 lg:items-start">
             {/* Left side - Content */}
-            <div>
+            <div className="lg:col-span-6">
               <div className="space-y-6">
                 {/* Main heading with typing effect */}
                 <h1 className="hero-heading text-4xl sm:text-5xl font-bold text-[rgb(var(--text-primary))] opacity-0">
@@ -386,9 +401,9 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
               </div>
             </div>
 
-            {/* Right side - EXACT Logo Recreation with breathing effect (DESKTOP ONLY) */}
-            <div className="right-illustration hidden lg:flex items-center justify-center opacity-0">
-              <div className="logo-container relative w-full max-w-[400px] h-[400px] opacity-0">
+            {/* Middle - Logo (desktop) */}
+            <div className="right-illustration lg:col-span-3 hidden lg:flex items-center justify-center opacity-0">
+              <div className="logo-container relative w-full max-w-[280px] h-[280px] opacity-0">
                 {/* Cream background to match the logo's background */}
                 <div className="absolute inset-0 rounded-full bg-[#FFF8E1] opacity-40"></div>
                 
@@ -425,7 +440,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
                           repeatType: "reverse",
                           duration: 3,
                           ease: "easeInOut",
-                          delay: 1.8 // Start after spin completes
+                          delay: 1.0 // Adjusted for faster initial animation
                         }
                       }}
                     />
@@ -445,7 +460,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
                           repeatType: "reverse",
                           duration: 3.5,
                           ease: "easeInOut",
-                          delay: 2.0 // Start after spin with stagger
+                          delay: 1.1 // Adjusted for faster initial animation
                         }
                       }}
                     />
@@ -465,7 +480,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
                           repeatType: "reverse",
                           duration: 3.2,
                           ease: "easeInOut",
-                          delay: 2.2 // Start after spin with stagger
+                          delay: 1.2 // Adjusted for faster initial animation
                         }
                       }}
                     />
@@ -485,7 +500,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
                           repeatType: "reverse",
                           duration: 4,
                           ease: "easeInOut",
-                          delay: 1.8 // Start after spin completes
+                          delay: 1.0 // Adjusted for faster initial animation
                         }
                       }}
                     />
@@ -504,7 +519,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
                           repeatType: "reverse",
                           duration: 4.3,
                           ease: "easeInOut",
-                          delay: 1.9 // Start after spin with stagger
+                          delay: 1.1 // Adjusted for faster initial animation
                         }
                       }}
                     />
@@ -523,7 +538,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
                           repeatType: "reverse",
                           duration: 4.6,
                           ease: "easeInOut",
-                          delay: 2.0 // Start after spin with stagger
+                          delay: 1.2 // Adjusted for faster initial animation
                         }
                       }}
                     />
@@ -540,7 +555,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
                           repeatType: "reverse",
                           duration: 3,
                           ease: "easeInOut",
-                          delay: 1.8 // Start breathing after spin
+                          delay: 1.0 // Adjusted for faster initial animation
                         }
                       }}
                     />
@@ -556,7 +571,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
                           repeatType: "reverse",
                           duration: 3.3,
                           ease: "easeInOut",
-                          delay: 2.0 // Start breathing after spin
+                          delay: 1.1 // Adjusted for faster initial animation
                         }
                       }}
                     />
@@ -572,7 +587,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
                           repeatType: "reverse",
                           duration: 3.6,
                           ease: "easeInOut",
-                          delay: 2.2 // Start breathing after spin
+                          delay: 1.2 // Adjusted for faster initial animation
                         }
                       }}
                     />
@@ -584,7 +599,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
                         opacity: [0, 0.7, 0],
                       }}
                       transition={{
-                        duration: 1.8,
+                        duration: 1.0, // Reduced from 1.8 to 1.0
                         ease: "easeOut"
                       }}
                     >
@@ -603,6 +618,115 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
                   </svg>
                 </div>
               </div>
+            </div>
+
+            {/* Right side - Video (desktop) */}
+            <div className="lg:col-span-3 hidden lg:block pt-10">
+              <VideoSection />
+            </div>
+          </div>
+
+          {/* Mobile layout: Stacked content and video */}
+          <div className="grid grid-cols-1 gap-8 lg:hidden">
+            {/* Content */}
+            <div>
+              <div className="space-y-6">
+                {/* Main heading with typing effect */}
+                <h1 className="hero-heading text-4xl sm:text-5xl font-bold text-[rgb(var(--text-primary))] opacity-0">
+                  <div className="relative">
+                    <span className="text-[rgb(var(--primary-accent))]" ref={typingRef}></span>
+                    <span id="cursor" className="absolute h-[1.2em] w-[2px] bg-black opacity-0"></span>
+                  </div>
+                  
+                  <div id="tagline" className="mt-4 text-2xl sm:text-3xl font-medium text-[rgb(var(--text-secondary))] opacity-0">
+                    Your walls, reimagined by <span className="relative">
+                      artificial intelligence
+                      <svg 
+                        className="absolute left-0 -bottom-1 w-full" 
+                        height="12" 
+                        viewBox="0 0 200 12" 
+                        preserveAspectRatio="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <motion.path
+                          className="ai-underline"
+                          d="M0,3 C50,10 150,0 200,5"
+                          stroke="rgba(var(--tertiary-accent), 0.8)"
+                          strokeWidth="3"
+                          strokeLinecap="round"
+                          fill="none"
+                          initial={{ pathLength: 0, opacity: 0 }}
+                        />
+                        <motion.path
+                          className="ai-underline"
+                          d="M0,8 C75,4 125,12 200,8"
+                          stroke="rgba(var(--primary-accent), 0.5)"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          fill="none"
+                          initial={{ pathLength: 0, opacity: 0 }}
+                          style={{ pathOffset: 0.1 }}
+                        />
+                      </svg>
+                    </span>
+                  </div>
+                </h1>
+
+                <p className="hero-description text-lg text-[rgb(var(--text-secondary))] opacity-0">
+                  The Canvas by Atelier Frames is the first digital picture frame with built-in AI, 
+                  bringing your spaces to life with art that adapts to your style and environment.
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-10">
+                  {/* First Card */}
+                  <div id="card-1" className="anthro-card p-6 opacity-0">
+                    <div className="space-y-4">
+                      <div className="inline-flex items-center rounded-full bg-[rgba(var(--primary-accent),0.1)] border border-[rgba(var(--primary-accent),0.2)] px-3 py-1">
+                        <span className="text-xs font-medium text-[rgb(var(--primary-accent))] uppercase tracking-wider">INNOVATION</span>
+                      </div>
+                      <h2 className="title-sm">AI-Powered Art</h2>
+                      <p className="body">Experience intelligent art generation that evolves based on your preferences and environment.</p>
+                      <Link href="#features" className="btn btn-primary mt-4 inline-block">
+                        Learn more
+                      </Link>
+                    </div>
+                  </div>
+
+                  {/* Second Card */}
+                  <div id="card-2" className="anthro-card p-6 opacity-0">
+                    <div className="space-y-4">
+                      <div className="inline-flex items-center rounded-full bg-[rgba(var(--secondary-accent),0.1)] border border-[rgba(var(--secondary-accent),0.2)] px-3 py-1">
+                        <span className="text-xs font-medium text-[rgb(var(--secondary-accent))] uppercase tracking-wider">CRAFTSMANSHIP</span>
+                      </div>
+                      <h2 className="title-sm">Premium Design</h2>
+                      <p className="body">Elegant handcrafted frames that blend traditional craftsmanship with cutting-edge technology.</p>
+                      <Link href="#ai-art-demo" className="btn btn-primary mt-4 inline-block">
+                        Try demo
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Mobile Video Section */}
+            <div className="mt-4">
+              <VideoSection />
+            </div>
+            
+            {/* Video link (optional on mobile since we have a full video section) */}
+            <div className="flex items-center mt-4">
+              <a 
+                href="https://www.kickstarter.com/projects/nicolascodet/the-canvas-by-atelier-frames" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="video-link text-tertiary flex items-center hover:text-secondary transition-colors duration-300 opacity-0"
+              >
+                <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
+                </svg>
+                <span>Learn more on Kickstarter</span>
+              </a>
             </div>
           </div>
         </div>
