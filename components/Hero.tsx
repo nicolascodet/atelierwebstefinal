@@ -40,6 +40,36 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
     };
   }, []);
 
+  // Add custom CSS for button styling to match logo green
+  useEffect(() => {
+    // Add custom styles to override button colors site-wide
+    const style = document.createElement('style');
+    style.innerHTML = `
+      .btn-primary {
+        background-color: #5D7A61 !important;
+        border-color: #5D7A61 !important;
+      }
+      .btn-primary:hover {
+        background-color: #4D6A51 !important;
+        border-color: #4D6A51 !important;
+      }
+      .video-btn {
+        background-color: #5D7A61;
+        border: none;
+        color: white;
+        transition: background-color 0.3s;
+      }
+      .video-btn:hover {
+        background-color: #4D6A51;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
   const startAnimations = async () => {
     if (hasAnimated) return;
 
@@ -204,38 +234,24 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
     setHasAnimated(true);
   };
 
-  // Mobile video section component - with clickable thumbnail
-  const MobileVideoSection = () => (
-    <div className="mobile-video-container w-full opacity-0">
-      {!showVideo ? (
-        <div 
-          className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer relative"
-          onClick={() => setShowVideo(true)}
-        >
-          <div className="relative pb-[56.25%] overflow-hidden">
-            <img 
-              src="https://img.youtube.com/vi/m6GNAmyvLVc/maxresdefault.jpg" 
-              alt="Video Thumbnail" 
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-16 h-16 bg-white bg-opacity-80 rounded-full flex items-center justify-center">
-                <svg className="w-8 h-8 text-red-600" fill="currentColor" viewBox="0 0 24 24">
-                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
-                </svg>
-              </div>
-            </div>
-          </div>
-          <div className="p-4 border-t border-gray-100">
-            <h3 className="font-medium text-lg mb-1">Watch: The Canvas in Action</h3>
-            <p className="text-sm text-gray-600">See how our AI-powered frame transforms spaces and brings art to life</p>
-          </div>
-        </div>
-      ) : (
+  // Completely revised video implementation for more reliable playback
+  const VideoComponent = ({ isMobile = false }) => {
+    const containerClass = isMobile 
+      ? "mobile-video-container w-full opacity-0" 
+      : "desktop-video-container w-full opacity-0 rounded-lg overflow-hidden";
+      
+    const handleOpenVideo = () => {
+      // Open the video in a new tab if having issues with embedding
+      window.open('https://www.youtube.com/watch?v=m6GNAmyvLVc', '_blank');
+    };
+    
+    return (
+      <div className={containerClass}>
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          {/* Static YouTube embed - more reliable than dynamic loading */}
           <div className="relative pb-[56.25%] overflow-hidden">
             <iframe 
-              src="https://www.youtube.com/embed/m6GNAmyvLVc?rel=0&showinfo=0&autoplay=1" 
+              src="https://www.youtube.com/embed/m6GNAmyvLVc?rel=0&showinfo=0" 
               title="The Canvas by Atelier Frames"
               className="absolute inset-0 w-full h-full"
               frameBorder="0"
@@ -243,26 +259,22 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
               allowFullScreen
             ></iframe>
           </div>
+          
+          {/* Fallback if iframe doesn't load */}
+          <div className="p-4 border-t border-gray-100">
+            <h3 className="font-medium text-lg mb-1">Watch: The Canvas in Action</h3>
+            <p className="text-sm text-gray-600 mb-2">See how our AI-powered frame transforms spaces and brings art to life</p>
+            <button 
+              onClick={handleOpenVideo}
+              className="video-btn py-2 px-4 rounded font-medium text-sm"
+            >
+              Open in YouTube
+            </button>
+          </div>
         </div>
-      )}
-    </div>
-  );
-
-  // Desktop video section component
-  const DesktopVideoSection = () => (
-    <div className="desktop-video-container w-full opacity-0 rounded-lg overflow-hidden shadow-md">
-      <div className="relative pb-[56.25%] overflow-hidden">
-        <iframe 
-          src="https://www.youtube.com/embed/m6GNAmyvLVc?rel=0&showinfo=0" 
-          title="The Canvas by Atelier Frames"
-          className="absolute inset-0 w-full h-full"
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        ></iframe>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div ref={scope} className="relative overflow-hidden bg-[rgb(var(--background-rgb))] py-10 md:py-16">
@@ -443,7 +455,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
 
                 {/* Desktop video below content on left side */}
                 <div className="hidden lg:block mt-8">
-                  <DesktopVideoSection />
+                  <VideoComponent isMobile={false} />
                 </div>
               </div>
             </div>
@@ -670,7 +682,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
 
           {/* Mobile Video Section - Prominent outside the grid */}
           <div className="mt-8 lg:hidden">
-            <MobileVideoSection />
+            <VideoComponent isMobile={true} />
           </div>
           
           {/* Mobile Kickstarter link below video */}
@@ -679,7 +691,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
               href="https://www.kickstarter.com/projects/nicolascodet/the-canvas-by-atelier-frames" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="inline-block py-2 px-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-md font-medium hover:from-blue-600 hover:to-purple-700 transition-colors"
+              className="inline-block py-2 px-6 bg-[#5D7A61] hover:bg-[#4D6A51] text-white rounded-md font-medium transition-colors duration-300"
             >
               Back on Kickstarter
             </a>
