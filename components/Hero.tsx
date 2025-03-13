@@ -263,11 +263,14 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
           {/* Fallback if iframe doesn't load */}
           <div className="p-4 border-t border-gray-100">
             <h3 className="font-medium text-lg mb-1">Watch: The Canvas in Action</h3>
-            <p className="text-sm text-gray-600 mb-2">See how our AI-powered frame transforms spaces and brings art to life</p>
+            <p className="text-sm text-gray-600 mb-3">See how our AI-powered frame transforms spaces and brings art to life</p>
             <button 
               onClick={handleOpenVideo}
-              className="video-btn py-2 px-4 rounded font-medium text-sm"
+              className="video-btn py-2 px-4 rounded flex items-center justify-center gap-2 w-full sm:w-auto font-medium text-sm"
             >
+              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"></path>
+              </svg>
               Open in YouTube
             </button>
           </div>
