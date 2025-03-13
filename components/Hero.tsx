@@ -14,6 +14,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
   const [scope, animate] = useAnimate();
   const [hasAnimated, setHasAnimated] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
   const typingRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
@@ -86,8 +87,8 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
         for (let i = 0; i <= targetText.length; i++) {
           element.textContent = targetText.substring(0, i);
           animate("#cursor", { left: `${i * 0.6}em` }, { duration: 0.02 });
-          // Ultra fast typing (6ms per character)
-          await new Promise(resolve => setTimeout(resolve, 6));
+          // Slowed down typing from 6ms to 12ms per character (2x slower)
+          await new Promise(resolve => setTimeout(resolve, 12));
         }
       }
       
@@ -139,7 +140,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
           [".desktop-video-container", { opacity: 1 }, { duration: 0.3 }]
         ]);
         
-        // Typing animation for "Introducing Atelier Frames" - faster
+        // Typing animation for "Introducing Atelier Frames" - slower
         const targetText = "Introducing Atelier Frames.";
         const element = typingRef.current;
         if (element) {
@@ -149,8 +150,8 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
           for (let i = 0; i <= targetText.length; i++) {
             element.textContent = targetText.substring(0, i);
             animate("#cursor", { left: `${i * 0.6}em` }, { duration: 0.02 });
-            // Faster typing
-            await new Promise(resolve => setTimeout(resolve, 12)); // Reduced from 25ms to 12ms
+            // Slowed down typing from 12ms to 24ms per character (2x slower)
+            await new Promise(resolve => setTimeout(resolve, 24));
           }
           
           await new Promise(resolve => setTimeout(resolve, 25)); // Reduced from 50ms to 25ms
@@ -203,25 +204,47 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
     setHasAnimated(true);
   };
 
-  // Mobile video section component - bigger and more noticeable
+  // Mobile video section component - with clickable thumbnail
   const MobileVideoSection = () => (
     <div className="mobile-video-container w-full opacity-0">
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
-        <div className="relative pb-[56.25%] overflow-hidden">
-          <iframe 
-            src="https://www.youtube.com/embed/rFvrtf5wudE?rel=0&showinfo=0&mute=0&autoplay=1" 
-            title="The Canvas by Atelier Frames"
-            className="absolute inset-0 w-full h-full"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
+      {!showVideo ? (
+        <div 
+          className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer relative"
+          onClick={() => setShowVideo(true)}
+        >
+          <div className="relative pb-[56.25%] overflow-hidden">
+            <img 
+              src="https://img.youtube.com/vi/rFvrtf5wudE/maxresdefault.jpg" 
+              alt="Video Thumbnail" 
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-16 h-16 bg-white bg-opacity-80 rounded-full flex items-center justify-center">
+                <svg className="w-8 h-8 text-red-600" fill="currentColor" viewBox="0 0 24 24">
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div className="p-4 border-t border-gray-100">
+            <h3 className="font-medium text-lg mb-1">Watch: The Canvas in Action</h3>
+            <p className="text-sm text-gray-600">See how our AI-powered frame transforms spaces and brings art to life</p>
+          </div>
         </div>
-        <div className="p-4 border-t border-gray-100">
-          <h3 className="font-medium text-lg mb-1">Watch: The Canvas in Action</h3>
-          <p className="text-sm text-gray-600">See how our AI-powered frame transforms spaces and brings art to life</p>
+      ) : (
+        <div className="bg-white rounded-lg shadow-md overflow-hidden">
+          <div className="relative pb-[56.25%] overflow-hidden">
+            <iframe 
+              src="https://www.youtube.com/embed/rFvrtf5wudE?rel=0&showinfo=0&autoplay=1" 
+              title="The Canvas by Atelier Frames"
+              className="absolute inset-0 w-full h-full"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            ></iframe>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 
