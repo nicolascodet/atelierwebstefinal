@@ -30,7 +30,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
     // Start animations after a short delay
     const timer = setTimeout(() => {
       startAnimations();
-    }, 300);
+    }, 150);
     
     return () => {
       window.removeEventListener('resize', checkMobile);
@@ -81,34 +81,34 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
           // Move cursor
           animate("#cursor", { left: `${i * 0.6}em` }, { duration: 0.05 });
           // Reduced timing for faster typing animation
-          await new Promise(resolve => setTimeout(resolve, 25));
+          await new Promise(resolve => setTimeout(resolve, 12));
         }
         
         // Move cursor to next line after typing is done
-        await new Promise(resolve => setTimeout(resolve, 50));
+        await new Promise(resolve => setTimeout(resolve, 25));
       }
       
       // Fade in the tagline
-      await animate("#tagline", { opacity: [0, 1], y: [10, 0] }, { duration: 0.4 });
+      await animate("#tagline", { opacity: [0, 1], y: [10, 0] }, { duration: 0.3 });
       
       // Animate the cool underline for "artificial intelligence"
       animate(".ai-underline", { 
         pathLength: [0, 1],
         opacity: [0, 1]
       }, { 
-        duration: 0.8,
+        duration: 0.4,
         ease: "easeInOut"
       });
       
       // Hide cursor when all text is done
-      await animate("#cursor", { opacity: 0 }, { duration: 0.5 });
+      await animate("#cursor", { opacity: 0 }, { duration: 0.3 });
       
       // Fade in description and cards
-      await animate(".hero-description", { opacity: [0, 1], y: [20, 0] }, { duration: 0.5 });
+      await animate(".hero-description", { opacity: [0, 1], y: [20, 0] }, { duration: 0.25 });
       
       // Fade in the cards one at a time
-      await animate("#card-1", { opacity: [0, 1], y: [20, 0] }, { duration: 0.5 });
-      await animate("#card-2", { opacity: [0, 1], y: [20, 0] }, { duration: 0.5 });
+      await animate("#card-1", { opacity: [0, 1], y: [20, 0] }, { duration: 0.25 });
+      await animate("#card-2", { opacity: [0, 1], y: [20, 0] }, { duration: 0.25 });
       
       // Fade in the video link
       animate(".video-link", { opacity: [0, 1] }, { duration: 0.3 });
@@ -363,7 +363,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
                       </div>
                       <h2 className="title-sm">Premium Design</h2>
                       <p className="body">Elegant handcrafted frames that blend traditional craftsmanship with cutting-edge technology.</p>
-                      <Link href="#ai-art-demo" className="btn btn-secondary mt-4 inline-block">
+                      <Link href="#ai-art-demo" className="btn btn-primary mt-4 inline-block">
                         Try demo
                       </Link>
                     </div>
