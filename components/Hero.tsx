@@ -226,8 +226,11 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
           ["#card-2", { opacity: [0, 1], y: [20, 0] }, { duration: 0.3, delay: 0.1 }], // Reduced delay from 0.2 to 0.1
         ]);
         
-        // Fade in the video link
-        animate(".video-link", { opacity: [0, 1] }, { duration: 0.2 }); // Reduced from 0.3 to 0.2
+        // Fade in the video link and desktop video
+        animate([
+          [".video-link", { opacity: [0, 1] }, { duration: 0.2 }],
+          [".desktop-video-container", { opacity: [0, 1] }, { duration: 0.3, delay: 0.2 }]
+        ]);
       }
     }
     
@@ -455,17 +458,12 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
                     <span>Watch our video</span>
                   </a>
                 </div>
-
-                {/* Desktop video below content on left side */}
-                <div className="hidden lg:block mt-8">
-                  <VideoComponent isMobile={false} />
-                </div>
               </div>
             </div>
 
-            {/* Right side - Logo (back to original position) */}
+            {/* Right side - Logo (back to original position, properly centered) */}
             <div className="right-illustration hidden lg:flex items-center justify-center opacity-0">
-              <div className="logo-container relative w-full max-w-[400px] h-[400px] opacity-0">
+              <div className="logo-container relative w-full max-w-[400px] mx-auto h-[400px] opacity-0">
                 {/* Cream background to match the logo's background */}
                 <div className="absolute inset-0 rounded-full bg-[#FFF8E1] opacity-40"></div>
                 
@@ -680,6 +678,13 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
                   </svg>
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Desktop Video Section - Full width below the grid on desktop */}
+          <div className="hidden lg:block mt-16">
+            <div className="max-w-3xl mx-auto">
+              <VideoComponent isMobile={false} />
             </div>
           </div>
 
