@@ -72,7 +72,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
         [".hero-description", { opacity: 1, y: 0 }, { duration: 0.2 }],
         ["#card-1", { opacity: 1, y: 0 }, { duration: 0.2 }],
         ["#card-2", { opacity: 1, y: 0 }, { duration: 0.2 }],
-        [".video-section", { opacity: 1 }, { duration: 0.2 }],
+        [".mobile-video-container", { opacity: 1 }, { duration: 0.2 }],
         [".video-link", { opacity: 1 }, { duration: 0.2 }]
       ]);
       
@@ -117,7 +117,8 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
           ["#card-1", { opacity: 1 }, { duration: 0 }],
           ["#card-2", { opacity: 1 }, { duration: 0 }],
           [".video-link", { opacity: 1 }, { duration: 0 }],
-          [".video-section", { opacity: 1 }, { duration: 0 }],
+          [".mobile-video-container", { opacity: 1 }, { duration: 0 }],
+          [".desktop-video-container", { opacity: 1 }, { duration: 0 }],
           [".right-illustration", { opacity: 1 }, { duration: 0 }],
           [".logo-container", { opacity: 1 }, { duration: 0 }],
           [".ai-underline", { pathLength: 1, opacity: 1 }, { duration: 0 }]
@@ -135,7 +136,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
           [".hero-heading", { opacity: 1 }, { duration: 0 }],
           [".right-illustration", { opacity: 1 }, { duration: 0 }],
           [".hero-description", { opacity: 1, y: 0 }, { duration: 0.2 }],
-          [".video-section", { opacity: 1 }, { duration: 0.3 }]
+          [".desktop-video-container", { opacity: 1 }, { duration: 0.3 }]
         ]);
         
         // Typing animation for "Introducing Atelier Frames" - faster
@@ -202,22 +203,40 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
     setHasAnimated(true);
   };
 
-  // Video section component
-  const VideoSection = () => (
-    <div className="video-section bg-white rounded-lg shadow-md overflow-hidden opacity-0">
+  // Mobile video section component - bigger and more noticeable
+  const MobileVideoSection = () => (
+    <div className="mobile-video-container w-full opacity-0">
+      <div className="bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="relative pb-[56.25%] overflow-hidden">
+          <iframe 
+            src="https://www.youtube.com/embed/rFvrtf5wudE?rel=0&showinfo=0&mute=0&autoplay=1" 
+            title="The Canvas by Atelier Frames"
+            className="absolute inset-0 w-full h-full"
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          ></iframe>
+        </div>
+        <div className="p-4 border-t border-gray-100">
+          <h3 className="font-medium text-lg mb-1">Watch: The Canvas in Action</h3>
+          <p className="text-sm text-gray-600">See how our AI-powered frame transforms spaces and brings art to life</p>
+        </div>
+      </div>
+    </div>
+  );
+
+  // Desktop video section component
+  const DesktopVideoSection = () => (
+    <div className="desktop-video-container w-full opacity-0 rounded-lg overflow-hidden shadow-md">
       <div className="relative pb-[56.25%] overflow-hidden">
         <iframe 
-          src="https://www.youtube.com/embed/rFvrtf5wudE?rel=0&showinfo=0&autoplay=0" 
+          src="https://www.youtube.com/embed/rFvrtf5wudE?rel=0&showinfo=0" 
           title="The Canvas by Atelier Frames"
           className="absolute inset-0 w-full h-full"
           frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
         ></iframe>
-      </div>
-      <div className="p-4 border-t border-gray-100">
-        <h3 className="font-medium text-lg mb-1">Watch: The Canvas in Action</h3>
-        <p className="text-sm text-gray-600">See how our AI-powered frame transforms spaces and brings art to life</p>
       </div>
     </div>
   );
@@ -304,10 +323,10 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
       
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="max-w-screen-xl mx-auto">
-          {/* Desktop layout: Content + Logo + Video in a 3-column grid */}
-          <div className="hidden lg:grid lg:grid-cols-12 lg:gap-8 lg:items-start">
+          {/* DESKTOP LAYOUT - Back to original 2-column grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             {/* Left side - Content */}
-            <div className="lg:col-span-6">
+            <div>
               <div className="space-y-6">
                 {/* Main heading with typing effect */}
                 <h1 className="hero-heading text-4xl sm:text-5xl font-bold text-[rgb(var(--text-primary))] opacity-0">
@@ -398,12 +417,17 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
                     <span>Watch our video</span>
                   </a>
                 </div>
+
+                {/* Desktop video below content on left side */}
+                <div className="hidden lg:block mt-8">
+                  <DesktopVideoSection />
+                </div>
               </div>
             </div>
 
-            {/* Middle - Logo (desktop) */}
-            <div className="right-illustration lg:col-span-3 hidden lg:flex items-center justify-center opacity-0">
-              <div className="logo-container relative w-full max-w-[280px] h-[280px] opacity-0">
+            {/* Right side - Logo (back to original position) */}
+            <div className="right-illustration hidden lg:flex items-center justify-center opacity-0">
+              <div className="logo-container relative w-full max-w-[400px] h-[400px] opacity-0">
                 {/* Cream background to match the logo's background */}
                 <div className="absolute inset-0 rounded-full bg-[#FFF8E1] opacity-40"></div>
                 
@@ -619,115 +643,23 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
                 </div>
               </div>
             </div>
-
-            {/* Right side - Video (desktop) */}
-            <div className="lg:col-span-3 hidden lg:block pt-10">
-              <VideoSection />
-            </div>
           </div>
 
-          {/* Mobile layout: Stacked content and video */}
-          <div className="grid grid-cols-1 gap-8 lg:hidden">
-            {/* Content */}
-            <div>
-              <div className="space-y-6">
-                {/* Main heading with typing effect */}
-                <h1 className="hero-heading text-4xl sm:text-5xl font-bold text-[rgb(var(--text-primary))] opacity-0">
-                  <div className="relative">
-                    <span className="text-[rgb(var(--primary-accent))]" ref={typingRef}></span>
-                    <span id="cursor" className="absolute h-[1.2em] w-[2px] bg-black opacity-0"></span>
-                  </div>
-                  
-                  <div id="tagline" className="mt-4 text-2xl sm:text-3xl font-medium text-[rgb(var(--text-secondary))] opacity-0">
-                    Your walls, reimagined by <span className="relative">
-                      artificial intelligence
-                      <svg 
-                        className="absolute left-0 -bottom-1 w-full" 
-                        height="12" 
-                        viewBox="0 0 200 12" 
-                        preserveAspectRatio="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <motion.path
-                          className="ai-underline"
-                          d="M0,3 C50,10 150,0 200,5"
-                          stroke="rgba(var(--tertiary-accent), 0.8)"
-                          strokeWidth="3"
-                          strokeLinecap="round"
-                          fill="none"
-                          initial={{ pathLength: 0, opacity: 0 }}
-                        />
-                        <motion.path
-                          className="ai-underline"
-                          d="M0,8 C75,4 125,12 200,8"
-                          stroke="rgba(var(--primary-accent), 0.5)"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          fill="none"
-                          initial={{ pathLength: 0, opacity: 0 }}
-                          style={{ pathOffset: 0.1 }}
-                        />
-                      </svg>
-                    </span>
-                  </div>
-                </h1>
-
-                <p className="hero-description text-lg text-[rgb(var(--text-secondary))] opacity-0">
-                  The Canvas by Atelier Frames is the first digital picture frame with built-in AI, 
-                  bringing your spaces to life with art that adapts to your style and environment.
-                </p>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-10">
-                  {/* First Card */}
-                  <div id="card-1" className="anthro-card p-6 opacity-0">
-                    <div className="space-y-4">
-                      <div className="inline-flex items-center rounded-full bg-[rgba(var(--primary-accent),0.1)] border border-[rgba(var(--primary-accent),0.2)] px-3 py-1">
-                        <span className="text-xs font-medium text-[rgb(var(--primary-accent))] uppercase tracking-wider">INNOVATION</span>
-                      </div>
-                      <h2 className="title-sm">AI-Powered Art</h2>
-                      <p className="body">Experience intelligent art generation that evolves based on your preferences and environment.</p>
-                      <Link href="#features" className="btn btn-primary mt-4 inline-block">
-                        Learn more
-                      </Link>
-                    </div>
-                  </div>
-
-                  {/* Second Card */}
-                  <div id="card-2" className="anthro-card p-6 opacity-0">
-                    <div className="space-y-4">
-                      <div className="inline-flex items-center rounded-full bg-[rgba(var(--secondary-accent),0.1)] border border-[rgba(var(--secondary-accent),0.2)] px-3 py-1">
-                        <span className="text-xs font-medium text-[rgb(var(--secondary-accent))] uppercase tracking-wider">CRAFTSMANSHIP</span>
-                      </div>
-                      <h2 className="title-sm">Premium Design</h2>
-                      <p className="body">Elegant handcrafted frames that blend traditional craftsmanship with cutting-edge technology.</p>
-                      <Link href="#ai-art-demo" className="btn btn-primary mt-4 inline-block">
-                        Try demo
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Mobile Video Section */}
-            <div className="mt-4">
-              <VideoSection />
-            </div>
-            
-            {/* Video link (optional on mobile since we have a full video section) */}
-            <div className="flex items-center mt-4">
-              <a 
-                href="https://www.kickstarter.com/projects/nicolascodet/the-canvas-by-atelier-frames" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="video-link text-tertiary flex items-center hover:text-secondary transition-colors duration-300 opacity-0"
-              >
-                <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
-                </svg>
-                <span>Learn more on Kickstarter</span>
-              </a>
-            </div>
+          {/* Mobile Video Section - Prominent outside the grid */}
+          <div className="mt-8 lg:hidden">
+            <MobileVideoSection />
+          </div>
+          
+          {/* Mobile Kickstarter link below video */}
+          <div className="flex items-center justify-center mt-4 lg:hidden">
+            <a 
+              href="https://www.kickstarter.com/projects/nicolascodet/the-canvas-by-atelier-frames" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-block py-2 px-6 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-md font-medium hover:from-blue-600 hover:to-purple-700 transition-colors"
+            >
+              Back on Kickstarter
+            </a>
           </div>
         </div>
       </div>
