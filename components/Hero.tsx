@@ -97,13 +97,12 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
         ease: "easeOut" 
       });
       
-      // Show content immediately
+      // Show content immediately - Make sure mobile video is immediately visible by not including it here
       animate([
         [".hero-heading", { opacity: 1 }, { duration: 0.3 }],
         [".hero-description", { opacity: 1, y: 0 }, { duration: 0.2 }],
         ["#card-1", { opacity: 1, y: 0 }, { duration: 0.2 }],
         ["#card-2", { opacity: 1, y: 0 }, { duration: 0.2 }],
-        [".mobile-video-container", { opacity: 1 }, { duration: 0.2 }],
         [".video-link", { opacity: 1 }, { duration: 0.2 }]
       ]);
       
@@ -148,7 +147,6 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
           ["#card-1", { opacity: 1 }, { duration: 0 }],
           ["#card-2", { opacity: 1 }, { duration: 0 }],
           [".video-link", { opacity: 1 }, { duration: 0 }],
-          [".mobile-video-container", { opacity: 1 }, { duration: 0 }],
           [".desktop-video-container", { opacity: 1 }, { duration: 0 }],
           [".right-illustration", { opacity: 1 }, { duration: 0 }],
           [".logo-container", { opacity: 1 }, { duration: 0 }],
@@ -445,9 +443,28 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
                   </div>
                 </div>
                 
+                {/* Mobile Video Section - Directly below buttons */}
+                <div className="mt-8 lg:hidden">
+                  <div className="w-full">
+                    <div className="bg-white rounded-lg shadow-md overflow-hidden">
+                      {/* Direct YouTube embed without opacity-0 class for immediate visibility */}
+                      <div className="relative pb-[56.25%] overflow-hidden">
+                        <iframe 
+                          src="https://www.youtube.com/embed/m6GNAmyvLVc?rel=0&showinfo=0" 
+                          title="The Canvas by Atelier Frames"
+                          className="absolute inset-0 w-full h-full"
+                          frameBorder="0"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        ></iframe>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
                 <div className="flex items-center space-x-4 mt-4">
                   <a 
-                    href="https://www.kickstarter.com/projects/nicolascodet/the-canvas-by-atelier-frames" 
+                    href="https://www.youtube.com/watch?v=m6GNAmyvLVc" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="video-link text-tertiary flex items-center hover:text-secondary transition-colors duration-300 opacity-0"
@@ -688,11 +705,6 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
             </div>
           </div>
 
-          {/* Mobile Video Section - Prominent outside the grid */}
-          <div className="mt-8 lg:hidden">
-            <VideoComponent isMobile={true} />
-          </div>
-          
           {/* Mobile Kickstarter link below video */}
           <div className="flex items-center justify-center mt-4 lg:hidden">
             <a 
