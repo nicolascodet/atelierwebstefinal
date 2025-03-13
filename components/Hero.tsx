@@ -5,7 +5,11 @@ import React, { useEffect, useState, useRef } from 'react';
 import { motion, useAnimate } from 'framer-motion';
 import Link from 'next/link';
 
-const Hero = () => {
+interface HeroProps {
+  skipMobileAnimation?: boolean;
+}
+
+const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
   const [scope, animate] = useAnimate();
   const [hasAnimated, setHasAnimated] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -37,7 +41,7 @@ const Hero = () => {
   const startAnimations = async () => {
     if (hasAnimated) return;
 
-    if (isMobile) {
+    if (isMobile && !skipMobileAnimation) {
       // MOBILE ANIMATION SEQUENCE
       
       // First, show only the logo
@@ -109,74 +113,96 @@ const Hero = () => {
       // Fade in the video link
       animate(".video-link", { opacity: [0, 1] }, { duration: 0.3 });
     } else {
-      // DESKTOP ANIMATION SEQUENCE (unchanged)
-      animate(".hero-heading", { opacity: 1 }, { duration: 0 });
-      animate(".right-illustration", { opacity: 1 }, { duration: 0 });
-      
-      // Typing animation for "Introducing Atelier Frames"
-      const targetText = "Introducing Atelier Frames.";
-      const element = typingRef.current;
-      if (element) {
-        element.textContent = "";
-        // Make cursor visible
-        animate("#cursor", { opacity: 1 }, { duration: 0.1 });
+      // Skip mobile animation if we've already done the entry animation
+      if (isMobile && skipMobileAnimation) {
+        // Show everything immediately with no animation
+        animate([
+          [".hero-heading", { opacity: 1 }, { duration: 0 }],
+          ["#tagline", { opacity: 1 }, { duration: 0 }],
+          [".hero-description", { opacity: 1 }, { duration: 0 }],
+          ["#card-1", { opacity: 1 }, { duration: 0 }],
+          ["#card-2", { opacity: 1 }, { duration: 0 }],
+          [".video-link", { opacity: 1 }, { duration: 0 }],
+          [".right-illustration", { opacity: 1 }, { duration: 0 }],
+          [".logo-container", { opacity: 1 }, { duration: 0 }],
+          [".ai-underline", { pathLength: 1, opacity: 1 }, { duration: 0 }]
+        ]);
         
-        for (let i = 0; i <= targetText.length; i++) {
-          element.textContent = targetText.substring(0, i);
-          // Move cursor
-          animate("#cursor", { left: `${i * 0.6}em` }, { duration: 0.05 });
-          // Reduced timing for faster typing animation
-          await new Promise(resolve => setTimeout(resolve, 40));
+        // Add text content without animation
+        const element = typingRef.current;
+        if (element) {
+          element.textContent = "Introducing Atelier Frames.";
+        }
+      } else {
+        // DESKTOP ANIMATION SEQUENCE (unchanged)
+        animate(".hero-heading", { opacity: 1 }, { duration: 0 });
+        animate(".right-illustration", { opacity: 1 }, { duration: 0 });
+        
+        // Typing animation for "Introducing Atelier Frames"
+        const targetText = "Introducing Atelier Frames.";
+        const element = typingRef.current;
+        if (element) {
+          element.textContent = "";
+          // Make cursor visible
+          animate("#cursor", { opacity: 1 }, { duration: 0.1 });
+          
+          for (let i = 0; i <= targetText.length; i++) {
+            element.textContent = targetText.substring(0, i);
+            // Move cursor
+            animate("#cursor", { left: `${i * 0.6}em` }, { duration: 0.05 });
+            // Reduced timing for faster typing animation
+            await new Promise(resolve => setTimeout(resolve, 40));
+          }
+          
+          // Move cursor to next line after typing is done
+          await new Promise(resolve => setTimeout(resolve, 300));
         }
         
-        // Move cursor to next line after typing is done
-        await new Promise(resolve => setTimeout(resolve, 300));
+        // Fade in the tagline
+        await animate("#tagline", { opacity: [0, 1], y: [10, 0] }, { duration: 0.4 });
+        
+        // Animate the cool underline for "artificial intelligence"
+        animate(".ai-underline", { 
+          pathLength: [0, 1],
+          opacity: [0, 1]
+        }, { 
+          duration: 0.8,
+          ease: "easeInOut"
+        });
+        
+        // Hide cursor when all text is done
+        await animate("#cursor", { opacity: 0 }, { duration: 0.5 });
+        
+        // Make container visible first
+        animate(".logo-container", { opacity: 1 }, { duration: 0.3 });
+        
+        // First, the initial spin animation of the logo
+        await animate(".logo-spin-container", {
+          rotate: [0, 720], // Two full rotations
+          scale: [0.6, 1],  // Grow from smaller to normal size
+        }, {
+          duration: 1.8,    // Duration of spin
+          ease: "easeOut",  // Start fast, then slow down
+        });
+        
+        // Then add the glow and detailed animations
+        animate([
+          [".logo-glow", { opacity: [0, 0.5] }, { duration: 0.8 }],
+          [".connector-line", { pathLength: [0, 1], opacity: [0, 1] }, { duration: 1 }],
+        ]);
+        
+        // Fade in description and cards
+        await animate(".hero-description", { opacity: [0, 1], y: [20, 0] }, { duration: 0.5 });
+        
+        // Fade in the cards
+        animate([
+          ["#card-1", { opacity: [0, 1], y: [20, 0] }, { duration: 0.5 }],
+          ["#card-2", { opacity: [0, 1], y: [20, 0] }, { duration: 0.5, delay: 0.2 }],
+        ]);
+        
+        // Fade in the video link
+        animate(".video-link", { opacity: [0, 1] }, { duration: 0.3 });
       }
-      
-      // Fade in the tagline
-      await animate("#tagline", { opacity: [0, 1], y: [10, 0] }, { duration: 0.4 });
-      
-      // Animate the cool underline for "artificial intelligence"
-      animate(".ai-underline", { 
-        pathLength: [0, 1],
-        opacity: [0, 1]
-      }, { 
-        duration: 0.8,
-        ease: "easeInOut"
-      });
-      
-      // Hide cursor when all text is done
-      await animate("#cursor", { opacity: 0 }, { duration: 0.5 });
-      
-      // Make container visible first
-      animate(".logo-container", { opacity: 1 }, { duration: 0.3 });
-      
-      // First, the initial spin animation of the logo
-      await animate(".logo-spin-container", {
-        rotate: [0, 720], // Two full rotations
-        scale: [0.6, 1],  // Grow from smaller to normal size
-      }, {
-        duration: 1.8,    // Duration of spin
-        ease: "easeOut",  // Start fast, then slow down
-      });
-      
-      // Then add the glow and detailed animations
-      animate([
-        [".logo-glow", { opacity: [0, 0.5] }, { duration: 0.8 }],
-        [".connector-line", { pathLength: [0, 1], opacity: [0, 1] }, { duration: 1 }],
-      ]);
-      
-      // Fade in description and cards
-      await animate(".hero-description", { opacity: [0, 1], y: [20, 0] }, { duration: 0.5 });
-      
-      // Fade in the cards
-      animate([
-        ["#card-1", { opacity: [0, 1], y: [20, 0] }, { duration: 0.5 }],
-        ["#card-2", { opacity: [0, 1], y: [20, 0] }, { duration: 0.5, delay: 0.2 }],
-      ]);
-      
-      // Fade in the video link
-      animate(".video-link", { opacity: [0, 1] }, { duration: 0.3 });
     }
     
     setHasAnimated(true);
@@ -187,78 +213,80 @@ const Hero = () => {
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-[rgba(var(--secondary-accent),0.05)] to-transparent" />
       
-      {/* MOBILE-ONLY INITIAL LOGO */}
-      <div className="mobile-logo-container fixed inset-0 z-50 flex items-center justify-center opacity-0 lg:hidden">
-        <div className="relative w-[280px] h-[280px]">
-          {/* Cream background */}
-          <div className="absolute inset-0 rounded-full bg-[#FFF8E1] opacity-40"></div>
-          
-          {/* Spin container for logo animation */}
-          <div className="logo-spin-container w-full h-full flex items-center justify-center origin-center">
-            <svg 
-              viewBox="0 0 400 400" 
-              className="w-full h-full"
-              fill="none" 
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <defs>
-                <filter id="mobile-glow" x="-50%" y="-50%" width="200%" height="200%">
-                  <feGaussianBlur stdDeviation="10" result="blur" />
-                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                </filter>
-              </defs>
-              
-              {/* The three green circular nodes */}
-              <motion.circle
-                cx="200" cy="120" r="30"
-                fill="#5D7A61"
-              />
-              
-              <motion.circle
-                cx="120" cy="240" r="30"
-                fill="#5D7A61"
-              />
-              
-              <motion.circle
-                cx="280" cy="240" r="30"
-                fill="#5D7A61"
-              />
-              
-              {/* Connection lines */}
-              <path
-                d="M200,120 L120,240 M200,120 L280,240 M120,240 L280,240"
-                stroke="#C4D0C5"  
-                strokeWidth="5"
-                strokeLinecap="round"
-              />
-              
-              {/* Dynamic trail effect during spin */}
-              <motion.g
-                initial={{ opacity: 0 }}
-                animate={{ 
-                  opacity: [0, 0.7, 0],
-                }}
-                transition={{
-                  duration: 2.0,
-                  ease: "easeOut"
-                }}
+      {/* MOBILE-ONLY INITIAL LOGO - Hide if skipMobileAnimation is true */}
+      {!skipMobileAnimation && (
+        <div className="mobile-logo-container fixed inset-0 z-50 flex items-center justify-center opacity-0 lg:hidden">
+          <div className="relative w-[280px] h-[280px]">
+            {/* Cream background */}
+            <div className="absolute inset-0 rounded-full bg-[#FFF8E1] opacity-40"></div>
+            
+            {/* Spin container for logo animation */}
+            <div className="logo-spin-container w-full h-full flex items-center justify-center origin-center">
+              <svg 
+                viewBox="0 0 400 400" 
+                className="w-full h-full"
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg"
               >
-                {/* Motion trails for spinning effect */}
-                <path 
-                  d="M200,120 L120,240 L280,240 Z" 
-                  stroke="#C4D0C5" 
-                  strokeWidth="2"
-                  strokeDasharray="5,5"
-                  fill="none"
+                <defs>
+                  <filter id="mobile-glow" x="-50%" y="-50%" width="200%" height="200%">
+                    <feGaussianBlur stdDeviation="10" result="blur" />
+                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                  </filter>
+                </defs>
+                
+                {/* The three green circular nodes */}
+                <motion.circle
+                  cx="200" cy="120" r="30"
+                  fill="#5D7A61"
                 />
-                <circle cx="200" cy="120" r="15" fill="#5D7A61" opacity="0.3" />
-                <circle cx="120" cy="240" r="15" fill="#5D7A61" opacity="0.3" />
-                <circle cx="280" cy="240" r="15" fill="#5D7A61" opacity="0.3" />
-              </motion.g>
-            </svg>
+                
+                <motion.circle
+                  cx="120" cy="240" r="30"
+                  fill="#5D7A61"
+                />
+                
+                <motion.circle
+                  cx="280" cy="240" r="30"
+                  fill="#5D7A61"
+                />
+                
+                {/* Connection lines */}
+                <path
+                  d="M200,120 L120,240 M200,120 L280,240 M120,240 L280,240"
+                  stroke="#C4D0C5"  
+                  strokeWidth="5"
+                  strokeLinecap="round"
+                />
+                
+                {/* Dynamic trail effect during spin */}
+                <motion.g
+                  initial={{ opacity: 0 }}
+                  animate={{ 
+                    opacity: [0, 0.7, 0],
+                  }}
+                  transition={{
+                    duration: 2.0,
+                    ease: "easeOut"
+                  }}
+                >
+                  {/* Motion trails for spinning effect */}
+                  <path 
+                    d="M200,120 L120,240 L280,240 Z" 
+                    stroke="#C4D0C5" 
+                    strokeWidth="2"
+                    strokeDasharray="5,5"
+                    fill="none"
+                  />
+                  <circle cx="200" cy="120" r="15" fill="#5D7A61" opacity="0.3" />
+                  <circle cx="120" cy="240" r="15" fill="#5D7A61" opacity="0.3" />
+                  <circle cx="280" cy="240" r="15" fill="#5D7A61" opacity="0.3" />
+                </motion.g>
+              </svg>
+            </div>
           </div>
         </div>
-      </div>
+      )}
       
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="max-w-screen-xl mx-auto">
