@@ -8,87 +8,176 @@ import Link from 'next/link';
 const Hero = () => {
   const [scope, animate] = useAnimate();
   const [hasAnimated, setHasAnimated] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const typingRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
+    // Check if we're on mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024); // lg breakpoint in Tailwind
+    };
+    
+    // Check on initial load
+    checkMobile();
+    
+    // Listen for resize events
+    window.addEventListener('resize', checkMobile);
+    
+    // Start animations after a short delay
     const timer = setTimeout(() => {
       startAnimations();
-    }, 300); // Reduced delay for faster start
+    }, 300);
     
-    return () => clearTimeout(timer);
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      clearTimeout(timer);
+    };
   }, []);
 
   const startAnimations = async () => {
     if (hasAnimated) return;
 
-    // Make everything visible at initial states
-    animate(".hero-heading", { opacity: 1 }, { duration: 0 });
-    animate(".right-illustration", { opacity: 1 }, { duration: 0 });
-    
-    // Typing animation for "Introducing Atelier Frames"
-    const targetText = "Introducing Atelier Frames.";
-    const element = typingRef.current;
-    if (element) {
-      element.textContent = "";
-      // Make cursor visible
-      animate("#cursor", { opacity: 1 }, { duration: 0.1 });
+    if (isMobile) {
+      // MOBILE ANIMATION SEQUENCE
       
-      for (let i = 0; i <= targetText.length; i++) {
-        element.textContent = targetText.substring(0, i);
-        // Move cursor
-        animate("#cursor", { left: `${i * 0.6}em` }, { duration: 0.05 });
-        // Reduced timing for faster typing animation
-        await new Promise(resolve => setTimeout(resolve, 40));
+      // First, show only the logo
+      animate(".mobile-logo-container", { opacity: 1 }, { duration: 0.3 });
+      
+      // Do the spin animation
+      await animate(".logo-spin-container", {
+        rotate: [0, 720],
+        scale: [0.6, 0.9, 0.7],
+      }, {
+        duration: 2.0,
+        ease: "easeOut",
+      });
+      
+      // Fade out the logo
+      await animate(".mobile-logo-container", { 
+        opacity: 0,
+        scale: 0.5
+      }, { 
+        duration: 0.5,
+        ease: "easeOut" 
+      });
+      
+      // Show the content section
+      animate(".hero-heading", { opacity: 1 }, { duration: 0.5 });
+      
+      // Start typing animation
+      const targetText = "Introducing Atelier Frames.";
+      const element = typingRef.current;
+      if (element) {
+        element.textContent = "";
+        // Make cursor visible
+        animate("#cursor", { opacity: 1 }, { duration: 0.1 });
+        
+        for (let i = 0; i <= targetText.length; i++) {
+          element.textContent = targetText.substring(0, i);
+          // Move cursor
+          animate("#cursor", { left: `${i * 0.6}em` }, { duration: 0.05 });
+          // Reduced timing for faster typing animation
+          await new Promise(resolve => setTimeout(resolve, 40));
+        }
+        
+        // Move cursor to next line after typing is done
+        await new Promise(resolve => setTimeout(resolve, 300));
       }
       
-      // Move cursor to next line after typing is done
-      await new Promise(resolve => setTimeout(resolve, 300));
+      // Fade in the tagline
+      await animate("#tagline", { opacity: [0, 1], y: [10, 0] }, { duration: 0.4 });
+      
+      // Animate the cool underline for "artificial intelligence"
+      animate(".ai-underline", { 
+        pathLength: [0, 1],
+        opacity: [0, 1]
+      }, { 
+        duration: 0.8,
+        ease: "easeInOut"
+      });
+      
+      // Hide cursor when all text is done
+      await animate("#cursor", { opacity: 0 }, { duration: 0.5 });
+      
+      // Fade in description and cards
+      await animate(".hero-description", { opacity: [0, 1], y: [20, 0] }, { duration: 0.5 });
+      
+      // Fade in the cards one at a time
+      await animate("#card-1", { opacity: [0, 1], y: [20, 0] }, { duration: 0.5 });
+      await animate("#card-2", { opacity: [0, 1], y: [20, 0] }, { duration: 0.5 });
+      
+      // Fade in the video link
+      animate(".video-link", { opacity: [0, 1] }, { duration: 0.3 });
+    } else {
+      // DESKTOP ANIMATION SEQUENCE (unchanged)
+      animate(".hero-heading", { opacity: 1 }, { duration: 0 });
+      animate(".right-illustration", { opacity: 1 }, { duration: 0 });
+      
+      // Typing animation for "Introducing Atelier Frames"
+      const targetText = "Introducing Atelier Frames.";
+      const element = typingRef.current;
+      if (element) {
+        element.textContent = "";
+        // Make cursor visible
+        animate("#cursor", { opacity: 1 }, { duration: 0.1 });
+        
+        for (let i = 0; i <= targetText.length; i++) {
+          element.textContent = targetText.substring(0, i);
+          // Move cursor
+          animate("#cursor", { left: `${i * 0.6}em` }, { duration: 0.05 });
+          // Reduced timing for faster typing animation
+          await new Promise(resolve => setTimeout(resolve, 40));
+        }
+        
+        // Move cursor to next line after typing is done
+        await new Promise(resolve => setTimeout(resolve, 300));
+      }
+      
+      // Fade in the tagline
+      await animate("#tagline", { opacity: [0, 1], y: [10, 0] }, { duration: 0.4 });
+      
+      // Animate the cool underline for "artificial intelligence"
+      animate(".ai-underline", { 
+        pathLength: [0, 1],
+        opacity: [0, 1]
+      }, { 
+        duration: 0.8,
+        ease: "easeInOut"
+      });
+      
+      // Hide cursor when all text is done
+      await animate("#cursor", { opacity: 0 }, { duration: 0.5 });
+      
+      // Make container visible first
+      animate(".logo-container", { opacity: 1 }, { duration: 0.3 });
+      
+      // First, the initial spin animation of the logo
+      await animate(".logo-spin-container", {
+        rotate: [0, 720], // Two full rotations
+        scale: [0.6, 1],  // Grow from smaller to normal size
+      }, {
+        duration: 1.8,    // Duration of spin
+        ease: "easeOut",  // Start fast, then slow down
+      });
+      
+      // Then add the glow and detailed animations
+      animate([
+        [".logo-glow", { opacity: [0, 0.5] }, { duration: 0.8 }],
+        [".connector-line", { pathLength: [0, 1], opacity: [0, 1] }, { duration: 1 }],
+      ]);
+      
+      // Fade in description and cards
+      await animate(".hero-description", { opacity: [0, 1], y: [20, 0] }, { duration: 0.5 });
+      
+      // Fade in the cards
+      animate([
+        ["#card-1", { opacity: [0, 1], y: [20, 0] }, { duration: 0.5 }],
+        ["#card-2", { opacity: [0, 1], y: [20, 0] }, { duration: 0.5, delay: 0.2 }],
+      ]);
+      
+      // Fade in the video link
+      animate(".video-link", { opacity: [0, 1] }, { duration: 0.3 });
     }
-    
-    // Fade in the tagline
-    await animate("#tagline", { opacity: [0, 1], y: [10, 0] }, { duration: 0.4 });
-    
-    // Animate the cool underline for "artificial intelligence"
-    animate(".ai-underline", { 
-      pathLength: [0, 1],
-      opacity: [0, 1]
-    }, { 
-      duration: 0.8,
-      ease: "easeInOut"
-    });
-    
-    // Hide cursor when all text is done
-    await animate("#cursor", { opacity: 0 }, { duration: 0.5 });
-    
-    // Make container visible first
-    animate(".logo-container", { opacity: 1 }, { duration: 0.3 });
-    
-    // First, the initial spin animation of the logo
-    await animate(".logo-spin-container", {
-      rotate: [0, 720], // Two full rotations
-      scale: [0.6, 1],  // Grow from smaller to normal size
-    }, {
-      duration: 1.8,    // Duration of spin
-      ease: "easeOut",  // Start fast, then slow down
-    });
-    
-    // Then add the glow and detailed animations
-    animate([
-      [".logo-glow", { opacity: [0, 0.5] }, { duration: 0.8 }],
-      [".connector-line", { pathLength: [0, 1], opacity: [0, 1] }, { duration: 1 }],
-    ]);
-    
-    // Fade in description and cards
-    await animate(".hero-description", { opacity: [0, 1], y: [20, 0] }, { duration: 0.5 });
-    
-    // Fade in the cards
-    animate([
-      ["#card-1", { opacity: [0, 1], y: [20, 0] }, { duration: 0.5 }],
-      ["#card-2", { opacity: [0, 1], y: [20, 0] }, { duration: 0.5, delay: 0.2 }],
-    ]);
-    
-    // Fade in the video link
-    animate(".video-link", { opacity: [0, 1] }, { duration: 0.3 });
     
     setHasAnimated(true);
   };
@@ -97,6 +186,79 @@ const Hero = () => {
     <div ref={scope} className="relative overflow-hidden bg-[rgb(var(--background-rgb))] py-10 md:py-16">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-[rgba(var(--secondary-accent),0.05)] to-transparent" />
+      
+      {/* MOBILE-ONLY INITIAL LOGO */}
+      <div className="mobile-logo-container fixed inset-0 z-50 flex items-center justify-center opacity-0 lg:hidden">
+        <div className="relative w-[280px] h-[280px]">
+          {/* Cream background */}
+          <div className="absolute inset-0 rounded-full bg-[#FFF8E1] opacity-40"></div>
+          
+          {/* Spin container for logo animation */}
+          <div className="logo-spin-container w-full h-full flex items-center justify-center origin-center">
+            <svg 
+              viewBox="0 0 400 400" 
+              className="w-full h-full"
+              fill="none" 
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <defs>
+                <filter id="mobile-glow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="10" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+              </defs>
+              
+              {/* The three green circular nodes */}
+              <motion.circle
+                cx="200" cy="120" r="30"
+                fill="#5D7A61"
+              />
+              
+              <motion.circle
+                cx="120" cy="240" r="30"
+                fill="#5D7A61"
+              />
+              
+              <motion.circle
+                cx="280" cy="240" r="30"
+                fill="#5D7A61"
+              />
+              
+              {/* Connection lines */}
+              <path
+                d="M200,120 L120,240 M200,120 L280,240 M120,240 L280,240"
+                stroke="#C4D0C5"  
+                strokeWidth="5"
+                strokeLinecap="round"
+              />
+              
+              {/* Dynamic trail effect during spin */}
+              <motion.g
+                initial={{ opacity: 0 }}
+                animate={{ 
+                  opacity: [0, 0.7, 0],
+                }}
+                transition={{
+                  duration: 2.0,
+                  ease: "easeOut"
+                }}
+              >
+                {/* Motion trails for spinning effect */}
+                <path 
+                  d="M200,120 L120,240 L280,240 Z" 
+                  stroke="#C4D0C5" 
+                  strokeWidth="2"
+                  strokeDasharray="5,5"
+                  fill="none"
+                />
+                <circle cx="200" cy="120" r="15" fill="#5D7A61" opacity="0.3" />
+                <circle cx="120" cy="240" r="15" fill="#5D7A61" opacity="0.3" />
+                <circle cx="280" cy="240" r="15" fill="#5D7A61" opacity="0.3" />
+              </motion.g>
+            </svg>
+          </div>
+        </div>
+      </div>
       
       <div className="container mx-auto px-4 sm:px-6 relative z-10">
         <div className="max-w-screen-xl mx-auto">
@@ -196,8 +358,8 @@ const Hero = () => {
               </div>
             </div>
 
-            {/* Right side - EXACT Logo Recreation with breathing effect */}
-            <div className="right-illustration flex items-center justify-center opacity-0">
+            {/* Right side - EXACT Logo Recreation with breathing effect (DESKTOP ONLY) */}
+            <div className="right-illustration hidden lg:flex items-center justify-center opacity-0">
               <div className="logo-container relative w-full max-w-[400px] h-[400px] opacity-0">
                 {/* Cream background to match the logo's background */}
                 <div className="absolute inset-0 rounded-full bg-[#FFF8E1] opacity-40"></div>
