@@ -87,8 +87,8 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
         for (let i = 0; i <= targetText.length; i++) {
           element.textContent = targetText.substring(0, i);
           animate("#cursor", { left: `${i * 0.6}em` }, { duration: 0.02 });
-          // Slowed down typing from 6ms to 12ms per character (2x slower)
-          await new Promise(resolve => setTimeout(resolve, 12));
+          // Slowed down typing from 12ms to 30ms per character (even slower)
+          await new Promise(resolve => setTimeout(resolve, 30));
         }
       }
       
@@ -150,8 +150,8 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
           for (let i = 0; i <= targetText.length; i++) {
             element.textContent = targetText.substring(0, i);
             animate("#cursor", { left: `${i * 0.6}em` }, { duration: 0.02 });
-            // Slowed down typing from 12ms to 24ms per character (2x slower)
-            await new Promise(resolve => setTimeout(resolve, 24));
+            // Slowed down typing from 24ms to 50ms per character (even slower)
+            await new Promise(resolve => setTimeout(resolve, 50));
           }
           
           await new Promise(resolve => setTimeout(resolve, 25)); // Reduced from 50ms to 25ms
@@ -214,7 +214,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
         >
           <div className="relative pb-[56.25%] overflow-hidden">
             <img 
-              src="https://img.youtube.com/vi/rFvrtf5wudE/maxresdefault.jpg" 
+              src="https://img.youtube.com/vi/m6GNAmyvLVc/maxresdefault.jpg" 
               alt="Video Thumbnail" 
               className="absolute inset-0 w-full h-full object-cover"
             />
@@ -235,7 +235,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
         <div className="bg-white rounded-lg shadow-md overflow-hidden">
           <div className="relative pb-[56.25%] overflow-hidden">
             <iframe 
-              src="https://www.youtube.com/embed/rFvrtf5wudE?rel=0&showinfo=0&autoplay=1" 
+              src="https://www.youtube.com/embed/m6GNAmyvLVc?rel=0&showinfo=0&autoplay=1" 
               title="The Canvas by Atelier Frames"
               className="absolute inset-0 w-full h-full"
               frameBorder="0"
@@ -253,7 +253,7 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
     <div className="desktop-video-container w-full opacity-0 rounded-lg overflow-hidden shadow-md">
       <div className="relative pb-[56.25%] overflow-hidden">
         <iframe 
-          src="https://www.youtube.com/embed/rFvrtf5wudE?rel=0&showinfo=0" 
+          src="https://www.youtube.com/embed/m6GNAmyvLVc?rel=0&showinfo=0" 
           title="The Canvas by Atelier Frames"
           className="absolute inset-0 w-full h-full"
           frameBorder="0"
