@@ -17,10 +17,6 @@ const productImages = [
     src: '/images/bedroom.JPG',
     alt: 'The Canvas in a bedroom',
   },
-  {
-    src: '/images/gallery.JPG',
-    alt: 'The Canvas as part of a gallery wall',
-  },
 ];
 
 const ProductGallery = () => {
@@ -47,7 +43,7 @@ const ProductGallery = () => {
   }, []);
 
   return (
-    <section className="py-10 sm:py-16 border-t border-gray-100 mt-12 sm:mt-8">
+    <section className="py-10 sm:py-16">
       <div className="max-w-5xl mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -91,6 +87,9 @@ const ProductGallery = () => {
                       className="transition-transform duration-500 hover:scale-105"
                       sizes="(max-width: 640px) 256px, (max-width: 768px) 288px, 320px"
                     />
+                  </div>
+                  <div className="p-3 text-center">
+                    <p className="text-sm text-gray-700">{image.alt}</p>
                   </div>
                 </div>
               </motion.div>

@@ -9,6 +9,7 @@ import Image from 'next/image';
 const navItems = [
   { name: 'Try Demo', href: '#ai-art-demo' },
   { name: 'Features', href: '#features' },
+  { name: 'Gallery', href: '#product-gallery' },
   { name: 'Newsletter', href: '#newsletter' },
 ];
 

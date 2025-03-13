@@ -45,15 +45,20 @@ export default function Home() {
         <Features />
       </section>
       
+      {/* Product Gallery showing Canvas in different settings */}
+      <section id="product-gallery" className="py-8 md:py-12 bg-white">
+        <ProductGallery />
+      </section>
+      
+      {/* Video Demo section */}
+      <section id="video-demo" className="py-8 md:py-12 bg-white">
+        <VideoDemo />
+      </section>
+      
       {/* Newsletter with Kickstarter reminder */}
       <section id="newsletter" className="py-8 md:py-12 bg-gray-50">
         <Newsletter />
       </section>
-      
-      <div className="bg-white">
-        <ProductGallery />
-        <VideoDemo />
-      </div>
       
       <Footer />
     </main>
