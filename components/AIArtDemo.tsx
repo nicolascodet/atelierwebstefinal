@@ -158,7 +158,7 @@ export default function AIArtDemo({ preventAutoFocus = false }: AIArtDemoProps) 
       <div className="flex justify-between items-center relative">
         <div className="absolute left-0 right-0 h-1 top-4 bg-gray-200 -z-10">
           <div 
-            className="h-full bg-blue-500 transition-all duration-500"
+            className="h-full bg-[#5D7A61] transition-all duration-500"
             style={{ width: `${(activeStep / 4) * 100}%` }}
           ></div>
         </div>
@@ -167,7 +167,7 @@ export default function AIArtDemo({ preventAutoFocus = false }: AIArtDemoProps) 
           <div 
             key={step} 
             className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
-              step <= activeStep ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-600'
+              step <= activeStep ? 'bg-[#5D7A61] text-white' : 'bg-gray-200 text-gray-600'
             } transition-colors duration-300`}
           >
             {step}
@@ -181,7 +181,7 @@ export default function AIArtDemo({ preventAutoFocus = false }: AIArtDemoProps) 
   const MobileStyleSelector = () => (
     <div className="mb-5">
       <div className="flex items-center mb-3">
-        <div className={`w-6 h-6 rounded-full ${activeStep >= 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'} flex items-center justify-center text-xs font-bold mr-2`}>1</div>
+        <div className={`w-6 h-6 rounded-full ${activeStep >= 1 ? 'bg-[#5D7A61] text-white' : 'bg-gray-200'} flex items-center justify-center text-xs font-bold mr-2`}>1</div>
         <label className="block text-sm font-medium text-gray-700">
           Choose a style
         </label>
@@ -197,8 +197,8 @@ export default function AIArtDemo({ preventAutoFocus = false }: AIArtDemoProps) 
               disabled={isGenerating}
               className={`w-[180px] border rounded-lg p-3 text-center transition-all h-full ${
                 selectedStyle?.id === style.id
-                  ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-500 text-blue-700'
-                  : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50/50'
+                  ? 'border-[#5D7A61] bg-[#5D7A61]/10 ring-2 ring-[#5D7A61] text-[#5D7A61]'
+                  : 'border-gray-200 hover:border-[#5D7A61]/50 hover:bg-[#5D7A61]/5'
               }`}
             >
               <div className="font-medium text-sm">{style.name}</div>
@@ -214,7 +214,7 @@ export default function AIArtDemo({ preventAutoFocus = false }: AIArtDemoProps) 
   const MobilePromptInput = () => (
     <div className="mb-5">
       <div className="flex items-center mb-3">
-        <div className={`w-6 h-6 rounded-full ${activeStep >= 2 ? 'bg-blue-500 text-white' : 'bg-gray-200'} flex items-center justify-center text-xs font-bold mr-2`}>2</div>
+        <div className={`w-6 h-6 rounded-full ${activeStep >= 2 ? 'bg-[#5D7A61] text-white' : 'bg-gray-200'} flex items-center justify-center text-xs font-bold mr-2`}>2</div>
         <label htmlFor="prompt" className="block text-sm font-medium text-gray-700">
           Describe your artwork
         </label>
@@ -228,7 +228,7 @@ export default function AIArtDemo({ preventAutoFocus = false }: AIArtDemoProps) 
           placeholder="Example: A serene lake with mountains at sunset"
           disabled={isGenerating}
           rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#5D7A61] focus:border-[#5D7A61] text-base"
         />
       </div>
     </div>
@@ -238,7 +238,7 @@ export default function AIArtDemo({ preventAutoFocus = false }: AIArtDemoProps) 
   const MobileFrame = () => (
     <div className="mb-5">
       <div className="flex items-center mb-3">
-        <div className={`w-6 h-6 rounded-full ${activeStep >= 4 ? 'bg-blue-500 text-white' : 'bg-gray-200'} flex items-center justify-center text-xs font-bold mr-2`}>4</div>
+        <div className={`w-6 h-6 rounded-full ${activeStep >= 4 ? 'bg-[#5D7A61] text-white' : 'bg-gray-200'} flex items-center justify-center text-xs font-bold mr-2`}>4</div>
         <span className="text-sm font-medium text-gray-700">Your Custom Artwork</span>
       </div>
       
@@ -270,7 +270,7 @@ export default function AIArtDemo({ preventAutoFocus = false }: AIArtDemoProps) 
                     <div className="w-full h-full flex items-center justify-center bg-gray-100">
                       {isGenerating ? (
                         <div className="text-center px-4">
-                          <div className="text-blue-500 mb-2">
+                          <div className="text-[#5D7A61] mb-2">
                             <svg className="animate-spin w-8 h-8 mx-auto" fill="none" viewBox="0 0 24 24">
                               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                               <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -302,14 +302,14 @@ export default function AIArtDemo({ preventAutoFocus = false }: AIArtDemoProps) 
   const MobileControls = () => (
     <div className="mb-5">
       <div className="flex items-center mb-3">
-        <div className={`w-6 h-6 rounded-full ${activeStep >= 3 ? 'bg-blue-500 text-white' : 'bg-gray-200'} flex items-center justify-center text-xs font-bold mr-2`}>3</div>
+        <div className={`w-6 h-6 rounded-full ${activeStep >= 3 ? 'bg-[#5D7A61] text-white' : 'bg-gray-200'} flex items-center justify-center text-xs font-bold mr-2`}>3</div>
         <p className="text-sm font-medium text-gray-700">Generate your custom artwork</p>
       </div>
       <div className="flex gap-2">
         <button
           onClick={handleGenerate}
           disabled={isGenerating || !prompt || !selectedStyle}
-          className="flex-1 py-3 px-4 rounded-md text-white font-medium transition-colors bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex justify-center items-center"
+          className="flex-1 py-3 px-4 rounded-md text-white font-medium transition-colors bg-[#5D7A61] hover:bg-[#4D6A51] disabled:bg-gray-400 disabled:cursor-not-allowed flex justify-center items-center"
         >
           {isGenerating ? (
             <>
@@ -410,7 +410,7 @@ export default function AIArtDemo({ preventAutoFocus = false }: AIArtDemoProps) 
           >
             <div className="mb-4 sm:mb-5">
               <div className="flex items-center mb-2">
-                <div className={`w-6 h-6 rounded-full ${activeStep >= 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'} flex items-center justify-center text-xs font-bold mr-2`}>1</div>
+                <div className={`w-6 h-6 rounded-full ${activeStep >= 1 ? 'bg-[#5D7A61] text-white' : 'bg-gray-200'} flex items-center justify-center text-xs font-bold mr-2`}>1</div>
                 <label className="block text-sm font-medium text-gray-700">
                   Choose a style
                 </label>
@@ -423,8 +423,8 @@ export default function AIArtDemo({ preventAutoFocus = false }: AIArtDemoProps) 
                     disabled={isGenerating}
                     className={`border rounded-md p-3 text-center transition-all ${
                       selectedStyle?.id === style.id
-                        ? 'border-blue-500 bg-blue-50 ring-2 ring-blue-500 text-blue-700'
-                        : 'border-gray-200 hover:border-blue-300 hover:bg-blue-50/50'
+                        ? 'border-[#5D7A61] bg-[#5D7A61]/10 ring-2 ring-[#5D7A61] text-[#5D7A61]'
+                        : 'border-gray-200 hover:border-[#5D7A61]/30 hover:bg-[#5D7A61]/5'
                     }`}
                   >
                     <div className="font-medium text-sm">{style.name}</div>
@@ -436,7 +436,7 @@ export default function AIArtDemo({ preventAutoFocus = false }: AIArtDemoProps) 
 
             <div className="mb-4 sm:mb-5">
               <div className="flex items-center mb-2">
-                <div className={`w-6 h-6 rounded-full ${activeStep >= 2 ? 'bg-blue-500 text-white' : 'bg-gray-200'} flex items-center justify-center text-xs font-bold mr-2`}>2</div>
+                <div className={`w-6 h-6 rounded-full ${activeStep >= 2 ? 'bg-[#5D7A61] text-white' : 'bg-gray-200'} flex items-center justify-center text-xs font-bold mr-2`}>2</div>
                 <label htmlFor="prompt" className="block text-sm font-medium text-gray-700">
                   Describe your artwork
                 </label>
@@ -450,21 +450,21 @@ export default function AIArtDemo({ preventAutoFocus = false }: AIArtDemoProps) 
                   placeholder="Example: A serene lake with mountains at sunset"
                   disabled={isGenerating}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-[#5D7A61] focus:border-[#5D7A61]"
                 />
               </div>
             </div>
 
             <div className="mb-2 sm:mb-3">
               <div className="flex items-center mb-2 sm:mb-3">
-                <div className={`w-6 h-6 rounded-full ${activeStep >= 3 ? 'bg-blue-500 text-white' : 'bg-gray-200'} flex items-center justify-center text-xs font-bold mr-2`}>3</div>
+                <div className={`w-6 h-6 rounded-full ${activeStep >= 3 ? 'bg-[#5D7A61] text-white' : 'bg-gray-200'} flex items-center justify-center text-xs font-bold mr-2`}>3</div>
                 <p className="text-sm font-medium text-gray-700">Generate your custom artwork</p>
               </div>
               <div className="flex flex-col sm:flex-row gap-3">
                 <button
                   onClick={handleGenerate}
                   disabled={isGenerating || !prompt || !selectedStyle}
-                  className="w-full py-2.5 px-4 rounded-md text-white font-medium transition-colors bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex justify-center items-center"
+                  className="w-full py-2.5 px-4 rounded-md text-white font-medium transition-colors bg-[#5D7A61] hover:bg-[#4D6A51] disabled:bg-gray-400 disabled:cursor-not-allowed flex justify-center items-center"
                 >
                   {isGenerating ? (
                     <>
@@ -496,13 +496,13 @@ export default function AIArtDemo({ preventAutoFocus = false }: AIArtDemoProps) 
             )}
 
             {statusMessage && !error && (
-              <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-md">
+              <div className="mt-3 p-3 bg-[#5D7A61]/10 border border-[#5D7A61]/20 rounded-md">
                 <div className="flex items-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-blue-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <svg className="animate-spin -ml-1 mr-3 h-4 w-4 text-[#5D7A61]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
-                  <p className="text-sm text-blue-600">{statusMessage}</p>
+                  <p className="text-sm text-[#5D7A61]">{statusMessage}</p>
                 </div>
               </div>
             )}
@@ -517,7 +517,7 @@ export default function AIArtDemo({ preventAutoFocus = false }: AIArtDemoProps) 
           >
             <div className="bg-white rounded-lg border border-gray-200 p-5 shadow-sm h-full flex flex-col">
               <div className="flex items-center mb-3">
-                <div className={`w-6 h-6 rounded-full ${activeStep >= 4 ? 'bg-blue-500 text-white' : 'bg-gray-200'} flex items-center justify-center text-xs font-bold mr-2`}>4</div>
+                <div className={`w-6 h-6 rounded-full ${activeStep >= 4 ? 'bg-[#5D7A61] text-white' : 'bg-gray-200'} flex items-center justify-center text-xs font-bold mr-2`}>4</div>
                 <span className="text-sm font-medium text-gray-700">Your Custom Artwork</span>
               </div>
               
@@ -549,7 +549,7 @@ export default function AIArtDemo({ preventAutoFocus = false }: AIArtDemoProps) 
                             <div className="w-full h-full flex items-center justify-center bg-gray-100">
                               {isGenerating ? (
                                 <div className="text-center px-4">
-                                  <div className="text-blue-500 mb-2">
+                                  <div className="text-[#5D7A61] mb-2">
                                     <svg className="animate-spin w-8 h-8 mx-auto" fill="none" viewBox="0 0 24 24">
                                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -576,18 +576,19 @@ export default function AIArtDemo({ preventAutoFocus = false }: AIArtDemoProps) 
               </div>
 
               {generatedImage && (
-                <div className="mt-4">
-                  <div className="text-center">
-                    <p className="text-sm text-gray-700 mb-3">Like what you see? Back our Kickstarter to bring The Canvas to life!</p>
-                    <a 
-                      href="https://www.kickstarter.com/projects/nicolascodet/the-canvas-by-atelier-frames" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="inline-block py-2 px-4 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-md font-medium hover:from-blue-600 hover:to-purple-700 transition-colors"
-                    >
-                      Back on Kickstarter
-                    </a>
-                  </div>
+                <div className="mt-5 text-center">
+                  <p className="text-sm text-gray-700 mb-2">Like what you see? Back our Kickstarter to bring The Canvas to life!</p>
+                  <a
+                    href="https://www.kickstarter.com/projects/nicolascodet/the-canvas-by-atelier-frames"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center px-4 py-2 rounded-md bg-[#5D7A61] hover:bg-[#4D6A51] text-white text-sm font-medium transition-colors"
+                  >
+                    Back on Kickstarter
+                    <svg className="ml-2 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
                 </div>
               )}
             </div>
