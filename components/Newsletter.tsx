@@ -21,14 +21,26 @@ const Newsletter = () => {
     setError('');
     
     try {
-      // Simulate API call for demo purposes
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Submit email to Formspree
+      const response = await fetch('https://formspree.io/f/mwpleoao', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ email })
+      });
+      
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
       
       // Set success state
       setIsSuccess(true);
       setEmail('');
     } catch (err) {
       setError('An error occurred. Please try again.');
+      console.error('Newsletter submission error:', err);
     } finally {
       setIsSubmitting(false);
     }
@@ -58,15 +70,17 @@ const Newsletter = () => {
               Thank you for subscribing! We'll be in touch soon.
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="max-w-md mx-auto mb-6">
+            <form onSubmit={handleSubmit} className="max-w-md mx-auto mb-6" action="https://formspree.io/f/mwpleoao" method="POST">
               <div className="flex flex-col sm:flex-row gap-3">
                 <input
                   type="email"
+                  name="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#5D7A61] focus:border-transparent"
                   disabled={isSubmitting}
+                  required
                 />
                 <button
                   type="submit"
