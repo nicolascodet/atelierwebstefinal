@@ -81,11 +81,11 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
           // Move cursor
           animate("#cursor", { left: `${i * 0.6}em` }, { duration: 0.05 });
           // Reduced timing for faster typing animation
-          await new Promise(resolve => setTimeout(resolve, 40));
+          await new Promise(resolve => setTimeout(resolve, 25));
         }
         
         // Move cursor to next line after typing is done
-        await new Promise(resolve => setTimeout(resolve, 300));
+        await new Promise(resolve => setTimeout(resolve, 50));
       }
       
       // Fade in the tagline
@@ -151,11 +151,11 @@ const Hero = ({ skipMobileAnimation = false }: HeroProps) => {
             // Move cursor
             animate("#cursor", { left: `${i * 0.6}em` }, { duration: 0.05 });
             // Reduced timing for faster typing animation
-            await new Promise(resolve => setTimeout(resolve, 40));
+            await new Promise(resolve => setTimeout(resolve, 25));
           }
           
           // Move cursor to next line after typing is done
-          await new Promise(resolve => setTimeout(resolve, 300));
+          await new Promise(resolve => setTimeout(resolve, 50));
         }
         
         // Fade in the tagline
