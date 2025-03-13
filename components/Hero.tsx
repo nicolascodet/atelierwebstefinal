@@ -51,14 +51,22 @@ const Hero = () => {
     // Hide cursor when all text is done
     await animate("#cursor", { opacity: 0 }, { duration: 0.5 });
     
-    // Animate in the exact logo elements with precision
-    animate(".logo-container", { opacity: 1 }, { duration: 0.5 });
+    // Make container visible first
+    animate(".logo-container", { opacity: 1 }, { duration: 0.3 });
     
-    // Precise sequencing of animation elements to match the logo
+    // First, the initial spin animation of the logo
+    await animate(".logo-spin-container", {
+      rotate: [0, 720], // Two full rotations
+      scale: [0.6, 1],  // Grow from smaller to normal size
+    }, {
+      duration: 1.8,    // Duration of spin
+      ease: "easeOut",  // Start fast, then slow down
+    });
+    
+    // Then add the glow and detailed animations
     animate([
-      [".logo-glow", { opacity: [0, 0.5] }, { duration: 1 }],
-      [".connector-line", { pathLength: [0, 1], opacity: [0, 1] }, { duration: 1.2 }],
-      [".node-circle", { scale: [0.9, 1], opacity: [0, 1] }, { duration: 0.8 }],
+      [".logo-glow", { opacity: [0, 0.5] }, { duration: 0.8 }],
+      [".connector-line", { pathLength: [0, 1], opacity: [0, 1] }, { duration: 1 }],
     ]);
     
     // Fade in description and cards
@@ -156,178 +164,216 @@ const Hero = () => {
                 {/* Cream background to match the logo's background */}
                 <div className="absolute inset-0 rounded-full bg-[#FFF8E1] opacity-40"></div>
                 
-                {/* Exact logo SVG recreation with precise breathing animations */}
-                <svg 
-                  viewBox="0 0 400 400" 
-                  className="w-full h-full"
-                  fill="none" 
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  {/* Background soft glow effect */}
-                  <defs>
-                    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-                      <feGaussianBlur stdDeviation="10" result="blur" />
-                      <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                    </filter>
-                  </defs>
-                  
-                  {/* The three glow halos behind each node */}
-                  <motion.ellipse 
-                    cx="200" cy="120" rx="35" ry="35" 
-                    className="logo-glow"
-                    fill="#E8F0E9" 
-                    filter="url(#glow)"
-                    animate={{
-                      rx: [35, 38, 35],
-                      ry: [35, 38, 35],
-                      opacity: [0.5, 0.6, 0.5],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 3,
-                        ease: "easeInOut"
-                      }
-                    }}
-                  />
-                  
-                  <motion.ellipse 
-                    cx="120" cy="240" rx="35" ry="35" 
-                    className="logo-glow"
-                    fill="#E8F0E9" 
-                    filter="url(#glow)"
-                    animate={{
-                      rx: [35, 38, 35],
-                      ry: [35, 38, 35],
-                      opacity: [0.5, 0.6, 0.5],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 3.5,
-                        ease: "easeInOut",
-                        delay: 0.5
-                      }
-                    }}
-                  />
-                  
-                  <motion.ellipse 
-                    cx="280" cy="240" rx="35" ry="35" 
-                    className="logo-glow"
-                    fill="#E8F0E9" 
-                    filter="url(#glow)"
-                    animate={{
-                      rx: [35, 38, 35],
-                      ry: [35, 38, 35],
-                      opacity: [0.5, 0.6, 0.5],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 3.2,
-                        ease: "easeInOut",
-                        delay: 0.8
-                      }
-                    }}
-                  />
-                  
-                  {/* Connection lines - precisely matching the logo's light green-gray */}
-                  <motion.path
-                    d="M200,120 L120,240"
-                    className="connector-line"
-                    stroke="#C4D0C5"  
-                    strokeWidth="4"
-                    strokeLinecap="round"
-                    animate={{
-                      strokeWidth: [4, 4.5, 4],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 4,
-                        ease: "easeInOut"
-                      }
-                    }}
-                  />
-                  
-                  <motion.path
-                    d="M200,120 L280,240"
-                    className="connector-line"
-                    stroke="#C4D0C5"
-                    strokeWidth="4"
-                    strokeLinecap="round" 
-                    animate={{
-                      strokeWidth: [4, 4.5, 4],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 4.3,
-                        ease: "easeInOut"
-                      }
-                    }}
-                  />
-                  
-                  <motion.path
-                    d="M120,240 L280,240"
-                    className="connector-line"
-                    stroke="#C4D0C5"
-                    strokeWidth="4"
-                    strokeLinecap="round"
-                    animate={{
-                      strokeWidth: [4, 4.5, 4],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 4.6,
-                        ease: "easeInOut"
-                      }
-                    }}
-                  />
-                  
-                  {/* The three green circular nodes - exact color match */}
-                  <motion.circle
-                    cx="200" cy="120" r="25"
-                    className="node-circle"
-                    fill="#5D7A61"
-                    animate={{
-                      r: [25, 27, 25],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 3,
-                        ease: "easeInOut"
-                      }
-                    }}
-                  />
-                  
-                  <motion.circle
-                    cx="120" cy="240" r="25"
-                    className="node-circle"
-                    fill="#5D7A61"
-                    animate={{
-                      r: [25, 27, 25],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 3.3,
-                        ease: "easeInOut",
-                        delay: 0.4
-                      }
-                    }}
-                  />
-                  
-                  <motion.circle
-                    cx="280" cy="240" r="25"
-                    className="node-circle"
-                    fill="#5D7A61"
-                    animate={{
-                      r: [25, 27, 25],
-                      transition: {
-                        repeat: Infinity,
-                        repeatType: "reverse",
-                        duration: 3.6,
-                        ease: "easeInOut",
-                        delay: 0.8
-                      }
-                    }}
-                  />
-                </svg>
+                {/* Spin container for initial animation */}
+                <div className="logo-spin-container w-full h-full flex items-center justify-center origin-center">
+                  {/* Exact logo SVG recreation with precise breathing animations */}
+                  <svg 
+                    viewBox="0 0 400 400" 
+                    className="w-full h-full"
+                    fill="none" 
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    {/* Background soft glow effect */}
+                    <defs>
+                      <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                        <feGaussianBlur stdDeviation="10" result="blur" />
+                        <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                      </filter>
+                    </defs>
+                    
+                    {/* The three glow halos behind each node */}
+                    <motion.ellipse 
+                      cx="200" cy="120" rx="35" ry="35" 
+                      className="logo-glow"
+                      fill="#E8F0E9" 
+                      filter="url(#glow)"
+                      initial={{ opacity: 0 }}
+                      animate={{
+                        rx: [35, 38, 35],
+                        ry: [35, 38, 35],
+                        opacity: [0.5, 0.6, 0.5],
+                        transition: {
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                          duration: 3,
+                          ease: "easeInOut",
+                          delay: 1.8 // Start after spin completes
+                        }
+                      }}
+                    />
+                    
+                    <motion.ellipse 
+                      cx="120" cy="240" rx="35" ry="35" 
+                      className="logo-glow"
+                      fill="#E8F0E9" 
+                      filter="url(#glow)"
+                      initial={{ opacity: 0 }}
+                      animate={{
+                        rx: [35, 38, 35],
+                        ry: [35, 38, 35],
+                        opacity: [0.5, 0.6, 0.5],
+                        transition: {
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                          duration: 3.5,
+                          ease: "easeInOut",
+                          delay: 2.0 // Start after spin with stagger
+                        }
+                      }}
+                    />
+                    
+                    <motion.ellipse 
+                      cx="280" cy="240" rx="35" ry="35" 
+                      className="logo-glow"
+                      fill="#E8F0E9" 
+                      filter="url(#glow)"
+                      initial={{ opacity: 0 }}
+                      animate={{
+                        rx: [35, 38, 35],
+                        ry: [35, 38, 35],
+                        opacity: [0.5, 0.6, 0.5],
+                        transition: {
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                          duration: 3.2,
+                          ease: "easeInOut",
+                          delay: 2.2 // Start after spin with stagger
+                        }
+                      }}
+                    />
+                    
+                    {/* Connection lines - precisely matching the logo's light green-gray */}
+                    <motion.path
+                      d="M200,120 L120,240"
+                      className="connector-line"
+                      stroke="#C4D0C5"  
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      initial={{ pathLength: 0, opacity: 0 }}
+                      animate={{
+                        strokeWidth: [4, 4.5, 4],
+                        transition: {
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                          duration: 4,
+                          ease: "easeInOut",
+                          delay: 1.8 // Start after spin completes
+                        }
+                      }}
+                    />
+                    
+                    <motion.path
+                      d="M200,120 L280,240"
+                      className="connector-line"
+                      stroke="#C4D0C5"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                      initial={{ pathLength: 0, opacity: 0 }}
+                      animate={{
+                        strokeWidth: [4, 4.5, 4],
+                        transition: {
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                          duration: 4.3,
+                          ease: "easeInOut",
+                          delay: 1.9 // Start after spin with stagger
+                        }
+                      }}
+                    />
+                    
+                    <motion.path
+                      d="M120,240 L280,240"
+                      className="connector-line"
+                      stroke="#C4D0C5"
+                      strokeWidth="4" 
+                      strokeLinecap="round"
+                      initial={{ pathLength: 0, opacity: 0 }}
+                      animate={{
+                        strokeWidth: [4, 4.5, 4],
+                        transition: {
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                          duration: 4.6,
+                          ease: "easeInOut",
+                          delay: 2.0 // Start after spin with stagger
+                        }
+                      }}
+                    />
+                    
+                    {/* The three green circular nodes - exact color match */}
+                    <motion.circle
+                      cx="200" cy="120" r="25"
+                      className="node-circle"
+                      fill="#5D7A61"
+                      animate={{
+                        r: [25, 27, 25],
+                        transition: {
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                          duration: 3,
+                          ease: "easeInOut",
+                          delay: 1.8 // Start breathing after spin
+                        }
+                      }}
+                    />
+                    
+                    <motion.circle
+                      cx="120" cy="240" r="25"
+                      className="node-circle"
+                      fill="#5D7A61"
+                      animate={{
+                        r: [25, 27, 25],
+                        transition: {
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                          duration: 3.3,
+                          ease: "easeInOut",
+                          delay: 2.0 // Start breathing after spin
+                        }
+                      }}
+                    />
+                    
+                    <motion.circle
+                      cx="280" cy="240" r="25"
+                      className="node-circle"
+                      fill="#5D7A61"
+                      animate={{
+                        r: [25, 27, 25],
+                        transition: {
+                          repeat: Infinity,
+                          repeatType: "reverse",
+                          duration: 3.6,
+                          ease: "easeInOut",
+                          delay: 2.2 // Start breathing after spin
+                        }
+                      }}
+                    />
+                    
+                    {/* Dynamic trail effect during spin */}
+                    <motion.g
+                      initial={{ opacity: 0 }}
+                      animate={{ 
+                        opacity: [0, 0.7, 0],
+                      }}
+                      transition={{
+                        duration: 1.8,
+                        ease: "easeOut"
+                      }}
+                    >
+                      {/* Motion trails for spinning effect */}
+                      <path 
+                        d="M200,120 L120,240 L280,240 Z" 
+                        stroke="#C4D0C5" 
+                        strokeWidth="2"
+                        strokeDasharray="5,5"
+                        fill="none"
+                      />
+                      <circle cx="200" cy="120" r="15" fill="#5D7A61" opacity="0.3" />
+                      <circle cx="120" cy="240" r="15" fill="#5D7A61" opacity="0.3" />
+                      <circle cx="280" cy="240" r="15" fill="#5D7A61" opacity="0.3" />
+                    </motion.g>
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
