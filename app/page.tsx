@@ -19,11 +19,24 @@ export default function Home() {
   const [showMobileEntry, setShowMobileEntry] = useState(false);
   const [showContent, setShowContent] = useState(false);
   const [animationHasRun, setAnimationHasRun] = useState(false);
+  const [forceScrollTop, setForceScrollTop] = useState(true);
 
   // Check if mobile and initialize states
   useEffect(() => {
-    // Fix scroll issue - ensure page loads at top
-    window.scrollTo(0, 0);
+    // Fix scroll issue - ensure page loads at top with a more robust approach
+    if (forceScrollTop) {
+      // Use both approaches for maximum compatibility
+      window.scrollTo(0, 0);
+      // Also set scroll position with timeout to ensure it happens after any component mounts
+      const timer = setTimeout(() => {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+        setForceScrollTop(false);
+      }, 100);
+      
+      return () => clearTimeout(timer);
+    }
     
     // Check if we're on mobile and if the animation has run before
     const checkMobileAndAnimation = () => {
@@ -53,8 +66,19 @@ export default function Home() {
     };
     
     window.addEventListener('resize', handleResize);
+    
+    // Handle history navigation to prevent hash URL from triggering auto-scroll
+    if (typeof window !== 'undefined' && window.location.hash) {
+      // Replace state with empty hash to avoid auto-scrolling
+      window.history.replaceState(
+        null, 
+        document.title, 
+        window.location.pathname + window.location.search
+      );
+    }
+    
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [forceScrollTop]);
 
   // Handle mobile entry animation completion
   const handleEntryComplete = () => {
@@ -63,7 +87,17 @@ export default function Home() {
     setAnimationHasRun(true);
     setShowMobileEntry(false);
     setShowContent(true);
+    
+    // Force scroll to top after animation completes
+    window.scrollTo(0, 0);
   };
+
+  // This will run once the component is mounted, ensuring scroll position is maintained at top
+  useEffect(() => {
+    if (showContent) {
+      window.scrollTo(0, 0);
+    }
+  }, [showContent]);
 
   return (
     <main className="min-h-screen bg-white">
@@ -83,19 +117,19 @@ export default function Home() {
           </section>
           
           {/* Process flow section - visualizes the steps */}
-          <section className="py-8 md:py-12 bg-gradient-to-b from-white to-blue-50/20">
+          <section className="py-8 md:py-12 bg-gradient-to-b from-white to-[#5D7A61]/5">
             <ProcessFlow />
           </section>
           
           {/* AI Art Demo moved up for better engagement */}
           <section id="ai-art-demo" className="py-8 md:py-12 bg-white">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-              <AIArtDemo />
+              <AIArtDemo preventAutoFocus={true} />
             </div>
           </section>
           
           {/* Simplified features section */}
-          <section id="features" className="py-8 md:py-12 bg-gradient-to-b from-white via-blue-50/30 to-white">
+          <section id="features" className="py-8 md:py-12 bg-gradient-to-b from-white via-[#5D7A61]/5 to-white">
             <Features />
           </section>
           

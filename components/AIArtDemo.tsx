@@ -31,7 +31,11 @@ const artStyles: Style[] = [
   }
 ];
 
-export default function AIArtDemo() {
+interface AIArtDemoProps {
+  preventAutoFocus?: boolean;
+}
+
+export default function AIArtDemo({ preventAutoFocus = false }: AIArtDemoProps) {
   const [prompt, setPrompt] = useState('');
   const [selectedStyle, setSelectedStyle] = useState<Style | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -42,21 +46,24 @@ export default function AIArtDemo() {
   const [isMobile, setIsMobile] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
 
-  // Focus input on mount
+  // Focus input on mount only if not prevented
   useEffect(() => {
-    if (inputRef.current) {
+    if (inputRef.current && !preventAutoFocus) {
       inputRef.current.focus();
     }
     
-    // Check if we're on mobile
+    // Check if mobile
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
     
     checkMobile();
     window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
+  }, [preventAutoFocus]);
 
   // Update active step based on user progress
   useEffect(() => {

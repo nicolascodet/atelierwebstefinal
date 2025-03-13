@@ -78,7 +78,7 @@ const Header = () => {
                   <a
                     key={item.name}
                     href={item.href}
-                    className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors"
+                    className="px-3 py-2 text-sm font-medium text-gray-700 hover:text-[#5D7A61] transition-colors"
                   >
                     {item.name}
                   </a>
@@ -90,7 +90,7 @@ const Header = () => {
                 href="https://www.kickstarter.com/projects/nicolascodet/the-canvas-by-atelier-frames"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg shadow-sm hover:from-blue-700 hover:to-purple-700 transition-colors"
+                className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-white bg-[#5D7A61] hover:bg-[#4D6A51] rounded-lg shadow-sm transition-colors"
               >
                 Back our Kickstarter
               </a>
@@ -102,14 +102,14 @@ const Header = () => {
                 href="https://www.kickstarter.com/projects/nicolascodet/the-canvas-by-atelier-frames"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center px-3 py-1.5 mr-2 text-xs font-medium text-white bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg"
+                className="inline-flex items-center justify-center px-3 py-1.5 mr-2 text-xs font-medium text-white bg-[#5D7A61] hover:bg-[#4D6A51] rounded-lg"
               >
                 Kickstarter
               </a>
               
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="inline-flex items-center justify-center p-1.5 rounded-md text-gray-700 hover:text-blue-600 hover:bg-gray-100 focus:outline-none"
+                className="inline-flex items-center justify-center p-1.5 rounded-md text-gray-700 hover:text-[#5D7A61] hover:bg-gray-100 focus:outline-none"
               >
                 <span className="sr-only">Open main menu</span>
                 {mobileMenuOpen ? (
@@ -154,7 +154,7 @@ const Header = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-between px-3 py-2.5 text-base font-medium text-blue-600 hover:bg-blue-50 rounded-md"
+                className="flex items-center justify-between px-3 py-2.5 text-base font-medium text-[#5D7A61] hover:bg-[#5D7A61]/10 rounded-md"
               >
                 <span>Visit our Kickstarter</span>
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
